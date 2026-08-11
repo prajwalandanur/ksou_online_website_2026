@@ -80,13 +80,26 @@ export const ABOUT_STORY = {
 
 export const ABOUT_VALUES = {
   heading: 'Education Shouldn’t Stop Because Life Gets Busy.',
-  // Split across two blocks so the composition can stagger them rather than
-  // rendering five identical cards.
-  primary: ['Access.', 'Equity.', 'Quality.'],
-  secondary: ['Affordability.', 'Accountability.'],
-  body: [
-    'KSOU was created to extend higher education to learners who may not be able to follow a conventional campus-based path.',
-    'Its open-learning approach has supported working professionals, learners from different backgrounds, and people whose personal or geographical circumstances make traditional education difficult.',
+  // Two symmetrical blocks: oversized words on the left, the copy that
+  // explains them on the right. Both carry body text — an earlier version
+  // gave the second block none, which left half the row visibly empty.
+  blocks: [
+    {
+      id: 'access',
+      words: ['Access.', 'Equity.', 'Quality.'],
+      body: [
+        'KSOU was created to extend higher education to learners who may not be able to follow a conventional campus-based path.',
+        'Its open-learning approach has supported working professionals, learners from different backgrounds, and people whose personal or geographical circumstances make traditional education difficult.',
+      ],
+    },
+    {
+      id: 'affordability',
+      words: ['Affordability.', 'Accountability.'],
+      body: [
+        'Affordability is part of the mandate rather than an afterthought. Programme fees are published openly and in full, so learners can weigh the real cost of a qualification before committing to it.',
+        'Accountability is what holds the rest together: curricula, credits and examinations are prescribed and published, and the university’s academic standards are subject to external review — reflected in its NAAC A+ accreditation.',
+      ],
+    },
   ],
   note: 'KSOU’s official material identifies these as core institutional objectives.',
 };

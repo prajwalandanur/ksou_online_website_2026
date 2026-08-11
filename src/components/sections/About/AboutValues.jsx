@@ -4,9 +4,9 @@ import { ABOUT_VALUES } from '@/constants/about';
 const EASE = [0.22, 1, 0.36, 1];
 
 /**
- * The five objectives are set as oversized type, not five cards — the brief
- * is explicit about that. They highlight from muted to navy as they enter
- * the viewport, which is the section's only motion.
+ * The five objectives are set as oversized type, not five cards — the
+ * source brief is explicit about that. They highlight from muted to navy
+ * as they enter the viewport, which is the section's only motion.
  */
 function ValueWord({ word, index }) {
   return (
@@ -33,28 +33,34 @@ export function AboutValues() {
           {ABOUT_VALUES.heading}
         </h2>
 
-        <div className="mt-10 grid gap-10 sm:mt-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
-          <div>
-            {ABOUT_VALUES.primary.map((word, i) => (
-              <ValueWord key={word} word={word} index={i} />
-            ))}
-          </div>
+        {/* Both blocks share one layout, so the right column is never empty
+            and the two rows line up on the same grid. */}
+        {ABOUT_VALUES.blocks.map((block, blockIndex) => (
+          <div
+            key={block.id}
+            className={
+              blockIndex === 0
+                ? 'mt-10 grid gap-8 sm:mt-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16'
+                : 'mt-10 grid gap-8 border-t border-border pt-10 sm:mt-12 sm:pt-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16'
+            }
+          >
+            <div>
+              {block.words.map((word, i) => (
+                <ValueWord key={word} word={word} index={i} />
+              ))}
+            </div>
 
-          <div className="flex flex-col gap-5 lg:pt-3">
-            {ABOUT_VALUES.body.map((p) => (
-              <p key={p} className="text-base leading-relaxed text-muted-foreground sm:text-lg">
-                {p}
-              </p>
-            ))}
+            <div className="flex flex-col gap-5 lg:pt-3">
+              {block.body.map((p) => (
+                <p key={p} className="text-base leading-relaxed text-muted-foreground sm:text-lg">
+                  {p}
+                </p>
+              ))}
+            </div>
           </div>
-        </div>
+        ))}
 
-        <div className="mt-10 border-t border-border pt-10 sm:mt-12 sm:pt-12">
-          {ABOUT_VALUES.secondary.map((word, i) => (
-            <ValueWord key={word} word={word} index={i} />
-          ))}
-          <p className="mt-6 max-w-xl text-sm text-muted-foreground">{ABOUT_VALUES.note}</p>
-        </div>
+        <p className="mt-8 max-w-xl text-sm text-muted-foreground">{ABOUT_VALUES.note}</p>
       </div>
     </section>
   );
