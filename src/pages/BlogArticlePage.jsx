@@ -41,6 +41,7 @@ export function BlogArticlePage() {
   return (
     <main>
       <BlogHero
+        slug={slug}
         category={article.category}
         title={article.title}
         excerpt={article.excerpt}

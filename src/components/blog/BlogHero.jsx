@@ -1,8 +1,12 @@
 import { Calendar, Clock, User } from 'lucide-react';
 import { BlogBreadcrumbs } from './BlogBreadcrumbs';
 import { ImagePlaceholder } from './ImagePlaceholder';
+import { BLOG_IMAGES } from '@/constants/blogImages';
 
-export function BlogHero({ category, title, excerpt, publishedDate, readingTime, author }) {
+export function BlogHero({ slug, category, title, excerpt, publishedDate, readingTime, author }) {
+  // Articles without artwork keep the reserved placeholder slot.
+  const image = BLOG_IMAGES[slug];
+
   return (
     <header className="flex flex-col gap-8 pb-10 pt-8 sm:pb-14 sm:pt-12 lg:pb-16">
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 px-6 lg:px-8">
@@ -39,7 +43,18 @@ export function BlogHero({ category, title, excerpt, publishedDate, readingTime,
       </div>
 
       <div className="mx-auto w-full max-w-5xl px-6 lg:px-8">
-        <ImagePlaceholder label="Featured image" aspectClass="aspect-[21/9]" />
+        {image ? (
+          <img
+            src={image.src}
+            alt={image.alt}
+            // The first meaningful paint on an article page — eager, and
+            // flagged high priority so it isn't queued behind other assets.
+            fetchPriority="high"
+            className="aspect-[21/9] w-full rounded-[24px] object-cover"
+          />
+        ) : (
+          <ImagePlaceholder label="Featured image" aspectClass="aspect-[21/9]" />
+        )}
       </div>
     </header>
   );
