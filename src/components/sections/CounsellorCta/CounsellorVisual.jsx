@@ -30,7 +30,7 @@ import counsellor from '@/assets/counsellor.webp';
  */
 export function CounsellorVisual() {
   return (
-    <div className="pointer-events-none relative z-30 mx-auto -mb-4 mt-8 w-[15.5rem] select-none sm:w-[18rem] lg:absolute lg:bottom-[-1rem] lg:right-4 lg:mx-0 lg:mb-0 lg:mt-0 lg:w-[18.5rem] xl:right-12">
+    <div className="pointer-events-none relative z-30 mx-auto -mb-4 mt-8 w-[15.5rem] select-none sm:w-[18rem] lg:absolute lg:bottom-[-1rem] lg:right-0 lg:mx-0 lg:mb-0 lg:mt-0 lg:w-[18.5rem]">
       {/* Soft halo so the cutout sits on the ice background instead of
           floating on it — kept well under the figure's own contrast. */}
       <div
