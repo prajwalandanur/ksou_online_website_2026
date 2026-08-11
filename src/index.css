@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+@import '@fontsource/dm-serif-display/400.css';
+@import '@fontsource/dm-sans/400.css';
+@import '@fontsource/dm-sans/500.css';
+@import '@fontsource/dm-sans/600.css';
+@import '@fontsource/dm-sans/700.css';
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: #111111;
+
+  --color-primary: #4169e1;
+  --color-primary-hover: #3457c9;
+  --color-primary-foreground: #ffffff;
+
+  --color-muted: #f6f7fb;
+  --color-muted-foreground: #6b7280;
+  --color-border: #e8e9ee;
+
+  /* Very light ice-blue — shared background for the Counsellor CTA + Footer,
+     so the two read as one continuous closing section instead of a hard seam. */
+  --color-ice: #f3f7ff;
+  /* Subtle metallic gold — footer accents only (column-heading underlines).
+     Keep usage sparing; this is not a primary token. */
+  --color-gold: #c9a227;
+
+  /* Site-wide type system: DM Serif Display for headings/brand, DM Sans for
+     everything else. DM Serif Display ships Regular (400) only — never
+     pair it with font-bold, lean on size/tracking for weight instead. */
+  --font-sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-brand: 'DM Serif Display', 'Georgia', serif;
+
+  /* Soft elevation scale for the floating navbar card — resting vs. lifted-on-scroll. */
+  --shadow-card-rest: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px -12px rgba(17, 17, 17, 0.1);
+  --shadow-card-scrolled: 0 4px 8px -2px rgba(17, 17, 17, 0.08), 0 16px 36px -12px rgba(17, 17, 17, 0.16);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-sans);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}

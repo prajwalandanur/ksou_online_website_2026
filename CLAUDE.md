@@ -1,0 +1,182 @@
+# KSOU Online Website — Project Context
+
+This file is the source of truth for any Claude Code session continuing work on this project. Read it before making changes. It reflects the actual state of the codebase, not aspirational plans — keep it that way as the project grows.
+
+Source prompts for completed sections live in the project root as markdown files (`KSOU_Online_Global_Development_Guidelines.md`, `KSOU_Section_01_Navigation_Bar_Prompt.md`, etc.) — this file supersedes them where they conflict, since it tracks decisions made *during* implementation (e.g. typography changed twice after the original section prompts were written).
+
+---
+
+## 1. Project Overview
+
+**KSOU Online** — the online-programmes website for Karnataka State Open University, a government university in Mysuru, Karnataka. This is a production-grade project for a government institution, built to the same engineering standard as a commercial enterprise product: clean architecture, scalability, performance, accessibility, SEO, and security are not optional.
+
+Design goal: feel like a premium modern SaaS/education platform (Linear, Stripe, Vercel, Notion, Online Manipal) — **not** a traditional government website. Premium, elegant, minimal, spacious, trustworthy, conversion-focused. Design inspiration comes from the latest Online Manipal website, without copying it — KSOU Online needs its own identity.
+
+---
+
+## 2. Tech Stack
+
+- **React 19** + **Vite 8** (JavaScript/JSX, not TypeScript)
+- **Tailwind CSS v4** (via `@tailwindcss/vite` plugin — CSS-first config in `src/index.css` using `@theme`, not a `tailwind.config.js`)
+- **React Router DOM v7** (`BrowserRouter`, client-side routing)
+- **Framer Motion v13** — all animation/micro-interaction work
+- **Lucide React** — icon set (verify an icon's exact export name in `node_modules/lucide-react/dist/lucide-react.d.ts` before importing; some common names have been renamed, e.g. `LineChart` → `ChartLine` in the installed version)
+- **Swiper.js** and **React Hook Form** — installed per the original spec but **still not used anywhere in the codebase**. No forms exist yet. Carousels/scroll mechanisms have kept growing hand-rolled instead of converging on Swiper — there are now **three distinct home-grown mechanisms**: `useAutoScrollCarousel` (interval-based autoplay, used by the accreditation strip and the course-grid mobile carousel), `useMarquee` (real `scrollLeft` + `requestAnimationFrame`, infinite-loop via duplicated content, used by the Why Choose KSOU feature strip), and a third pattern with no shared hook at all — manual scroll-snap + explicit Prev/Next buttons, no autoplay (`BlogCarousel.jsx`). This is the inconsistency the original note warned about; worth a deliberate look (converge on Swiper, or extract the third pattern into a shared hook) before adding a fourth.
+
+Path alias: `@` → `src/` (configured in `vite.config.js` and `tsconfig.json` — a plain-JS project intentionally keeps a `tsconfig.json` only so editor tooling and Vite's dependency scanner resolve paths; there is no actual TypeScript in this project).
+
+---
+
+## 3. Design System
+
+Defined in `src/index.css` under `@theme`. Tailwind v4's CSS-first config means these `--color-*`/`--font-*`/`--shadow-*` tokens automatically become utility classes (`bg-background`, `text-primary`, `font-brand`, `shadow-card-rest`, etc.) — don't hardcode hex values in components, use the tokens.
+
+**Colors**
+| Token | Value | Utility |
+|---|---|---|
+| Background | `#FFFFFF` | `bg-background` |
+| Primary text | `#111111` | `text-foreground` |
+| Primary accent | `#4169E1` (royal blue) | `bg-primary` / `text-primary` |
+| Accent hover | `#3457C9` | `bg-primary-hover` |
+| Muted background | `#F6F7FB` | `bg-muted` |
+| Muted text | `#6B7280` | `text-muted-foreground` |
+| Border | `#E8E9ED` | `border-border` |
+
+White-on-`#4169E1` contrast was checked: ~4.85:1, passes WCAG AA at any weight/size.
+
+Tailwind's built-in `amber-400` has since been adopted as a small decorative accent (dot separators, the traveling dot on the How It Works timeline) — used consistently across `BlogCard`, `FeatureCard`, and both `JourneyDesktop`/`JourneyMobile`. It's a deliberate, consistently-applied choice but isn't a `--color-*` token yet — promote it to one (`--color-accent` or similar) if it keeps spreading, rather than letting bare `amber-400` proliferate.
+
+**Typography — current system (this has changed twice; this is the standing one, confirmed explicitly by the user):**
+- **Headings / brand:** DM Serif Display, `font-brand` utility. **Only weight 400 exists** — this font has no bold instance on Google Fonts/Fontsource. Never apply `font-bold`/`font-extrabold` to anything using `font-brand`; get visual weight from size and letter-spacing instead.
+- **Body / nav / buttons / everything else:** DM Sans, weights 400–700 available, `font-sans` utility (this is also the `<body>` default, so plain text needs no explicit class).
+- Both are **self-hosted** via `@fontsource/dm-serif-display` and `@fontsource/dm-sans` — imported in `src/index.css`, actual font files live in `node_modules`, nothing is loaded from Google Fonts/any CDN at runtime.
+- **Standing project convention: always self-host fonts.** Never add a `<link>` to an external font CDN. If a requested font isn't on `@fontsource`, download the actual files (e.g. via the foundry's API) and vendor them under `src/assets/fonts/` with local `@font-face` rules. This has been applied consistently (Google Fonts → Fontsource; a Fontshare-exclusive request was downloaded and vendored rather than linked live) — see the project's Claude memory for the full history if it matters.
+- Prior iterations, fully removed (packages uninstalled, files deleted) — **do not resurrect these**: Plus Jakarta Sans + Inter (initial build), General Sans + Satoshi (a later Hero-only experiment, self-hosted from Fontshare).
+
+**Other tokens**
+- `--shadow-card-rest` / `--shadow-card-scrolled`: the layered elevation scale used by the floating Navbar card (and reused conceptually elsewhere) — resting vs. scrolled/lifted state.
+- Large border radii throughout (20–28px range) for the "floating card" aesthetic — e.g. `rounded-[26px]` on the Navbar card, `rounded-[28px]` on course/hero cards.
+- Generous whitespace, soft multi-layer shadows, thin `border-border` hairlines, soft hover lift (`hover:-translate-y-*` + shadow bloom) — this vocabulary repeats across every section built so far and should continue.
+- Mobile-first responsive; breakpoints follow Tailwind defaults (`sm`, `lg` are the two used most).
+
+---
+
+## 4. Folder Structure
+
+```
+src/
+├── assets/
+│   ├── accreditation/    # AICTE/UGC/NAAC logos
+│   ├── courses/          # real course photography (ba/bcom/ma/mba/mcom/msc .png — large, unoptimized, see §7)
+│   ├── icons/why-choose/ # 6 PNG icons for the Why Choose KSOU cards (used as <img>, not lucide-react components)
+│   └── ksou-crest.jpeg
+├── components/
+│   ├── common/           # Logo.jsx, ScrollToTop.jsx — cross-cutting pieces used by multiple layouts
+│   ├── layout/            # Navbar/ (multi-file), ClosingSection.jsx, Footer/ (multi-file), MainLayout consumers
+│   ├── sections/          # Hero/, Courses/, WhyChooseKsou/, HowItWorks/, Blog/, Faq/ (one folder per homepage section) + Programme/ (12 generic components shared by all 6 programme detail pages — see §6)
+│   ├── blog/              # 14 generic article-design-system components shared by all blog articles (see §6) — BlogHero, TableOfContents, ArticleBody (block renderer), ArticleTable, HighlightCallout, StepTimeline, ComparisonCards, StatCardRow, FaqAccordion, KeyTakeaways, ArticleCta, RelatedArticles, ImagePlaceholder, InlineProgrammeLink, BlogBreadcrumbs
+│   └── ui/                # Button.jsx — generic reusable primitives (variant-based, not one-off)
+├── constants/             # navigation.js, courses.js, accreditation.js, whyChooseKsou.js, howItWorks.js, blogPosts.js, footer.js — all copy/data lives here, not inline in JSX; programmes/ subfolder holds one data file per programme (see §6); blogs/ subfolder holds one content-block data file per article (see §6)
+├── hooks/                 # useScrolled, useLockBodyScroll, useAutoScrollCarousel, useMarquee, useVerticalTimelineTrack, useDocumentMeta
+├── layouts/               # MainLayout.jsx — wraps Navbar + <Outlet /> + ClosingSection (Counsellor CTA + Footer)
+├── pages/                 # Home.jsx (real), ProgrammePage.jsx (real, data-driven, serves all 6 programme routes), BlogListingPage.jsx (real), BlogArticlePage.jsx (real, data-driven, serves built blog slugs — see §6), PageComingSoon.jsx (placeholder for unbuilt routes)
+├── routes/                # AppRoutes.jsx — single source of route definitions
+├── App.jsx                # wraps AppRoutes in MotionConfig (reducedMotion="user")
+├── main.jsx
+└── index.css              # Tailwind + design tokens + self-hosted font imports
+```
+
+`services/`, `utils/`, `data/`, `styles/`, `context/` exist in the original spec but have no files yet — create them only when something actually needs to live there (an empty folder isn't tracked by git anyway).
+
+---
+
+## 5. Coding Standards (established and followed so far)
+
+- Functional components + hooks only, no class components.
+- Data/copy lives in `src/constants/*.js`, never hardcoded inline in JSX — e.g. nav links, phone numbers, course list, accreditation logos are all constants files imported by components.
+- Reusable primitives over duplication: `Button.jsx` has `primary` / `secondary` / `ghost` variants (plus `onPrimary` / `outlineOnPrimary` for CTAs that sit on a solid primary-blue background, e.g. the MBA page's final CTA panel — added because overriding another variant's bg/border/text-color classes via a later `className` is unreliable, since Tailwind's generated CSS order for same-property utilities doesn't follow JSX class-string order, so the base variant's own class can still win the cascade) and handles `<Link>` vs `<a>` vs `<button>` automatically based on `to`/`href` props; `CourseCard` is one component reused across both the grid and the carousel; `useAutoScrollCarousel` is one hook reused by both the Hero's accreditation strip and the Courses carousel (parameterized by interval).
+- Local state by default; no global state library introduced (none has been needed yet).
+- Accessibility baked in throughout: semantic HTML (`<header>`, `<nav>`, `<section aria-labelledby>`, one `<h1>` per page), keyboard focus rings (`:focus-visible`), ARIA on the mobile menu (`role="dialog"`, `aria-modal`), descriptive `aria-label`s, `cursor-pointer` on all clickable elements, and every Framer Motion animation respects `prefers-reduced-motion` via `<MotionConfig reducedMotion="user">` in `App.jsx` (the two carousels additionally check `matchMedia('(prefers-reduced-motion: reduce)')` directly since their autoplay is a `setInterval`, not a Motion animation).
+- Every section built has gone through: `npm run lint` (ESLint flat config, must be clean) → `npm run build` (must succeed with no errors) → dev server smoke-test (curl every touched file for a 200) before being considered done. Chrome browser tools failed to connect across several early sessions but connected successfully as of 2026-08-11 (fix: fully quit and relaunch Chrome, confirm the signed-in profile matches the Claude Code session) — desktop viewport now visually verifiable via the extension. **Mobile-viewport QA no longer goes through the extension at all** — its `resize_window` tool resizes the real OS browser window via `chrome.windows.update()`, which silently no-ops when the window is maximized (confirmed live: `outerWidth` stayed pinned to `screenAvailWidth` before and after the call, and the tool's schema has no `state` param to un-maximize first), so it could never reliably reach a mobile layout. Fixed by adding `playwright` as a devDependency instead: `npm run qa:mobile` (`scripts/mobile-screenshot.mjs`) launches headless Chromium with real device emulation (`iPhone 13` profile) — a genuine viewport override, not OS window resizing — and screenshots the homepage + all 6 programme routes to `qa-screenshots/mobile/` (gitignored-worthy output dir, not committed content). Verified against real screenshots showing correct mobile layout (compact navbar, single-column stacked cards, mobile carousel dots) on both Home and the MBA programme page.
+- **Scroll position resets to top on every route change** — `components/common/ScrollToTop.jsx`, rendered once inside `<BrowserRouter>` in `AppRoutes.jsx`. React Router doesn't do this automatically (no full page load between routes), so without it, clicking a card while scrolled down on the previous page landed mid-scroll on the new one — this was reported as a real bug and fixed by calling `window.scrollTo(0, 0)` in a `useEffect` keyed on `location.pathname` only (not the full `location` object), so in-page anchor jumps like the blog Table of Contents (hash-only navigation, same pathname) aren't affected.
+- No external runtime dependencies beyond what's necessary: fonts are self-hosted (see §3), no analytics/tracking added, no third-party scripts.
+
+---
+
+## 6. Sections Completed
+
+1. **Navbar** (`src/components/layout/Navbar/`) — floating rounded card (not full-width strip), two rows: utility row (language toggle EN/ಕನ್ನಡ + 3 phone numbers, collapses on scroll) and main row (KSOU crest logo + wordmark, center nav links with pill hover/active state, LMS Login CTA). Sticky, shrinks and gains blur/shadow on scroll. Full-screen animated mobile drawer with hamburger toggle. Logo uses the real KSOU crest (`src/assets/ksou-crest.jpeg`).
+
+2. **Hero** (`src/components/sections/Hero/`) — two-column (55/45) layout. Final content (exact copy, do not paraphrase): H1 "UGC Approved **KSOU Online Programmes**", subtitle "Government Recognized Online UG & PG Degrees", single "Apply Now" CTA. No description paragraph, no trust cards (both were removed in a later revision — don't re-add without being asked). Right side is a placeholder visual (soft blue glow + icon, aspect-ratio-locked) since no real student photo has been supplied — the exact `<img>` swap-in snippet is left as a comment in `HeroVisual.jsx`. Bottom of the Hero (same `<section>`, not a separate one) is the **Accreditation Strip**: real AICTE/UGC/NAAC A+ logos (`src/assets/accreditation/`) with heading+description each. Desktop/tablet: static 3-column row. Mobile: auto-scrolling swipeable carousel (2s interval, pauses on touch, resumes after 4s).
+
+3. **Courses Offered** (`src/components/sections/Courses/`) — two independent `<section>`s (not tabs, for SEO/crawlability): "Online Undergraduate Programmes" and "Online Postgraduate Programmes", now built as a shared `CourseCategorySection` (heading + `CourseGrid` + `CourseCarousel`, both fed the same `courses` array) rather than duplicated per category. Course data (`constants/courses.js`) sourced from `KSOU_Online_Programmes_Prospectus.pdf` — **consolidated since the original build**: the five separate MA-by-specialization entries (Kannada/English/Hindi/Sanskrit/Economics) are now one `MA` card carrying a `specializations` array, so the list is 6 cards (BA, B.Com under UG; M.Com, MA, MBA, M.Sc Mathematics under PG) instead of 10. Each course now also carries a `fee` field, shown on the card.
+   `CourseCard.jsx` has real photography (`assets/courses/*.png`) instead of the icon-on-tint placeholder — **but the file still has a stale doc comment claiming "No course photography exists yet"; fix that comment next time this file is touched.** These images are also large (1.8–2.1MB each, unoptimized) and should be compressed/converted (e.g. WebP) before this is considered launch-ready. Card action row grew from two buttons to four: Brochure download + Previous QPs download (both new, styled placeholders — `aria-label` says "coming soon", no real files wired up) alongside the original Learn More (placeholder) and Apply Now (real CTA). Desktop/tablet: responsive grid. Mobile: swipeable carousel with visible Prev/Next arrows, 5s auto-advance, pause-on-interaction (`useAutoScrollCarousel`).
+
+4. **Why Choose KSOU** (`src/components/sections/WhyChooseKsou/`) — infinite auto-scrolling horizontal marquee of 6 feature cards (Government University, UGC Recognized, Study Alongside Work, Flexible Learning, Digital Learning, Career Growth — copy + PNG icons in `constants/whyChooseKsou.js`). Built on a new hook, `useMarquee`: drives real `scrollLeft` via `requestAnimationFrame` (not a CSS transform) so the track stays natively touch/wheel-scrollable, loops seamlessly by duplicating the card list and wrapping scroll position, pauses on hover/touch/wheel and auto-resumes, respects `prefers-reduced-motion` (duplicate set isn't even rendered when reduced motion is on).
+
+5. **How It Works** (`src/components/sections/HowItWorks/`) — 5-step journey (Apply & Get Admitted → Access LMS → Learn & Engage → Complete Examinations → Earn Your Degree; copy in `constants/howItWorks.js`) with expand/collapse detail per step (single `openStepId` state, one open at a time). Two layouts: `JourneyDesktop` and `JourneyMobile` (vertical timeline with an animated traveling dot on a new hook, `useVerticalTimelineTrack`, that measures the first/last step's position to size the track). Ends with a "One platform. One journey. Your degree." summary line and an Admissions → Learning → Examinations → Degree breadcrumb.
+
+6. **Blog / Insights** (`src/components/sections/Blog/`) — "Insights for Your Next Step": 5 articles (`constants/blogPosts.js`, real titles/categories/dates/reading-time, slugs matching the source content prompt's suggested URLs) shown via `BlogCard.jsx` (image-placeholder upper half, same visual language as `CourseCard`), now a real `Link` to `/blogs/:id`. `BlogCarousel.jsx` is the third distinct scroll mechanism in the codebase (see §2) — manual scroll-snap with explicit Prev/Next buttons, no autoplay, no shared hook. The "View All" button now links to a real `/blogs` listing page (`BlogListingPage.jsx`).
+
+   **Blog article system — all 5 articles built** (`src/components/blog/`, `src/pages/BlogArticlePage.jsx`, route `/blogs/:slug`) — built from `blogs prompt.md` (a design-system spec attached with 5 fully-written real articles). Data-driven like the programme pages: 14 generic components render a flat array of typed content blocks (`heading2`/`heading3`/`paragraph`/`list`/`table`/`callout`/`steps`/`comparison`/`stats`/`image`/`link`) via `ArticleBody.jsx`'s switch renderer — adding a future article is a content change (`constants/blogs/*.js`), not a component change. Content is authored as near-markdown strings with `**bold**` parsed inline (`components/blog/inlineText.jsx`) so it stays easy to eyeball against the source prompt's verbatim wording (the spec explicitly forbids rewriting/shortening the supplied article text). `TableOfContents.jsx` auto-derives its entries from the article's `heading2` blocks (per spec) via `IntersectionObserver`-based active-section highlighting, rendered twice with a `variant` prop (`sidebar` for the sticky desktop aside, `inline` for the mobile collapsible version) rather than once, because a CSS-grid sidebar and an inline-in-column placement are structurally different DOM locations.
+   - **Built in two passes**, confirmed with the user: Blog 1 ("What Can You Do After a B.Com Degree?", `constants/blogs/career-options-after-bcom-degree.js`) first as the design-system pilot, then Blogs 2–5 batched once reviewed — `how-to-choose-right-online-degree-after-graduation.js`, `online-degree-while-working-full-time.js`, `online-learning-guide-admission-to-graduation.js` (first real use of the `steps` block — its 10-step "Online Degree Journey"), `online-degree-vs-traditional-degree.js` (first real use of the `comparison` block — its "Simple Decision Framework"). All 5 registered in `BLOG_ARTICLES` (`constants/blogs/index.js`); no other slugs are referenced from `relatedIds` anymore, so there's currently no live example of the `PageComingSoon` blog fallback — it'll trigger again the moment a 6th article is added to `BLOG_POSTS` without matching content.
+   - **Conclusion sections were synthesized, not invented-from-nothing, for Blogs 2–4** (5 also lacked one) — the source content for Blog 1 alone included an explicit "## Conclusion" section; the other 4 don't. Per item 19's instruction that every article share the same heading hierarchy, each got a short closing summary written as a pure restatement of that article's own already-stated points (no new facts, figures, or claims) rather than skipping the section inconsistently.
+   - **The CTA heading/description text is identical across all 5 articles** ("Ready to take the next step in your education?" / "Explore KSOU Online programmes designed to help you continue your education with flexibility.") — this is item 14's own example text, reused verbatim rather than inventing 5 different variants, since the source prompt gave one generic CTA pattern rather than per-article copy.
+   - **Images are deliberately blank placeholders** (`ImagePlaceholder.jsx` — dashed border, icon, label) per explicit user instruction ("leave me place for images, i'll add them later"), not fabricated stock-style photography, across all 5 articles. Swap in real `<img>` tags where these appear (hero featured image; future `image` blocks).
+   - **Author byline** is the institutional "KSOU Online Editorial Team", not a fabricated named individual — no real author was supplied and inventing one would misrepresent authorship, similar to why testimonials stay honestly `isPlaceholder: true` rather than invented (see programme pages, §6 item 7).
+   - **Fixed a real mobile-layout bug while building this**: `ArticleTable.jsx`'s `min-w-[560px]` (needed so the table scrolls horizontally instead of squeezing unreadable) was making its flex/grid ancestors refuse to shrink below that width — the classic missing-`min-width:0` flex/grid-item issue — which blew out the *entire page* horizontally on mobile (confirmed via Playwright: `document.documentElement.scrollWidth` was 586px against a 390px viewport). Fixed by adding `min-w-0` to the flex containers wrapping the article body (`BlogArticlePage.jsx`'s main column, `ArticleBody.jsx`'s block wrapper) so only the table's own `overflow-x-auto` wrapper scrolls, not the page.
+   - **Verified via `npm run qa:mobile`-style Playwright device emulation** (see §5) at both desktop (1522px) and mobile (390×844, iPhone 13 profile): TOC active-highlighting, sticky-sidebar behaviour (required removing `items-start` from the two-column grid — sticky needs the aside's grid cell to stretch to the full row height, not shrink to its own content, or it runs out of room to travel), FAQ accordion toggle, internal programme links, and the horizontal-scroll table fix all confirmed working in the live browser, not just by reading the code.
+   - **Content-depth/SEO expansion pass** (after all 5 were reviewed): each article gained 2–4 new H2 sections plus 3–4 extra FAQs, roughly doubling word count, per explicit instruction to add more content/keyword coverage without asking clarifying questions first. New sections lean on either (a) generic, well-established domain knowledge that needs no KSOU-specific verification (e.g. Blog 1's CA/CS/CMA/CFA/CFP certification table, study-tool tips, common-mistakes lists), or (b) real figures already verified elsewhere in the codebase rather than invented ones — a "KSOU Online Programmes at a Glance" table (duration/credits/fee for all 6 programmes, sourced from `constants/programmes/*.js`) appears in both Blog 2 and Blog 4, and Blog 1's M.Com/MBA sections gained real `stats` blocks with the same verified figures. Still no invented salary figures, rankings, or specific approval claims — e.g. Blog 1's new "salary after B.Com" FAQ deliberately stays qualitative rather than citing a number nobody supplied. Re-verified with the same lint/build/mobile-overflow-check/screenshot process as the initial build — all clean.
+
+7. **Programme detail pages — all 6 built on one reusable, data-driven template** (`src/pages/ProgrammePage.jsx`, route `/programmes/:slug`). Started as a single hand-built MBA page (`MbaProgramme.jsx`, from `KSOU Online MBA Programme Page — Se.md`, later extended and put through a major UI/UX refinement pass per `KSOU Online MBA Page — Major UIUX R.md`), then templatized per `Use the existing KSOU Online MBA pr.md`: the 12 MBA-specific section components were converted into 12 generic components in `src/components/sections/Programme/` (`ProgrammeHero`, `ProgrammeLeadGeneration`, `ProgrammeFeeDurationEligibility`+`ProgrammeInfoCard`, `ProgrammeWhyChoose`, `ProgrammeStructure`+`ProgrammeStructureCard`, `ProgrammeRecognition`, `ProgrammeCurriculum`, `ProgrammeCareerSupport`, `ProgrammeDegreeShowcase`+`ProgrammeCertificateVisual`, `ProgrammeWhyKsou`, `ProgrammeTestimonials`, `ProgrammeFaq`) that all take a `programme` data object as props instead of importing course-specific constants. `ProgrammePage.jsx` looks up `PROGRAMMES[slug]` from `src/constants/programmes/index.js` and renders the same 12 sections for whichever programme is active; an unknown slug falls back to `PageComingSoon`.
+   - **Per-programme data files**: `constants/programmes/{mba,ba,bcom,mcom,msc-mathematics,ma}.js`, each sourced from `PROSPECTUS WITH SUBJECTS NEW.pdf` (the fuller prospectus with subject-level curriculum, supersedes the earlier `KSOU_Online_Programmes_Prospectus.pdf` used for the original MBA-only build) — do not invent fees, eligibility, credits, subjects, or recognition claims when touching these.
+   - **Shared content**: `constants/programmes/shared.js` holds Recognition badges, the Career Support feature list, the Why-KSOU institutional story/milestones, degree tags, and the exam-fee table — identical across every programme per the source spec's explicit instruction not to rewrite institution-level content per course. `ProgrammeRecognition` and `ProgrammeWhyKsou` are content-static (no `programme` prop) for this reason.
+   - **MA is one consolidated page**, not 5 — matches the homepage's single MA course card. Kannada/English/Hindi/Sanskrit/Economics share identical fees (₹30,000 total) but differ in real credits (70–88), duration wording, and eligibility per the prospectus; the "Choose Your Discipline" structure section shows all 5 with their own credits/eligibility, while the Curriculum section shows the full semester-by-semester syllabus for English only (the most complete English-language source data) with a note pointing back to the discipline cards for the others. Kannada and Hindi structure cards deliberately omit invented English subject-title translations — their curricula are published in Kannada/Devanagari script in the source prospectus — and say so rather than guessing.
+   - **Per-route SEO**: `hooks/useDocumentMeta.js` (new, dependency-free — sets `document.title` and the `<meta name="description">` tag on mount, no react-helmet) is called by both `ProgrammePage` (per-programme `seo.title`/`seo.description` from each data file) and `Home.jsx` (site defaults) so navigating between routes always leaves the tag correct.
+   - **Entry points**: all 6 `CourseCard`s in the homepage Courses grid now have a `detailPath` in `constants/courses.js` (`/programmes/mba`, `/programmes/ba`, `/programmes/bcom`, `/programmes/mcom`, `/programmes/msc-mathematics`, `/programmes/ma`) and are fully interactive — this was previously MBA-only, with the other 5 cards intentionally non-interactive.
+   - Full history tracked in `PROGRAMME_PAGES_PROGRESS.md` at the project root (supersedes the now-deleted `MBA_PAGE_PROGRESS.md`) — read it before touching any programme page again.
+
+**Home page order:** Hero → Courses → WhyChooseKsou → HowItWorks → Blog → Faq. (The `Faq` section — `components/sections/Faq/Faq.jsx` — was found rendered on Home but never documented here; likely built in a session whose changes weren't reflected in this file. Not otherwise investigated this session.)
+
+**Routing:** `/` renders the real `Home` page, `/programmes/:slug` renders the real `ProgrammePage` for any of the 6 registered slugs (falls back to `PageComingSoon` for unknown slugs). Every other nav link (`/about`, `/programmes`, `/contact`, `/prospectus`, `/academic-planner`, `/lms-login`, `/apply`) still renders `PageComingSoon`, a generic placeholder — so nothing 404s, but no other page has real content yet.
+
+**Global closing section (every page):** `MainLayout` renders `ClosingSection` below `<Outlet />` — this was found undocumented during the 2026-08-11 MBA polish session (real drift; a prior session built it without updating this file). It's a shared ice-blue (`bg-ice`) wrapper holding `CounsellorCta` ("Have Questions? Connect With Our Counsellor" + Apply Now button) and `CounsellorVisual` (a decorative cutout meant to overlap both the CTA and the footer below it, per a comment in `ClosingSection.jsx`), then the real `Footer` (`components/layout/Footer/`): logo, social icon buttons (styled placeholders, `aria-label` says "coming soon" — no real social links wired), link columns from `constants/footer.js` (`FooterColumn.jsx`, currently 3 columns per the page's screenshot: Company / Online Degrees / Resources), and a copyright line. Since every page shares one `MainLayout`, this renders identically on `Home`, `MbaProgramme`, and every `PageComingSoon` route.
+
+---
+
+## 7. Sections Remaining
+
+Not started — the original guidelines and section prompts imply at least the following still need building, but **confirm scope with the user before starting each one**, the same way each section so far arrived as its own explicit prompt:
+
+- All 5 planned blog articles are now built (see §6) — no more blog content work queued unless the user supplies a 6th article or the source prompt's deferred JSON-LD schema.
+- Real photography for all 5 blog articles (currently honest dashed-border `ImagePlaceholder` slots per explicit user instruction, see §6) — swap in real `<img>` tags once supplied.
+- Real brochure/previous-question-paper files + download wiring for the two new `CourseCard` buttons (currently styled placeholders, `aria-label` says "coming soon"), and for every programme page's "View Prospectus" CTA (Hero + final CTA)
+- Real student testimonials for all 6 programme pages' `testimonials` arrays (currently honest placeholders with `isPlaceholder: true`, not fabricated — see §6)
+- Hindi and Kannada full semester-wise curricula for the MA page — currently omitted rather than guessed, since the source prospectus publishes them in Hindi/Kannada script (see §6); would need someone to transcribe/translate them
+- JSON-LD structured data (Course schema) per programme page — called out in `KSOU_SEO_Checklist.csv` but not yet added
+- Footer social links are styled placeholders (`aria-label` says "coming soon") — real social URLs still need wiring. The footer itself, and the "Have Questions?" counsellor CTA above it, are built and live globally via `MainLayout`'s `ClosingSection` (see §6) — don't re-build these.
+- About Us page (real content — currently `PageComingSoon`)
+- Programmes listing page (real content — currently `PageComingSoon`)
+- Contact Us page + working form (React Hook Form is installed for exactly this, unused so far)
+- Prospectus page
+- Academic Planner page
+- LMS Login page/flow
+- Apply Now page/flow
+- Real student photo for the Hero (currently a placeholder — swap instructions are in `HeroVisual.jsx`)
+- Compress/convert the new course photography (`assets/courses/*.png` are 1.8–2.1MB each, unoptimized — should be WebP + reasonably sized before launch) and fix the stale "no course photography exists yet" doc comment at the top of `CourseCard.jsx`
+- Reconsider the three parallel hand-rolled carousel/scroll mechanisms (`useAutoScrollCarousel`, `useMarquee`, and `BlogCarousel`'s bespoke scroll-snap) — converge on Swiper or a shared hook rather than letting a fourth pattern appear (see §2)
+- SEO: `<title>`/meta description are now set per-route via `useDocumentMeta` (Home, all 6 programme pages, `/blogs`, and all 5 blog articles, see §6) — but no JSON-LD schema (Article/Breadcrumb/FAQ types were part of the blog design-system spec but explicitly deferred this pass, see §6), sitemap, or robots.txt yet despite these being called out in `KSOU_SEO_Checklist.csv`, and the per-page copy hasn't been cross-checked against `KSOU_SEO_Keywords_By_Page.csv` in Downloads
+- Actual visual/responsive QA in a real browser — flagged as a gap in §5. Desktop is checkable via the Chrome extension (connected as of 2026-08-11) and all 6 programme pages' desktop layouts plus all 5 blog articles have been screenshot-verified. **Mobile is now also checkable**, via `npm run qa:mobile` (Playwright, see §5) rather than the extension — Home + all 6 programme pages + `/blogs` + all 5 blog articles screenshot-verified on mobile (390×844, iPhone 13 profile) with no layout breaks (one real bug was caught and fixed this way, see §6's Blog article system entry, and reverified with zero `scrollWidth`/`clientWidth` mismatches across all 5 articles after the fix). Still not covered by either method: the rest of the homepage sections beyond what's been spot-checked, and any non-Home/non-programme/non-blog routes (still `PageComingSoon` placeholders anyway).
+- Build output flags a >500KB JS chunk warning as of the programme-page templatization (all 6 programmes' data + the shared `Programme/` components now bundle into the main chunk) — not blocking, but worth revisiting with route-based code-splitting (`React.lazy`) if it grows further.
+
+---
+
+## 8. Skills
+
+Three skills are installed and should be consulted for every UI/engineering decision, per the original project instructions:
+
+- **`frontend-design`** — `.agents/skills/frontend-design` (symlinked for Claude Code). Anthropic's official example skill. Reviewed, no concerns.
+- **`react-expert`** — `.agents/skills/react-expert`. Installed from `reactjs/react.dev`. Automated risk scan flagged **Med Risk** (Snyk) at install time.
+- **`ui-ux-pro-max`** — `.agents/skills/ui-ux-pro-max`. Installed from a third-party repo (`nextlevelbuilder/ui-ux-pro-max-skill`). Automated risk scan flagged **High Risk** (Gen scanner) at install time; a manual code review at the time found no network calls, no exec/eval, no credential access, and file writes confined to a user-specified output directory — but that review was a spot-check, not exhaustive. It's a local BM25 search tool over CSV design-reference data (`python .agents/skills/ui-ux-pro-max/scripts/search.py "<query>" --domain <domain>`) and has been used for real design-token research this session (e.g. shadow elevation scales, typography pairings). Treat with a bit more caution than the other two given the scanner mismatch — worth another look if it starts behaving unexpectedly.
+
+`skills-lock.json` in the project root tracks exact installed versions.
