@@ -17,7 +17,7 @@ export function Faq() {
   const visibleFaqs = showAll ? FAQS : FAQS.slice(0, INITIAL_VISIBLE_COUNT);
 
   return (
-    <section aria-labelledby="faq-heading" className="flex flex-col gap-10 py-16 sm:gap-12 sm:py-20 lg:py-24">
+    <section aria-labelledby="faq-heading" className="flex flex-col gap-8 py-10 sm:gap-10 sm:py-14 lg:py-16">
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
         <h2 id="faq-heading" className="font-brand text-3xl text-foreground sm:text-4xl lg:text-5xl">
           Frequently Asked Questions

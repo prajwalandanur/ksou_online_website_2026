@@ -16,7 +16,7 @@ export function Hero() {
   return (
     <section
       aria-labelledby="hero-heading"
-      className="px-6 py-16 sm:py-20 lg:px-8 lg:py-28"
+      className="px-6 py-10 sm:py-14 lg:px-8 lg:py-16"
     >
       <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[55fr_45fr] lg:gap-16">
         <div className="flex flex-col items-start gap-8 lg:gap-9">

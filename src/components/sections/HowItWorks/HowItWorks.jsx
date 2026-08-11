@@ -16,7 +16,7 @@ export function HowItWorks() {
   return (
     <section
       aria-labelledby="how-it-works-heading"
-      className="flex flex-col bg-muted/40 py-16 sm:py-20 lg:py-24"
+      className="flex flex-col bg-muted/40 py-10 sm:py-14 lg:py-16"
     >
       <div className="mx-auto mb-10 flex w-full max-w-3xl flex-col gap-3 px-6 text-center sm:mb-12 lg:px-8">
         <h2

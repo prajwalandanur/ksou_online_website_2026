@@ -4,7 +4,7 @@ export function WhyChooseKsou() {
   return (
     <section
       aria-labelledby="why-choose-ksou-heading"
-      className="flex flex-col gap-10 py-16 sm:gap-12 sm:py-20 lg:py-24"
+      className="flex flex-col gap-8 py-10 sm:gap-10 sm:py-14 lg:py-16"
     >
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-6 text-center lg:px-8">
         <h2

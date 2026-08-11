@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/Button';
 
 export function Blog() {
   return (
-    <section aria-labelledby="blog-heading" className="flex flex-col gap-10 py-16 sm:gap-12 sm:py-20 lg:py-24">
+    <section aria-labelledby="blog-heading" className="flex flex-col gap-8 py-10 sm:gap-10 sm:py-14 lg:py-16">
       <div className="mx-auto flex w-full max-w-7xl flex-col items-start gap-5 px-6 sm:flex-row sm:items-end sm:justify-between lg:px-8">
         <div className="flex flex-col gap-3">
           <h2 id="blog-heading" className="font-brand text-3xl text-foreground sm:text-4xl lg:text-5xl">
