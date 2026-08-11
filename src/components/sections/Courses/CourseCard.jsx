@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { ChevronDown, Download, FileText } from 'lucide-react';
+// `Download` is still used by the Brochure button below.
+import { ChevronDown, Download, ExternalLink, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { buttonClasses } from '@/components/ui/buttonClasses';
 import { APPLY_NOW_URL } from '@/constants/navigation';
@@ -12,20 +13,16 @@ const QP_TRIGGER_CLASSES = buttonClasses(
   'w-full list-none justify-center gap-1 whitespace-nowrap px-3 py-2.5 text-xs sm:text-sm [&::-webkit-details-marker]:hidden',
 );
 
-/** Lands in the user's Downloads folder as a self-describing filename. */
-function downloadName(courseName, label) {
-  const slug = [courseName, label, 'Previous Question Papers']
-    .filter(Boolean)
-    .join(' ')
-    .replace(/[^a-z0-9]+/gi, '-')
-    .replace(/^-|-$/g, '');
-  return `KSOU-Online-${slug}.pdf`;
-}
-
 /**
  * Renders the "Previous QPs" action. Most programmes have one combined
- * paper and get a plain download button; MA's are published per discipline,
- * so it gets a small disclosure instead of arbitrarily picking one file.
+ * paper and get a single link; MA's are published per discipline, so it
+ * gets a small disclosure instead of arbitrarily picking one file.
+ *
+ * These open in a new tab (the browser's built-in PDF viewer) rather than
+ * saving to disk — students want to read a paper, not collect it, and it
+ * matches how the main KSOU site serves them. Note there is deliberately
+ * no `download` attribute: that attribute is what forces a save, and
+ * adding it back would silently undo this.
  *
  * The panel opens *upward* on purpose: the card wrapper is `overflow-hidden`
  * (it clips the image's rounded top), so a downward panel would be cut off.
@@ -35,7 +32,7 @@ function QuestionPapersAction({ courseName, papers }) {
     return (
       <Button
         variant="secondary"
-        aria-label={`Download previous question papers for ${courseName} — coming soon`}
+        aria-label={`View previous question papers for ${courseName} — coming soon`}
         className="justify-center gap-1.5 py-2.5 text-xs sm:text-sm"
       >
         <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -49,8 +46,10 @@ function QuestionPapersAction({ courseName, papers }) {
       <Button
         as="a"
         href={papers[0].href}
-        download={downloadName(courseName)}
-        aria-label={`Download previous question papers for ${courseName} (PDF)`}
+        target="_blank"
+        rel="noopener noreferrer"
+        variant="secondary"
+        aria-label={`View previous question papers for ${courseName} (PDF, opens in a new tab)`}
         className="justify-center gap-1.5 py-2.5 text-xs sm:text-sm"
       >
         <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
@@ -75,11 +74,12 @@ function QuestionPapersAction({ courseName, papers }) {
           <li key={paper.href}>
             <a
               href={paper.href}
-              download={downloadName(courseName, paper.label)}
-              aria-label={`Download ${courseName} ${paper.label} previous question papers (PDF)`}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`View ${courseName} ${paper.label} previous question papers (PDF, opens in a new tab)`}
               className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-primary"
             >
-              <Download className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
               {paper.label}
             </a>
           </li>
