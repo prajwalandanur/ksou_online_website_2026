@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
-// `Download` is still used by the Brochure button below.
-import { ChevronDown, Download, ExternalLink, FileText } from 'lucide-react';
+import { ChevronDown, ExternalLink, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { buttonClasses } from '@/components/ui/buttonClasses';
-import { APPLY_NOW_URL } from '@/constants/navigation';
+import { APPLY_NOW_URL, PROSPECTUS_URL } from '@/constants/navigation';
 
 // Tighter padding/gap than the sibling Brochure button so the extra chevron
 // still fits on one line at the card's width — otherwise the label wraps and
@@ -154,12 +153,19 @@ export function CourseCard({ course }) {
         </div>
 
         <div className="grid grid-cols-2 gap-3">
+          {/* No per-course brochures exist; every card points at the one
+              official prospectus, which covers all programmes. Same new-tab
+              treatment as the question papers above. */}
           <Button
+            as="a"
+            href={PROSPECTUS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             variant="secondary"
-            aria-label={`Download brochure for ${name} — coming soon`}
+            aria-label={`View the KSOU Online prospectus, which covers ${name} (PDF, opens in a new tab)`}
             className="justify-center gap-1.5 py-2.5 text-xs sm:text-sm"
           >
-            <Download className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
             Brochure
           </Button>
           <QuestionPapersAction courseName={name} papers={questionPapers} />

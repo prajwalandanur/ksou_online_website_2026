@@ -8,6 +8,9 @@ import { Button } from '@/components/ui/Button';
 import { Logo } from '@/components/common/Logo';
 import { LanguageToggle } from './LanguageToggle';
 
+const MOBILE_LINK_BASE =
+  'block cursor-pointer rounded-2xl px-4 py-3.5 text-lg font-semibold tracking-tight transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+
 export function MobileMenu({ isOpen, onClose }) {
   const closeButtonRef = useRef(null);
 
@@ -60,18 +63,32 @@ export function MobileMenu({ isOpen, onClose }) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.25, delay: 0.05 + i * 0.04, ease: 'easeOut' }}
                 >
-                  <NavLink
-                    to={link.href}
-                    end={link.href === '/'}
-                    onClick={onClose}
-                    className={({ isActive }) =>
-                      `block cursor-pointer rounded-2xl px-4 py-3.5 text-lg font-semibold tracking-tight transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-                        isActive ? 'bg-primary/10 text-primary' : 'text-foreground hover:bg-muted'
-                      }`
-                    }
-                  >
-                    {link.label}
-                  </NavLink>
+                  {link.newTab ? (
+                    // A PDF, not a route — see DesktopNavLinks.
+                    <a
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={onClose}
+                      aria-label={`${link.label} (PDF, opens in a new tab)`}
+                      className={`${MOBILE_LINK_BASE} text-foreground hover:bg-muted`}
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <NavLink
+                      to={link.href}
+                      end={link.href === '/'}
+                      onClick={onClose}
+                      className={({ isActive }) =>
+                        `${MOBILE_LINK_BASE} ${
+                          isActive ? 'bg-primary/10 text-primary' : 'text-foreground hover:bg-muted'
+                        }`
+                      }
+                    >
+                      {link.label}
+                    </NavLink>
+                  )}
                 </motion.li>
               ))}
             </ul>

@@ -1,10 +1,20 @@
+// Real PDFs served straight from public/documents/ (static, not bundled —
+// they're multi-MB documents). Both open in a new tab in the browser's PDF
+// viewer rather than downloading; see the note in CourseCard for why there
+// must be no `download` attribute on the anchors that use these.
+export const PROSPECTUS_URL = '/documents/ksou-online-prospectus.pdf';
+export const ACADEMIC_CALENDAR_URL = '/documents/academic-calendar.pdf';
+
+// `newTab: true` marks a link that points at a file rather than a route —
+// it renders as a plain <a target="_blank">, and AppRoutes skips it when
+// building placeholder routes (there is no /prospectus page to render).
 export const NAV_LINKS = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
   { label: 'Programmes', href: '/programmes' },
   { label: 'Contact Us', href: '/contact' },
-  { label: 'Prospectus', href: '/prospectus' },
-  { label: 'Academic Planner', href: '/academic-planner' },
+  { label: 'Prospectus', href: PROSPECTUS_URL, newTab: true },
+  { label: 'Academic Planner', href: ACADEMIC_CALENDAR_URL, newTab: true },
 ];
 
 export const LMS_LOGIN_URL = '/lms-login';

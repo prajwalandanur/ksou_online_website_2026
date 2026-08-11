@@ -12,7 +12,7 @@ import {
 import { PROGRAMME_EXAM_FEES, PROGRAMME_EXAM_FEE_NOTE } from './shared';
 
 // All facts on this page are sourced from KSOU_Online_Programmes_Prospectus.pdf
-// (PROSPECTUS WITH SUBJECTS NEW.pdf) — do not invent fees, eligibility,
+// (public/documents/ksou-online-prospectus.pdf) — do not invent fees, eligibility,
 // credits, subjects, recognition, or programme features.
 
 export const ba = {

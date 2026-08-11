@@ -15,7 +15,7 @@ The MBA programme page (previously hand-built, `src/pages/MbaProgramme.jsx` + `s
 - All 6 `CourseCard`s on the homepage now have a `detailPath` in `constants/courses.js` (previously MBA-only) and are fully interactive.
 - New `src/hooks/useDocumentMeta.js` — dependency-free, sets `document.title` + meta description on mount. Used by `ProgrammePage` (per-programme SEO) and `Home.jsx` (site defaults), so the tag is always correct regardless of navigation order.
 
-**Data source:** `PROSPECTUS WITH SUBJECTS NEW.pdf` (44 pages, fuller than the original `KSOU_Online_Programmes_Prospectus.pdf` used for the MBA-only build — has subject-level curriculum for every programme). Read in full this session.
+**Data source:** `public/documents/ksou-online-prospectus.pdf` — published on the site, formerly `PROSPECTUS WITH SUBJECTS NEW.pdf` at the project root. (44 pages, fuller than the original `KSOU_Online_Programmes_Prospectus.pdf` used for the MBA-only build — has subject-level curriculum for every programme). Read in full this session.
 
 ## Per-programme notes
 
@@ -39,7 +39,7 @@ The MBA programme page (previously hand-built, `src/pages/MbaProgramme.jsx` + `s
 ## Next steps on resume, in order
 
 1. If Hindi/Kannada MA curricula are ever supplied in English (translated or re-authored), add them to `ma.js`'s `kannada`/`hindi` structure-card `subjects` arrays and consider whether they warrant their own Curriculum-section discipline switcher instead of the current English-only representative view.
-2. Real brochure/prospectus files + download wiring — every programme page's Hero and final-CTA "View Prospectus" buttons are still styled placeholders.
+2. Wire every programme page's Hero and final-CTA "View Prospectus" buttons to `PROSPECTUS_URL` (`constants/navigation.js`) — the real prospectus is now published at `public/documents/ksou-online-prospectus.pdf` and already wired into the navbar, footer and the homepage cards' Brochure buttons, but these programme-page buttons are still styled placeholders. Copy the `as="a" href target="_blank" rel="noopener noreferrer"` pattern from `CourseCard`; do **not** add a `download` attribute (that would make them save instead of opening in the PDF viewer).
 3. Real student testimonials once supplied, per programme — replace `isPlaceholder: true` entries in each `testimonials` array.
 4. JSON-LD Course schema per programme page (SEO checklist item, not yet started).
 5. Revisit the >500KB JS chunk warning if the bundle keeps growing — `React.lazy`-split `ProgrammePage` from the rest of the app would be the natural fix.

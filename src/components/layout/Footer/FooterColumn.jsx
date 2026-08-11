@@ -19,7 +19,17 @@ export function FooterColumn({ title, links }) {
                 {link.label}
               </Link>
             ) : (
-              <a href={link.href} className={LINK_CLASSES}>
+              <a
+                href={link.href}
+                className={LINK_CLASSES}
+                {...(link.newTab
+                  ? {
+                      target: '_blank',
+                      rel: 'noopener noreferrer',
+                      'aria-label': `${link.label} (PDF, opens in a new tab)`,
+                    }
+                  : {})}
+              >
                 {link.label}
               </a>
             )}

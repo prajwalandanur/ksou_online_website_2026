@@ -4,6 +4,7 @@ import {
   LinkedinIcon,
   YoutubeIcon,
 } from '@/components/common/SocialIcons';
+import { ACADEMIC_CALENDAR_URL, PROSPECTUS_URL } from './navigation';
 
 // No official KSOU Online social handles have been supplied yet — these are
 // styled placeholders (see FOOTER_SOCIAL_LINKS usage) until real profiles exist.
@@ -27,8 +28,10 @@ export const FOOTER_LINK_COLUMNS = [
     links: [
       { label: 'About Us', to: '/about' },
       { label: 'Contact Us', to: '/contact' },
-      { label: 'Prospectus', to: '/prospectus' },
-      { label: 'Academic Planner', to: '/academic-planner' },
+      // PDFs, matching the navbar — `/prospectus` and `/academic-planner`
+      // are no longer registered routes.
+      { label: 'Prospectus', href: PROSPECTUS_URL, newTab: true },
+      { label: 'Academic Planner', href: ACADEMIC_CALENDAR_URL, newTab: true },
     ],
   },
   {

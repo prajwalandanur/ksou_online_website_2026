@@ -1,6 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { NAV_LINKS, LMS_LOGIN_URL, APPLY_NOW_URL } from '@/constants/navigation';
+import {
+  NAV_LINKS,
+  LMS_LOGIN_URL,
+  APPLY_NOW_URL,
+  PROSPECTUS_URL,
+  ACADEMIC_CALENDAR_URL,
+} from '@/constants/navigation';
 import { ScrollToTop } from '@/components/common/ScrollToTop';
+import { FileRedirect } from '@/components/common/FileRedirect';
 import { MainLayout } from '@/layouts/MainLayout';
 import { Home } from '@/pages/Home';
 import { ProgrammePage } from '@/pages/ProgrammePage';
@@ -9,7 +16,9 @@ import { BlogArticlePage } from '@/pages/BlogArticlePage';
 import { PageComingSoon } from '@/pages/PageComingSoon';
 
 const PLACEHOLDER_ROUTES = [
-  ...NAV_LINKS.filter((link) => link.href !== '/'),
+  // `newTab` links point at PDFs in public/, not routes — registering them
+  // here would create a bogus /documents/....pdf route.
+  ...NAV_LINKS.filter((link) => link.href !== '/' && !link.newTab),
   { label: 'LMS Login', href: LMS_LOGIN_URL },
   { label: 'Apply Now', href: APPLY_NOW_URL },
   { label: 'Student Support', href: '/student-support' },
@@ -33,6 +42,19 @@ export function AppRoutes() {
               element={<PageComingSoon title={route.label} />}
             />
           ))}
+
+          {/* Retired page routes — these are now the PDFs themselves. Kept
+              so old bookmarks and indexed links still land somewhere. */}
+          <Route path="/prospectus" element={<FileRedirect to={PROSPECTUS_URL} />} />
+          <Route
+            path="/academic-planner"
+            element={<FileRedirect to={ACADEMIC_CALENDAR_URL} />}
+          />
+
+          {/* Without this, an unmatched URL matches no child route and the
+              layout renders nothing at all — a blank white page with no nav
+              to escape from. */}
+          <Route path="*" element={<PageComingSoon title="Page not found" />} />
         </Route>
       </Routes>
     </BrowserRouter>
