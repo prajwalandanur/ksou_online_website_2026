@@ -1,33 +1,29 @@
-import { GraduationCap } from 'lucide-react';
+import campus from '@/assets/hero-campus.webp';
 
 /**
- * No approved KSOU student photo exists yet. This reserves the exact
- * footprint (aspect ratio, alignment) a full-height transparent PNG will
- * need, so dropping the real asset in later is a one-line swap:
+ * The KSOU campus photo is a 16:9 landscape, so this slot is landscape too
+ * — the previous placeholder was `aspect-[4/5]` portrait (shaped for a
+ * cutout of a student), and cropping the photo into that would have thrown
+ * away most of the building. `object-cover` at 4:3 trims the sides only
+ * slightly, keeping both the campus and the student in frame.
  *
- *   <img
- *     src={studentPhoto}
- *     alt="KSOU Online student holding a laptop"
- *     className="relative h-full w-full object-contain object-bottom"
- *   />
+ * Presented as a rounded card with the site's usual soft elevation so it
+ * reads as composed rather than a raw photo dropped into the layout.
  */
 export function HeroVisual() {
   return (
-    <div className="relative mx-auto aspect-[4/5] w-full max-w-[420px] lg:max-w-none">
+    <div className="relative mx-auto w-full max-w-[480px] lg:max-w-none">
       <div
         aria-hidden="true"
-        className="absolute left-1/2 top-1/2 h-[75%] w-[75%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/10 blur-3xl"
+        className="absolute -inset-4 rounded-[36px] bg-primary/[0.07] blur-2xl"
       />
-      <div
-        role="img"
-        aria-label="Placeholder area reserved for a KSOU Online student photo"
-        className="relative flex h-full w-full items-end justify-center"
-      >
-        <GraduationCap
-          className="mb-[14%] h-16 w-16 text-primary/25 sm:h-20 sm:w-20"
-          aria-hidden="true"
-        />
-      </div>
+      <img
+        src={campus}
+        alt="A KSOU Online student holding a laptop outside the Karnataka State Open University campus"
+        // Above the fold on the landing page — never lazy-load this.
+        fetchPriority="high"
+        className="relative aspect-[4/3] w-full rounded-[28px] object-cover shadow-[0_1px_2px_rgba(17,17,17,0.04),0_24px_48px_-24px_rgba(17,17,17,0.28)]"
+      />
     </div>
   );
 }
