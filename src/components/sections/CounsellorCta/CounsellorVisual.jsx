@@ -1,26 +1,33 @@
 import counsellor from '@/assets/counsellor.webp';
 
 /**
- * The visual bridge between the CTA and the footer. On desktop she is
- * absolutely positioned against the CTA's right edge and hangs below its
- * bottom edge so the footer card *occludes* her lower body — she reads as
- * standing behind the footer rather than pasted on top of it. That
- * occlusion is the whole point of the effect: the source photo ends in a
- * hard crop at the forearms, and letting the card cover that crop is what
- * keeps her from looking like a sticker. It depends on the CTA sitting at a
- * lower z-index than the footer (see ClosingSection).
+ * The visual bridge between the CTA and the footer.
  *
- * Below `lg` she drops into normal flow beneath the button (per the source
- * spec's stacking order) at a size that stays present without taking over
- * the screen. The negative bottom margin there does the same job the
- * absolute offset does on desktop: pulls her far enough down that the
- * footer card still covers her cropped edge.
+ * Her bottom edge is aligned to land *exactly* on the footer card's top
+ * edge — she is never covered by it, so her crossed arms, hands and watch
+ * stay fully visible. That alignment is what the offsets below encode:
+ *
+ *   desktop — `lg:bottom-[-1rem]` drops her 16px past the CTA's bottom,
+ *             which is precisely the footer's own `pt-4`, so her bottom
+ *             lands on the card's top edge.
+ *   mobile  — `-mb-4` pulls the flow 16px up, cancelling that same `pt-4`
+ *             for the identical result while she sits in normal flow.
+ *
+ * `z-30` keeps her in front of the footer card (`z-20`), so she reads as a
+ * foreground cutout the footer begins beneath. The CTA section itself
+ * carries no z-index on purpose: that leaves the decorative arc at
+ * `z-auto`, below the footer, so the arc's overhang still hides behind the
+ * card while she alone sits on top of it.
+ *
+ * Widths are paired with the `min-h` on her positioning parent in
+ * `CounsellorCta` — grow one and the other has to grow with it, or her head
+ * pushes out through the top of the ice background.
  *
  * `ClosingSection` deliberately does not clip overflow — see the note there.
  */
 export function CounsellorVisual() {
   return (
-    <div className="pointer-events-none relative mx-auto -mb-12 mt-8 w-[13.5rem] select-none sm:-mb-16 sm:w-[14.5rem] lg:absolute lg:bottom-[-5.5rem] lg:right-0 lg:mx-0 lg:mb-0 lg:mt-0 lg:w-[17rem] xl:w-[19rem]">
+    <div className="pointer-events-none relative z-30 mx-auto -mb-4 mt-8 w-[16rem] select-none sm:w-[20rem] lg:absolute lg:bottom-[-1rem] lg:right-4 lg:mx-0 lg:mb-0 lg:mt-0 lg:w-[22rem] xl:right-24 xl:w-[31rem]">
       {/* Soft halo so the cutout sits on the ice background instead of
           floating on it — kept well under the figure's own contrast. */}
       <div

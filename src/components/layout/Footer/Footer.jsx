@@ -5,9 +5,11 @@ import { KsouInstitutionalCard } from './KsouInstitutionalCard';
 
 export function Footer() {
   return (
-    // z-20 puts the card *over* the counsellor cutout hanging down from the
-    // CTA, so the card's top edge hides her cropped lower edge; the small pt
-    // is what makes CTA and footer read as one block.
+    // z-20 sits above the CTA's decorative arc but below the counsellor
+    // (z-30), so the arc's overhang hides behind this card while she stays
+    // fully visible in front of it. `pt-4` is the 16px the counsellor's
+    // offsets cancel out to land her bottom exactly on this card's top edge
+    // — changing it moves that alignment.
     <footer className="relative z-20 pb-10 pt-4 sm:pb-12">
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
         <div className="rounded-[32px] bg-white px-6 py-10 shadow-[0_1px_2px_rgba(17,17,17,0.04),0_24px_48px_-24px_rgba(17,17,17,0.14)] sm:px-10 sm:py-14">
