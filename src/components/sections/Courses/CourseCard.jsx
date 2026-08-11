@@ -1,7 +1,93 @@
 import { Link } from 'react-router-dom';
-import { Download, FileText } from 'lucide-react';
+import { ChevronDown, Download, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { buttonClasses } from '@/components/ui/buttonClasses';
 import { APPLY_NOW_URL } from '@/constants/navigation';
+
+// Tighter padding/gap than the sibling Brochure button so the extra chevron
+// still fits on one line at the card's width — otherwise the label wraps and
+// this button grows taller than the one beside it.
+const QP_TRIGGER_CLASSES = buttonClasses(
+  'secondary',
+  'w-full list-none justify-center gap-1 whitespace-nowrap px-3 py-2.5 text-xs sm:text-sm [&::-webkit-details-marker]:hidden',
+);
+
+/** Lands in the user's Downloads folder as a self-describing filename. */
+function downloadName(courseName, label) {
+  const slug = [courseName, label, 'Previous Question Papers']
+    .filter(Boolean)
+    .join(' ')
+    .replace(/[^a-z0-9]+/gi, '-')
+    .replace(/^-|-$/g, '');
+  return `KSOU-Online-${slug}.pdf`;
+}
+
+/**
+ * Renders the "Previous QPs" action. Most programmes have one combined
+ * paper and get a plain download button; MA's are published per discipline,
+ * so it gets a small disclosure instead of arbitrarily picking one file.
+ *
+ * The panel opens *upward* on purpose: the card wrapper is `overflow-hidden`
+ * (it clips the image's rounded top), so a downward panel would be cut off.
+ */
+function QuestionPapersAction({ courseName, papers }) {
+  if (!papers?.length) {
+    return (
+      <Button
+        variant="secondary"
+        aria-label={`Download previous question papers for ${courseName} — coming soon`}
+        className="justify-center gap-1.5 py-2.5 text-xs sm:text-sm"
+      >
+        <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
+        Previous QPs
+      </Button>
+    );
+  }
+
+  if (papers.length === 1) {
+    return (
+      <Button
+        as="a"
+        href={papers[0].href}
+        download={downloadName(courseName)}
+        aria-label={`Download previous question papers for ${courseName} (PDF)`}
+        className="justify-center gap-1.5 py-2.5 text-xs sm:text-sm"
+      >
+        <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
+        Previous QPs
+      </Button>
+    );
+  }
+
+  return (
+    <details className="group/qp relative">
+      <summary className={QP_TRIGGER_CLASSES}>
+        <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
+        Previous QPs
+        <ChevronDown
+          className="h-3 w-3 shrink-0 transition-transform duration-200 group-open/qp:rotate-180"
+          aria-hidden="true"
+        />
+      </summary>
+
+      <ul className="absolute bottom-full left-0 z-20 mb-2 w-full min-w-[9rem] rounded-2xl border border-border bg-white p-1.5 shadow-[0_12px_28px_-10px_rgba(17,17,17,0.28)]">
+        {papers.map((paper) => (
+          <li key={paper.href}>
+            <a
+              href={paper.href}
+              download={downloadName(courseName, paper.label)}
+              aria-label={`Download ${courseName} ${paper.label} previous question papers (PDF)`}
+              className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-primary"
+            >
+              <Download className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+              {paper.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  );
+}
 
 /**
  * The image/title link to a real detail page only for courses that have one
@@ -9,7 +95,7 @@ import { APPLY_NOW_URL } from '@/constants/navigation';
  * their own programme page exists.
  */
 export function CourseCard({ course }) {
-  const { name, description, duration, fee, Icon, image, detailPath } = course;
+  const { name, description, duration, fee, Icon, image, detailPath, questionPapers } = course;
 
   const imageContent = image ? (
     <img
@@ -76,14 +162,7 @@ export function CourseCard({ course }) {
             <Download className="h-4 w-4 shrink-0" aria-hidden="true" />
             Brochure
           </Button>
-          <Button
-            variant="secondary"
-            aria-label={`Download previous question papers for ${name} — coming soon`}
-            className="justify-center gap-1.5 py-2.5 text-xs sm:text-sm"
-          >
-            <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
-            Previous QPs
-          </Button>
+          <QuestionPapersAction courseName={name} papers={questionPapers} />
         </div>
 
         <div className="mt-auto grid grid-cols-2 gap-3">

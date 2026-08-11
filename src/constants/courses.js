@@ -13,6 +13,12 @@ import maImage from '@/assets/courses/ma.png';
 import mcomImage from '@/assets/courses/mcom.png';
 import mscImage from '@/assets/courses/msc.png';
 
+// `questionPapers` holds the real previous-question-paper PDFs, served from
+// public/question-papers/ (static files, not bundled — they're documents to
+// download, and several are 1–3 MB). Always an array: most programmes have a
+// single combined paper, MA's are split per discipline, so the card renders
+// one download button or a short picker off the same field.
+//
 // Sourced from KSOU_Online_Programmes_Prospectus.pdf — do not invent programmes.
 export const UG_COURSES = [
   {
@@ -26,6 +32,7 @@ export const UG_COURSES = [
     Icon: BookOpen,
     image: baImage,
     detailPath: '/programmes/ba',
+    questionPapers: [{ href: '/question-papers/ba.pdf' }],
   },
   {
     id: 'bcom',
@@ -37,6 +44,7 @@ export const UG_COURSES = [
     Icon: Briefcase,
     image: bcomImage,
     detailPath: '/programmes/bcom',
+    questionPapers: [{ href: '/question-papers/bcom.pdf' }],
   },
 ];
 
@@ -51,6 +59,7 @@ export const PG_COURSES = [
     Icon: Calculator,
     image: mcomImage,
     detailPath: '/programmes/mcom',
+    questionPapers: [{ href: '/question-papers/mcom.pdf' }],
   },
   {
     id: 'ma',
@@ -64,6 +73,14 @@ export const PG_COURSES = [
     Icon: Languages,
     image: maImage,
     detailPath: '/programmes/ma',
+    questionPapers: [
+      { label: 'Kannada', href: '/question-papers/ma-kannada.pdf' },
+      { label: 'English', href: '/question-papers/ma-english.pdf' },
+      { label: 'Hindi', href: '/question-papers/ma-hindi.pdf' },
+      { label: 'Sanskrit', href: '/question-papers/ma-sanskrit.pdf' },
+      // No Economics paper has been supplied — deliberately absent rather
+      // than pointed at another discipline's file.
+    ],
   },
   {
     id: 'mba',
@@ -75,6 +92,7 @@ export const PG_COURSES = [
     Icon: TrendingUp,
     image: mbaImage,
     detailPath: '/programmes/mba',
+    questionPapers: [{ href: '/question-papers/mba.pdf' }],
   },
   {
     id: 'msc-mathematics',
@@ -86,5 +104,6 @@ export const PG_COURSES = [
     Icon: Sigma,
     image: mscImage,
     detailPath: '/programmes/msc-mathematics',
+    questionPapers: [{ href: '/question-papers/msc-mathematics.pdf' }],
   },
 ];
