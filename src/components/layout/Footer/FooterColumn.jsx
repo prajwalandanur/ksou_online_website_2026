@@ -7,7 +7,7 @@ export function FooterColumn({ title, links }) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <h3 className="text-sm font-semibold tracking-wide text-foreground">{title}</h3>
+        <h3 className="text-sm font-semibold tracking-wide text-navy">{title}</h3>
         <span aria-hidden="true" className="block h-[2px] w-6 rounded-full bg-gold" />
       </div>
 

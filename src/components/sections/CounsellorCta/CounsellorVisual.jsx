@@ -1,35 +1,38 @@
-import { Headset } from 'lucide-react';
+import counsellor from '@/assets/counsellor.webp';
 
 /**
- * No counsellor cutout exists yet. This reserves the overflow footprint a
- * transparent-background PNG will need — head poking above the CTA's own
- * top edge, body extending down toward the footer — so dropping the real
- * asset in later is a one-line swap:
+ * The visual bridge between the CTA and the footer. On desktop she is
+ * absolutely positioned against the CTA's right edge and hangs below its
+ * bottom edge so the footer card *occludes* her lower body — she reads as
+ * standing behind the footer rather than pasted on top of it. That
+ * occlusion is the whole point of the effect: the source photo ends in a
+ * hard crop at the forearms, and letting the card cover that crop is what
+ * keeps her from looking like a sticker. It depends on the CTA sitting at a
+ * lower z-index than the footer (see ClosingSection).
  *
- *   <img
- *     src={counsellorCutout}
- *     alt="KSOU Online admissions counsellor"
- *     className="h-full w-full object-contain object-bottom"
- *   />
+ * Below `lg` she drops into normal flow beneath the button (per the source
+ * spec's stacking order) at a size that stays present without taking over
+ * the screen. The negative bottom margin there does the same job the
+ * absolute offset does on desktop: pulls her far enough down that the
+ * footer card still covers her cropped edge.
  *
- * The exact overlap depth (top/bottom offsets below) was tuned for this
- * placeholder's proportions — re-check it once the real cutout drops in,
- * since a transparent PNG's internal padding will differ.
+ * `ClosingSection` deliberately does not clip overflow — see the note there.
  */
 export function CounsellorVisual() {
   return (
-    <div
-      role="img"
-      aria-label="Placeholder area reserved for a KSOU Online counsellor photo"
-      className="pointer-events-none absolute right-0 top-[-2rem] z-20 h-[22rem] w-[10rem] sm:top-[-2.5rem] sm:h-[28rem] sm:w-[15rem] lg:top-[-3rem] lg:h-[32rem] lg:w-[19rem]"
-    >
+    <div className="pointer-events-none relative mx-auto -mb-12 mt-8 w-[13.5rem] select-none sm:-mb-16 sm:w-[14.5rem] lg:absolute lg:bottom-[-5.5rem] lg:right-0 lg:mx-0 lg:mb-0 lg:mt-0 lg:w-[17rem] xl:w-[19rem]">
+      {/* Soft halo so the cutout sits on the ice background instead of
+          floating on it — kept well under the figure's own contrast. */}
       <div
         aria-hidden="true"
-        className="absolute left-1/2 top-12 h-2/3 w-2/3 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl"
+        className="absolute inset-x-4 bottom-6 top-10 rounded-[999px] bg-primary/10 blur-3xl"
       />
-      <div className="relative flex h-full w-full items-start justify-center pt-14 sm:pt-16">
-        <Headset className="h-12 w-12 text-primary/35 sm:h-14 sm:w-14" aria-hidden="true" />
-      </div>
+      <img
+        src={counsellor}
+        alt="A KSOU Online admissions counsellor wearing a headset"
+        loading="lazy"
+        className="relative block w-full object-contain"
+      />
     </div>
   );
 }

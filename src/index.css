@@ -20,6 +20,10 @@
   /* Very light ice-blue — shared background for the Counsellor CTA + Footer,
      so the two read as one continuous closing section instead of a hard seam. */
   --color-ice: #f3f7ff;
+  /* Deep institutional navy — headings in the closing section (CTA + footer),
+     where #111111 reads too neutral for a university's sign-off. Not a
+     replacement for --color-foreground in body copy. */
+  --color-navy: #0b2451;
   /* Subtle metallic gold — footer accents only (column-heading underlines).
      Keep usage sparing; this is not a primary token. */
   --color-gold: #c9a227;
