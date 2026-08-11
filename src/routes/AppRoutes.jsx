@@ -10,15 +10,20 @@ import { ScrollToTop } from '@/components/common/ScrollToTop';
 import { FileRedirect } from '@/components/common/FileRedirect';
 import { MainLayout } from '@/layouts/MainLayout';
 import { Home } from '@/pages/Home';
+import { AboutPage } from '@/pages/AboutPage';
 import { ProgrammePage } from '@/pages/ProgrammePage';
 import { BlogListingPage } from '@/pages/BlogListingPage';
 import { BlogArticlePage } from '@/pages/BlogArticlePage';
 import { PageComingSoon } from '@/pages/PageComingSoon';
 
+// Nav destinations that have a real page below, so the placeholder map must
+// not also register them — two routes on one path is ambiguous.
+const REAL_PAGES = new Set(['/', '/about']);
+
 const PLACEHOLDER_ROUTES = [
   // `newTab` links point at PDFs in public/, not routes — registering them
   // here would create a bogus /documents/....pdf route.
-  ...NAV_LINKS.filter((link) => link.href !== '/' && !link.newTab),
+  ...NAV_LINKS.filter((link) => !REAL_PAGES.has(link.href) && !link.newTab),
   { label: 'LMS Login', href: LMS_LOGIN_URL },
   { label: 'Apply Now', href: APPLY_NOW_URL },
   { label: 'Student Support', href: '/student-support' },
@@ -32,6 +37,7 @@ export function AppRoutes() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/programmes/:slug" element={<ProgrammePage />} />
           <Route path="/blogs" element={<BlogListingPage />} />
           <Route path="/blogs/:slug" element={<BlogArticlePage />} />
