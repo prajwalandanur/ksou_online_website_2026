@@ -4,6 +4,8 @@ This file is the source of truth for any Claude Code session continuing work on 
 
 Source prompts for completed sections live in the project root as markdown files (`KSOU_Online_Global_Development_Guidelines.md`, `KSOU_Section_01_Navigation_Bar_Prompt.md`, etc.) — this file supersedes them where they conflict, since it tracks decisions made *during* implementation (e.g. typography changed twice after the original section prompts were written).
 
+**Git**: initialized 2026-08-11 with a single "Initial commit" capturing everything built up to that point (no prior history exists — the project ran for multiple sessions without version control before this). `.gitignore` excludes `node_modules`, `dist`, `qa-screenshots/` (regenerate via `npm run qa:mobile`), and the vendored `.agents/`/`.claude/` skill data (tooling infrastructure tracked via `skills-lock.json`, not website source).
+
 ---
 
 ## 1. Project Overview
