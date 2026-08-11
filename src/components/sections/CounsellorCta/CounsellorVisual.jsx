@@ -19,15 +19,18 @@ import counsellor from '@/assets/counsellor.webp';
  * `z-auto`, below the footer, so the arc's overhang still hides behind the
  * card while she alone sits on top of it.
  *
- * Widths are paired with the `min-h` on her positioning parent in
- * `CounsellorCta` — grow one and the other has to grow with it, or her head
- * pushes out through the top of the ice background.
+ * At this size the text column is the taller of the two, so it sets the
+ * CTA's height on its own. If she is ever scaled up far enough to exceed
+ * it, her positioning parent in `CounsellorCta` needs a `min-h` to reserve
+ * the space — she is absolutely positioned and contributes no layout
+ * height, so without one her head pushes out through the top of the ice
+ * background instead of the section growing to fit her.
  *
  * `ClosingSection` deliberately does not clip overflow — see the note there.
  */
 export function CounsellorVisual() {
   return (
-    <div className="pointer-events-none relative z-30 mx-auto -mb-4 mt-8 w-[16rem] select-none sm:w-[20rem] lg:absolute lg:bottom-[-1rem] lg:right-4 lg:mx-0 lg:mb-0 lg:mt-0 lg:w-[22rem] xl:right-24 xl:w-[31rem]">
+    <div className="pointer-events-none relative z-30 mx-auto -mb-4 mt-8 w-[15.5rem] select-none sm:w-[18rem] lg:absolute lg:bottom-[-1rem] lg:right-4 lg:mx-0 lg:mb-0 lg:mt-0 lg:w-[18.5rem] xl:right-12">
       {/* Soft halo so the cutout sits on the ice background instead of
           floating on it — kept well under the figure's own contrast. */}
       <div
