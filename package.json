@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run prerender",
     "lint": "eslint .",
     "preview": "vite preview",
-    "qa:mobile": "node scripts/mobile-screenshot.mjs"
+    "qa:mobile": "node scripts/mobile-screenshot.mjs",
+    "prerender": "node scripts/prerender.mjs"
   },
   "dependencies": {
     "@fontsource/dm-sans": "^5.3.0",
