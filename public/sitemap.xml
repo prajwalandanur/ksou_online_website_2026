@@ -79,6 +79,11 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  <url>
+    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/blogs/how-to-create-abc-id-and-deb-id</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 
   <!-- Announcements -->
   <url>

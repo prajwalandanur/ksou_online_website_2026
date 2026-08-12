@@ -25,9 +25,9 @@ export const mba = {
   shortName: 'MBA',
   fullName: 'Master of Business Administration',
   seo: {
-    title: 'KSOU Online MBA — UGC Entitled Online MBA Degree | Karnataka State Open University',
+    title: 'KSOU Online MBA — Fees, Eligibility & Admission 2026',
     description:
-      'Pursue a UGC-entitled Online MBA from Karnataka State Open University. 2-year, 4-semester programme with electives in Finance, Marketing, HR, Operations and more. Government university, AICTE approved, NAAC A+.',
+      'KSOU Online MBA — UGC-entitled, AICTE-approved 2-year online MBA from Karnataka State Open University. ₹80,000 total fees. NAAC A+ government university.',
   },
 
   hero: {
@@ -431,9 +431,9 @@ export const mba = {
       },
       {
         id: 'degree-validity',
-        question: 'Is the MBA degree valid for employment and higher education?',
+        question: 'Is the KSOU Online MBA valid for government jobs?',
         answer:
-          'Yes. As a UGC-entitled degree from a government university, the KSOU Online MBA is valid for higher studies and employment, on par with other recognized degrees.',
+          'Yes. As a UGC-entitled degree from a state government university, the KSOU Online MBA is accepted for government job applications, public-sector recruitment, private-sector employment and further higher education, on par with a degree earned on campus.',
       },
       {
         id: 'placement-support',
@@ -458,6 +458,18 @@ export const mba = {
         question: 'What happens after I complete all programme requirements?',
         answer:
           'On successfully completing all programme requirements, including the Project Report and Viva-Voce, you receive your officially recognized KSOU MBA degree.',
+      },
+      {
+        id: 'abc-deb-id',
+        question: 'Do I need an ABC ID and DEB ID for KSOU Online MBA admission?',
+        answer:
+          'Yes — both are mandatory for admission to any online or distance programme. Create your ABC ID (Academic Bank of Credits) free of cost through DigiLocker at digilocker.gov.in, then use that ABC ID to generate your DEB ID (Distance Education Bureau ID) at deb.ugc.ac.in/StudentDEBId. The DEB ID confirms you are enrolling with a UGC-recognised institution, and your KSOU Online MBA admission is completed using it.',
+      },
+      {
+        id: 'two-degrees',
+        question: 'Can I pursue the KSOU Online MBA alongside another degree?',
+        answer:
+          'Yes. UGC permits a student to pursue two academic programmes at the same time, and KSOU allows this. You need to meet the eligibility criteria for each programme and complete the admission requirements, including fee payment, separately for both.',
       },
       {
         id: 'contact-counsellor',

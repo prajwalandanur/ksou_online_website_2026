@@ -1,14 +1,31 @@
-import { AnimatePresence, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
 const EASE = [0.22, 1, 0.36, 1];
 
-export function FaqItem({ faq, isOpen, onToggle }) {
+/**
+ * `isHidden` collapses an item out of the layout entirely (used by the
+ * "Show More" cut-off) while leaving its question in the HTML source.
+ *
+ * The answer is **always rendered**, and collapsed by animating its height
+ * to 0 rather than by unmounting it. That is a deliberate SEO requirement,
+ * not a stylistic choice: this accordion previously mounted the answer only
+ * while open, so not one FAQ answer appeared in the pre-rendered HTML that
+ * crawlers read. `aria-hidden` keeps the collapsed copy out of the
+ * accessibility tree so screen-reader users still hear only what is open —
+ * it does not hide the text from search engines, which is exactly the
+ * combination wanted here. The <p> has no focusable children, so nothing
+ * ends up in the tab order while collapsed.
+ */
+export function FaqItem({ faq, isOpen, onToggle, isHidden = false }) {
   const { id, question, answer } = faq;
   const answerId = `faq-answer-${id}`;
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-border/80 bg-white transition-shadow duration-300 ease-out hover:shadow-[0_1px_2px_rgba(17,17,17,0.04),0_10px_24px_-16px_rgba(17,17,17,0.12)]">
+    <div
+      hidden={isHidden}
+      className="overflow-hidden rounded-2xl border border-border/80 bg-white transition-shadow duration-300 ease-out hover:shadow-[0_1px_2px_rgba(17,17,17,0.04),0_10px_24px_-16px_rgba(17,17,17,0.12)]"
+    >
       <button
         type="button"
         onClick={onToggle}
@@ -29,22 +46,18 @@ export function FaqItem({ faq, isOpen, onToggle }) {
         </span>
       </button>
 
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            id={answerId}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: EASE }}
-            className="overflow-hidden"
-          >
-            <p className="px-6 pb-6 text-sm leading-relaxed text-muted-foreground sm:px-8 sm:pb-7 sm:text-base">
-              {answer}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <motion.div
+        id={answerId}
+        aria-hidden={!isOpen}
+        initial={false}
+        animate={isOpen ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
+        transition={{ duration: 0.3, ease: EASE }}
+        className="overflow-hidden"
+      >
+        <p className="px-6 pb-6 text-sm leading-relaxed text-muted-foreground sm:px-8 sm:pb-7 sm:text-base">
+          {answer}
+        </p>
+      </motion.div>
     </div>
   );
 }

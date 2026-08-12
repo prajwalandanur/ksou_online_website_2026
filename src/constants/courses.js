@@ -24,12 +24,23 @@ import mscImage from '@/assets/courses/msc.webp';
 // one download button or a short picker off the same field.
 //
 // Sourced from KSOU_Online_Programmes_Prospectus.pdf — do not invent programmes.
+//
+// `name` stays the full formal degree title: it is the card's heading and the
+// stretched link's text, and it is what the prospectus calls the programme.
+// `description` is where the searched form of the name lives ("KSOU Online
+// MBA"), because that phrase is what people type and the formal title alone
+// carries no ranking power. Fee and duration are deliberately NOT repeated in
+// the description — the card renders both as labelled rows immediately below
+// it, so the text is already crawlable there and repeating it reads as
+// duplicated copy. "UGC-entitled" is the prospectus's own wording; the
+// "UGC approved" phrasing people search for is carried by the hero H1 and the
+// homepage FAQ instead of overstating the credential here.
 export const UG_COURSES = [
   {
     id: 'ba',
     name: 'Bachelor of Arts',
     description:
-      'Choose from History, Economics, and Political Science with two languages of your choice.',
+      'KSOU Online BA — a UGC-entitled arts degree with History, Economics and Political Science.',
     duration: '3 Years',
     eligibility: '10+2 / PUC or equivalent',
     fee: '₹10,000',
@@ -41,7 +52,8 @@ export const UG_COURSES = [
   {
     id: 'bcom',
     name: 'Bachelor of Commerce',
-    description: 'Build a strong foundation in accounting, finance, and business law.',
+    description:
+      'KSOU Online B.Com — a UGC-entitled commerce degree covering accounting, finance and business law.',
     duration: '3 Years',
     eligibility: '10+2 / PUC or equivalent',
     fee: '₹12,000',
@@ -56,7 +68,8 @@ export const PG_COURSES = [
   {
     id: 'mcom',
     name: 'Master of Commerce',
-    description: 'Deepen your expertise in commerce, finance, and business policy.',
+    description:
+      'KSOU Online M.Com — a UGC-entitled postgraduate degree in commerce, finance and business policy.',
     duration: '4 Semesters',
     eligibility: 'B.Com / BBM / BBA graduates',
     fee: '₹20,000',
@@ -69,7 +82,7 @@ export const PG_COURSES = [
     id: 'ma',
     name: 'Master of Arts',
     description:
-      'Choose from M.A. programmes in Kannada, English, Hindi, Sanskrit, and Economics.',
+      'KSOU Online MA — a UGC-entitled postgraduate arts degree in Kannada, English, Hindi, Sanskrit or Economics.',
     specializations: ['Kannada', 'English', 'Hindi', 'Sanskrit', 'Economics'],
     duration: '4 Semesters',
     eligibility: "Bachelor's degree (subject-specific eligibility varies by specialization)",
@@ -89,7 +102,8 @@ export const PG_COURSES = [
   {
     id: 'mba',
     name: 'Master of Business Administration',
-    description: 'Advance into leadership and management roles with a UGC-approved online MBA.',
+    description:
+      'KSOU Online MBA — a UGC-entitled, AICTE-approved online MBA for leadership and management roles.',
     duration: '4 Semesters',
     eligibility: "Bachelor's degree (any stream)",
     fee: '₹40,000',
@@ -101,7 +115,8 @@ export const PG_COURSES = [
   {
     id: 'msc-mathematics',
     name: 'Master of Science – Mathematics',
-    description: 'Postgraduate study in advanced mathematics for analytical and research careers.',
+    description:
+      'KSOU Online M.Sc Mathematics — a UGC-entitled postgraduate degree for analytical and research careers.',
     duration: '4 Semesters',
     eligibility: "Bachelor's degree (any recognized university)",
     fee: '₹40,000',

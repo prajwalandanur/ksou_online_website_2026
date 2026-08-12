@@ -20,9 +20,9 @@ export const bcom = {
   shortName: 'B.Com',
   fullName: 'Bachelor of Commerce',
   seo: {
-    title: 'KSOU Online B.Com — UGC Entitled Online Bachelor of Commerce | Karnataka State Open University',
+    title: 'KSOU Online B.Com — Fees, Eligibility & Admission 2026',
     description:
-      'Pursue a UGC-entitled Online B.Com from Karnataka State Open University. 3-year programme covering accounting, finance, business law and commerce. Government university, AICTE approved, NAAC A+.',
+      'KSOU Online B.Com — UGC-entitled 3-year Bachelor of Commerce from Karnataka State Open University, Mysuru. ₹36,000 total fees. NAAC A+ government university.',
   },
 
   hero: {
@@ -328,9 +328,9 @@ export const bcom = {
       },
       {
         id: 'degree-validity',
-        question: 'Is the B.Com degree valid for employment and higher education?',
+        question: 'Is the KSOU Online B.Com valid for government jobs?',
         answer:
-          'Yes. As a UGC-entitled degree from a government university, the KSOU Online B.Com is valid for higher studies and employment, on par with other recognized degrees.',
+          'Yes. As a UGC-entitled degree from a state government university, the KSOU Online B.Com is accepted for government job applications, public-sector recruitment, private-sector employment and further higher education, on par with a degree earned on campus.',
       },
       {
         id: 'lms-access',
@@ -343,6 +343,18 @@ export const bcom = {
         question: 'Can I study the B.Com from outside Karnataka?',
         answer:
           'Yes. As an online programme, the KSOU Online B.Com can be pursued from anywhere, without needing to relocate to Karnataka.',
+      },
+      {
+        id: 'abc-deb-id',
+        question: 'Do I need an ABC ID and DEB ID for KSOU Online B.Com admission?',
+        answer:
+          'Yes — both are mandatory for admission to any online or distance programme. Create your ABC ID (Academic Bank of Credits) free of cost through DigiLocker at digilocker.gov.in, then use that ABC ID to generate your DEB ID (Distance Education Bureau ID) at deb.ugc.ac.in/StudentDEBId. The DEB ID confirms you are enrolling with a UGC-recognised institution, and your KSOU Online B.Com admission is completed using it.',
+      },
+      {
+        id: 'two-degrees',
+        question: 'Can I pursue the KSOU Online B.Com alongside another degree?',
+        answer:
+          'Yes. UGC permits a student to pursue two academic programmes at the same time, and KSOU allows this. You need to meet the eligibility criteria for each programme and complete the admission requirements, including fee payment, separately for both.',
       },
       {
         id: 'contact-counsellor',

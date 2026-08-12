@@ -93,7 +93,9 @@ export function ArticleBody({ blocks }) {
           case 'image':
             return <ImagePlaceholder key={i} label={block.label} aspectClass={block.aspectClass} />;
           case 'link':
-            return <InlineProgrammeLink key={i} to={block.to} label={block.label} />;
+            return (
+              <InlineProgrammeLink key={i} to={block.to} href={block.href} label={block.label} />
+            );
           default:
             return null;
         }

@@ -41,6 +41,7 @@ const ROUTES = [
   '/blogs/online-degree-while-working-full-time',
   '/blogs/online-learning-guide-admission-to-graduation',
   '/blogs/online-degree-vs-traditional-degree',
+  '/blogs/how-to-create-abc-id-and-deb-id',
   '/programmes/mba',
   '/programmes/ba',
   '/programmes/bcom',

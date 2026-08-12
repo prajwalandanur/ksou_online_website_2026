@@ -31,20 +31,28 @@ export function Hero() {
             UGC Approved <span className="text-primary">KSOU Online Programmes</span>
           </motion.h1>
 
+          {/* The H1 deliberately stays short and brand-led. The full
+              university name, the accreditation and the entry fee live here
+              and in the paragraph below instead — search engines read the
+              whole block, and loading those ~70 characters into the H1 would
+              push it from two lines to four at this type size and visibly
+              rebalance the hero against the photo. */}
           <motion.p
             {...fadeUp(0.1)}
             className="text-lg font-medium text-foreground/75 sm:text-xl"
           >
-            Recognized Degrees. Flexible Learning. Real Opportunities.
+            Karnataka State Open University · NAAC A+ Government University · Online degrees from
+            ₹10,000/year.
           </motion.p>
 
           <motion.p
             {...fadeUp(0.15)}
             className="max-w-xl text-base text-muted-foreground sm:text-lg"
           >
-            Explore online undergraduate and postgraduate programmes from Karnataka State Open
-            University, designed for students and working professionals seeking flexible,
-            accessible and career-focused higher education.
+            Explore UGC-entitled online undergraduate and postgraduate programmes from Karnataka
+            State Open University (KSOU), Mysuru — a government university offering an accessible
+            alternative to conventional distance education in Karnataka, built for students and
+            working professionals. Admissions for the 2026 cycle are open.
           </motion.p>
 
           {/* Deliberately a pill plus a line of supporting text, not a

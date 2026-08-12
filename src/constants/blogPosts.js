@@ -1,5 +1,12 @@
 export const BLOG_POSTS = [
   {
+    id: 'how-to-create-abc-id-and-deb-id',
+    title: 'ABC ID and DEB ID: How to Create Them for Online Degree Admission',
+    category: 'Admission Guide',
+    publishedDate: 'Aug 12, 2026',
+    readingTime: '6 min read',
+  },
+  {
     id: 'online-degree-vs-traditional-degree',
     title: 'Online Degree vs Traditional Degree: Which Is Right for You?',
     category: 'Degree Guide',

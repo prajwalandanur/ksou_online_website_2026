@@ -9,23 +9,27 @@ KSOU Online provides flexible, affordable higher education through its online le
 ## Online Programmes Offered
 
 ### Undergraduate (UG)
-- **BA (Bachelor of Arts)** — 3-year programme, fees from ₹10,000/year
-- **B.Com (Bachelor of Commerce)** — 3-year programme, fees from ₹10,000/year
+- **BA (Bachelor of Arts)** — 3-year programme, ₹10,000/year, ₹30,000 total
+- **B.Com (Bachelor of Commerce)** — 3-year programme, ₹12,000/year, ₹36,000 total
 
 ### Postgraduate (PG)
-- **MBA (Master of Business Administration)** — 2-year programme
-- **M.Com (Master of Commerce)** — 2-year programme
-- **MA (Master of Arts)** — 2-year programme, specializations in Kannada, English, Hindi, Sanskrit, Economics
-- **M.Sc Mathematics** — 2-year programme
+- **MBA (Master of Business Administration)** — 2-year programme, ₹40,000/year, ₹80,000 total
+- **M.Com (Master of Commerce)** — 2-year programme, ₹20,000/year, ₹40,000 total
+- **MA (Master of Arts)** — 2-year programme, ₹15,000/year, ₹30,000 total, specializations in Kannada, English, Hindi, Sanskrit, Economics
+- **M.Sc Mathematics** — 2-year programme, ₹40,000/year, ₹80,000 total
+
+Examination fees are charged separately from the programme fee.
 
 ## Key Facts
 - Government university (not private)
-- UGC Approved for online programmes
-- NAAC A+ Accredited (GPA 3.31)
+- UGC-entitled online programmes under the UGC ODL & OL Regulations, 2020
+- NAAC A+ Accredited (GPA 3.31), valid five years from May 19, 2023
+- Ranked 2nd in the Open University category, NIRF 2025 (Ministry of Education)
 - AICTE Recognized (for MBA)
 - 115,000+ graduates since 1996
 - 120+ programmes across disciplines
 - Admissions open for July 2026 cycle
+- Admission requires an ABC ID (created via DigiLocker) and a DEB ID (created from the ABC ID at deb.ugc.ac.in/StudentDEBId), as UGC mandates for all online and distance programmes
 
 ## Important Pages
 
@@ -38,6 +42,7 @@ KSOU Online provides flexible, affordable higher education through its online le
 - M.Sc Mathematics: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/msc-mathematics
 - About KSOU: https://ksou-online-website-2026-qmolackhn.vercel.app/about
 - Blog / Insights: https://ksou-online-website-2026-qmolackhn.vercel.app/blogs
+- ABC ID & DEB ID admission guide: https://ksou-online-website-2026-qmolackhn.vercel.app/blogs/how-to-create-abc-id-and-deb-id
 - Announcements: https://ksou-online-website-2026-qmolackhn.vercel.app/announcements
 
 ## Contact

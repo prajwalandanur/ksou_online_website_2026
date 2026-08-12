@@ -31,9 +31,9 @@ export const ma = {
   shortName: 'MA',
   fullName: 'Master of Arts',
   seo: {
-    title: 'KSOU Online MA — UGC Entitled Online Master of Arts | Karnataka State Open University',
+    title: 'KSOU Online MA — Fees, Eligibility & Admission 2026',
     description:
-      'Pursue a UGC-entitled Online MA from Karnataka State Open University in Kannada, English, Hindi, Sanskrit or Economics. Government university, AICTE approved, NAAC A+.',
+      'KSOU Online MA in Kannada, English, Hindi, Sanskrit or Economics — UGC-entitled 2-year Master of Arts from Karnataka State Open University. ₹30,000 total fees.',
   },
 
   hero: {
@@ -370,9 +370,9 @@ export const ma = {
       },
       {
         id: 'degree-validity',
-        question: 'Is the MA degree valid for employment and higher education?',
+        question: 'Is the KSOU Online MA valid for government jobs?',
         answer:
-          'Yes. As a UGC-entitled degree from a government university, the KSOU Online MA is valid for higher studies and employment, on par with other recognized degrees.',
+          'Yes. As a UGC-entitled degree from a state government university, the KSOU Online MA is accepted for government job applications, public-sector recruitment, private-sector employment and further higher education, on par with a degree earned on campus.',
       },
       {
         id: 'lms-access',
@@ -385,6 +385,18 @@ export const ma = {
         question: 'Can I study the MA from outside Karnataka?',
         answer:
           'Yes. As an online programme, the KSOU Online MA can be pursued from anywhere, without needing to relocate to Karnataka.',
+      },
+      {
+        id: 'abc-deb-id',
+        question: 'Do I need an ABC ID and DEB ID for KSOU Online MA admission?',
+        answer:
+          'Yes — both are mandatory for admission to any online or distance programme. Create your ABC ID (Academic Bank of Credits) free of cost through DigiLocker at digilocker.gov.in, then use that ABC ID to generate your DEB ID (Distance Education Bureau ID) at deb.ugc.ac.in/StudentDEBId. The DEB ID confirms you are enrolling with a UGC-recognised institution, and your KSOU Online MA admission is completed using it.',
+      },
+      {
+        id: 'two-degrees',
+        question: 'Can I pursue the KSOU Online MA alongside another degree?',
+        answer:
+          'Yes. UGC permits a student to pursue two academic programmes at the same time, and KSOU allows this. You need to meet the eligibility criteria for each programme and complete the admission requirements, including fee payment, separately for both.',
       },
       {
         id: 'contact-counsellor',
