@@ -5,6 +5,9 @@ import { HowItWorks } from '@/components/sections/HowItWorks/HowItWorks';
 import { Blog } from '@/components/sections/Blog/Blog';
 import { Faq } from '@/components/sections/Faq/Faq';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
+import { JsonLd } from '@/components/common/JsonLd';
+import { FAQS } from '@/constants/faq';
+import { buildFaqSchema, buildOrganizationSchema } from '@/utils/schema';
 
 const HOME_SEO = {
   title: 'KSOU Online Programmes — Admissions Open 2026',
@@ -17,6 +20,11 @@ export function Home() {
 
   return (
     <main>
+      {/* Schemas read the same FAQS the visible accordion renders, so the
+          two can never drift apart. */}
+      <JsonLd data={buildOrganizationSchema()} />
+      <JsonLd data={buildFaqSchema(FAQS)} />
+
       <Hero />
       <Courses />
       <WhyChooseKsou />

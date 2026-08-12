@@ -2,6 +2,8 @@ import { useParams } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { BLOG_ARTICLES } from '@/constants/blogs';
 import { BLOG_POSTS } from '@/constants/blogPosts';
+import { JsonLd } from '@/components/common/JsonLd';
+import { buildArticleSchema, buildBreadcrumbSchema } from '@/utils/schema';
 import { PageComingSoon } from './PageComingSoon';
 import { BlogHero } from '@/components/blog/BlogHero';
 import { TableOfContents } from '@/components/blog/TableOfContents';
@@ -44,6 +46,15 @@ export function BlogArticlePage() {
 
   return (
     <main>
+      <JsonLd data={buildArticleSchema(article, slug)} />
+      <JsonLd
+        data={buildBreadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Blog', path: '/blogs' },
+          { name: article.title, path: `/blogs/${slug}` },
+        ])}
+      />
+
       <BlogHero
         slug={slug}
         category={article.category}

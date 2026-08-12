@@ -1,6 +1,12 @@
 import { useParams } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
 import { PROGRAMMES } from '@/constants/programmes';
+import { JsonLd } from '@/components/common/JsonLd';
+import {
+  buildBreadcrumbSchema,
+  buildCourseSchema,
+  buildFaqSchema,
+} from '@/utils/schema';
 import { PageComingSoon } from './PageComingSoon';
 import { ProgrammeHero } from '@/components/sections/Programme/ProgrammeHero';
 import { ProgrammeLeadGeneration } from '@/components/sections/Programme/ProgrammeLeadGeneration';
@@ -35,8 +41,22 @@ export function ProgrammePage() {
     return <PageComingSoon title="Programme" />;
   }
 
+  const programmeName = [programme.hero?.titleLead, programme.hero?.titleAccent]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <main>
+      <JsonLd data={buildCourseSchema(programme, slug)} />
+      <JsonLd data={buildFaqSchema(programme.faqs?.items)} />
+      <JsonLd
+        data={buildBreadcrumbSchema([
+          { name: 'Home', path: '/' },
+          { name: 'Programmes', path: '/programmes' },
+          { name: programmeName, path: `/programmes/${slug}` },
+        ])}
+      />
+
       <ProgrammeHero programme={programme} />
       <ProgrammeLeadGeneration />
       <ProgrammeFeeDurationEligibility programme={programme} />
