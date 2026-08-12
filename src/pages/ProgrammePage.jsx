@@ -25,7 +25,11 @@ export function ProgrammePage() {
   const { slug } = useParams();
   const programme = PROGRAMMES[slug];
   const seo = programme?.seo ?? DEFAULT_SEO;
-  useDocumentMeta(seo.title, seo.description);
+  useDocumentMeta({
+    ...seo,
+    ogType: 'website',
+    canonicalPath: `/programmes/${slug}`,
+  });
 
   if (!programme) {
     return <PageComingSoon title="Programme" />;

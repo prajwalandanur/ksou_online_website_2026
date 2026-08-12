@@ -24,7 +24,7 @@ const FILTERS = [
 ];
 
 export function AnnouncementsPage() {
-  useDocumentMeta(SEO.title, SEO.description);
+  useDocumentMeta({ ...SEO, ogType: 'website', canonicalPath: '/announcements' });
 
   const [activeId, setActiveId] = useState('all');
 

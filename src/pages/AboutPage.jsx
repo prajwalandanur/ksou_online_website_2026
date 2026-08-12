@@ -30,7 +30,7 @@ import { AboutPromise } from '@/components/sections/About/AboutPromise';
  * shared counsellor CTA and footer after it.
  */
 export function AboutPage() {
-  useDocumentMeta(ABOUT_SEO.title, ABOUT_SEO.description);
+  useDocumentMeta({ ...ABOUT_SEO, ogType: 'website', canonicalPath: '/about' });
 
   return (
     <main>

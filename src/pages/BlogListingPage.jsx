@@ -3,10 +3,13 @@ import { BLOG_POSTS } from '@/constants/blogPosts';
 import { BlogCard } from '@/components/sections/Blog/BlogCard';
 
 export function BlogListingPage() {
-  useDocumentMeta(
-    'Blog — KSOU Online',
-    'Guides, insights, and practical information to help you make better decisions about your education, careers and online degree programmes.',
-  );
+  useDocumentMeta({
+    title: 'Blog — KSOU Online',
+    description:
+      'Guides, insights, and practical information to help you make better decisions about your education, careers and online degree programmes.',
+    ogType: 'website',
+    canonicalPath: '/blogs',
+  });
 
   return (
     <main className="flex flex-col gap-10 py-16 sm:gap-12 sm:py-20 lg:py-24">

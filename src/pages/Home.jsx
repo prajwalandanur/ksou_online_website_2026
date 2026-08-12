@@ -13,7 +13,7 @@ const HOME_SEO = {
 };
 
 export function Home() {
-  useDocumentMeta(HOME_SEO.title, HOME_SEO.description);
+  useDocumentMeta({ ...HOME_SEO, ogType: 'website', canonicalPath: '/' });
 
   return (
     <main>

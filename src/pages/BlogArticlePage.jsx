@@ -25,7 +25,11 @@ export function BlogArticlePage() {
     title: 'KSOU Online Blog',
     description: 'Guides and insights to help you make better decisions about your education.',
   };
-  useDocumentMeta(seo.title, seo.description);
+  useDocumentMeta({
+    ...seo,
+    ogType: 'article',
+    canonicalPath: `/blogs/${slug}`,
+  });
 
   if (!article) {
     return <PageComingSoon title="Article" />;
