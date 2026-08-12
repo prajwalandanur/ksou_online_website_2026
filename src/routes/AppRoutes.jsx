@@ -11,6 +11,7 @@ import { FileRedirect } from '@/components/common/FileRedirect';
 import { MainLayout } from '@/layouts/MainLayout';
 import { Home } from '@/pages/Home';
 import { AboutPage } from '@/pages/AboutPage';
+import { AnnouncementsPage } from '@/pages/AnnouncementsPage';
 import { ProgrammePage } from '@/pages/ProgrammePage';
 import { BlogListingPage } from '@/pages/BlogListingPage';
 import { BlogArticlePage } from '@/pages/BlogArticlePage';
@@ -18,7 +19,7 @@ import { PageComingSoon } from '@/pages/PageComingSoon';
 
 // Nav destinations that have a real page below, so the placeholder map must
 // not also register them — two routes on one path is ambiguous.
-const REAL_PAGES = new Set(['/', '/about']);
+const REAL_PAGES = new Set(['/', '/about', '/announcements']);
 
 const PLACEHOLDER_ROUTES = [
   // `newTab` links point at PDFs in public/, not routes — registering them
@@ -38,6 +39,7 @@ export function AppRoutes() {
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/announcements" element={<AnnouncementsPage />} />
           <Route path="/programmes/:slug" element={<ProgrammePage />} />
           <Route path="/blogs" element={<BlogListingPage />} />
           <Route path="/blogs/:slug" element={<BlogArticlePage />} />

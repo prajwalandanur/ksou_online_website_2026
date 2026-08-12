@@ -68,7 +68,12 @@ export function ProgrammeHero({ programme }) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, ease: EASE }}
         >
-          <ProgrammeHeroVisual Icon={hero.Icon} label={hero.visualLabel} />
+          <ProgrammeHeroVisual
+            Icon={hero.Icon}
+            label={hero.visualLabel}
+            image={hero.image}
+            imageAlt={hero.imageAlt}
+          />
         </motion.div>
       </div>
 

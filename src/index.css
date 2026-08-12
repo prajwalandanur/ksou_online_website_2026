@@ -24,9 +24,15 @@
      where #111111 reads too neutral for a university's sign-off. Not a
      replacement for --color-foreground in body copy. */
   --color-navy: #0b2451;
-  /* Subtle metallic gold — footer accents only (column-heading underlines).
-     Keep usage sparing; this is not a primary token. */
+  /* Subtle metallic gold — footer accents and the announcement ticker's
+     indicator. Decorative only: on any of our light backgrounds it sits
+     around 2:1, so it must never carry text that has to be read. */
   --color-gold: #c9a227;
+  /* Pale blue bed for the announcement ticker under the navbar. A touch more
+     saturated than --color-ice so the strip reads as a distinct notification
+     layer, while staying inside the KSOU blue family. Edge-fade gradients on
+     the ticker track must use this exact token or the fade shows a seam. */
+  --color-ticker: #e9effd;
 
   /* Site-wide type system: DM Serif Display for headings/brand, DM Sans for
      everything else. DM Serif Display ships Regular (400) only — never

@@ -39,7 +39,7 @@ export function MobileMenu({ isOpen, onClose }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2, ease: 'easeOut' }}
-          className="fixed inset-0 z-[60] flex flex-col bg-background lg:hidden"
+          className="fixed inset-0 z-[60] flex flex-col bg-background xl:hidden"
         >
           <div className="flex items-center justify-between border-b border-border/70 px-6 py-4">
             <Logo />
@@ -106,11 +106,14 @@ export function MobileMenu({ isOpen, onClose }) {
               <ul className="flex flex-col gap-3">
                 {CONTACT_NUMBERS.map((number) => (
                   <li key={number.href}>
+                    {/* Matches the desktop utility bar's treatment — navy,
+                        semibold, blue icon — so the numbers read the same
+                        way on both. */}
                     <a
                       href={number.href}
-                      className="flex cursor-pointer items-center gap-2 text-sm font-medium tracking-tight text-muted-foreground transition-colors duration-200 ease-out hover:text-primary"
+                      className="flex cursor-pointer items-center gap-2 whitespace-nowrap text-[15px] font-semibold tracking-tight text-navy transition-colors duration-200 ease-out hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                     >
-                      <Phone className="h-4 w-4" aria-hidden="true" />
+                      <Phone className="h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                       {number.label}
                     </a>
                   </li>

@@ -13,6 +13,14 @@ import { InlineProgrammeLink } from './InlineProgrammeLink';
  * generic Programme* components) so adding blogs 2-5 later is a content
  * change, not a component change. H2/H3 blocks carry a stable `id` used for
  * anchor scrolling and Table of Contents highlighting.
+ *
+ * The headings' `scroll-mt-*` has to clear the sticky header, which is one
+ * card of a fixed height per breakpoint: ~224px below md (the utility bar's
+ * numbers wrap onto two rows at phone widths) and ~187px from md up. If the
+ * header's height ever changes, these values and the one on the FAQ section
+ * in BlogArticlePage.jsx must follow, or TOC jumps land the heading
+ * underneath it. Note mobile needs the *larger* offset, hence the unusual
+ * base-bigger-than-md pairing.
  */
 export function ArticleBody({ blocks }) {
   return (
@@ -24,7 +32,7 @@ export function ArticleBody({ blocks }) {
               <h2
                 key={i}
                 id={block.id}
-                className="scroll-mt-32 pt-4 font-brand text-2xl text-foreground sm:text-3xl"
+                className="scroll-mt-60 md:scroll-mt-52 pt-4 font-brand text-2xl text-foreground sm:text-3xl"
               >
                 {block.text}
               </h2>
@@ -34,7 +42,7 @@ export function ArticleBody({ blocks }) {
               <h3
                 key={i}
                 id={block.id}
-                className="scroll-mt-32 pt-2 text-lg font-semibold text-foreground sm:text-xl"
+                className="scroll-mt-60 md:scroll-mt-52 pt-2 text-lg font-semibold text-foreground sm:text-xl"
               >
                 {block.text}
               </h3>

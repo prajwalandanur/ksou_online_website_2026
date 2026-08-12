@@ -60,7 +60,7 @@ export function BlogArticlePage() {
 
           <KeyTakeaways points={article.keyTakeaways} />
 
-          <section aria-labelledby="faq-heading" id="faq" className="scroll-mt-32 flex flex-col gap-6">
+          <section aria-labelledby="faq-heading" id="faq" className="scroll-mt-60 md:scroll-mt-52 flex flex-col gap-6">
             <h2 id="faq-heading" className="font-brand text-2xl text-foreground sm:text-3xl">
               Frequently Asked Questions
             </h2>

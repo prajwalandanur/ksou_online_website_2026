@@ -1,4 +1,5 @@
 import campus from '@/assets/hero-campus.webp';
+import { RankingBadge } from './RankingBadge';
 
 /**
  * The KSOU campus photo is a 16:9 landscape, so this slot is landscape too
@@ -24,6 +25,8 @@ export function HeroVisual() {
         fetchPriority="high"
         className="relative aspect-[4/3] w-full rounded-[28px] object-cover shadow-[0_1px_2px_rgba(17,17,17,0.04),0_24px_48px_-24px_rgba(17,17,17,0.28)]"
       />
+
+      <RankingBadge />
     </div>
   );
 }

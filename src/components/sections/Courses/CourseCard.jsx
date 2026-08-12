@@ -89,9 +89,24 @@ function QuestionPapersAction({ courseName, papers }) {
 }
 
 /**
- * The image/title link to a real detail page only for courses that have one
- * (`detailPath` in constants/courses.js) — others stay non-interactive until
- * their own programme page exists.
+ * The whole card navigates to the programme page, via a "stretched link":
+ * the title link carries an `::after` pseudo-element pinned to the card's
+ * bounds (`after:absolute after:inset-0`), so every pixel of the card's
+ * informational area hit-tests as that link.
+ *
+ * It is done this way rather than wrapping the card in a <Link> or putting
+ * an onClick on the <div> because the card also contains four of its own
+ * actions. A wrapping link would nest <a> inside <a>, which is invalid HTML
+ * and collapses into unusable screen-reader output; an onClick div would not
+ * be keyboard-reachable and would need every child to stopPropagation.
+ *
+ * With the overlay, the child actions simply sit above it (`relative z-10`)
+ * and receive their own clicks — no event plumbing, and the card exposes
+ * exactly one tab stop (the title) instead of one per clickable region.
+ * That is also why the image is no longer separately linked.
+ *
+ * Only courses with a `detailPath` (constants/courses.js) get any of this —
+ * others stay non-interactive until their programme page exists.
  */
 export function CourseCard({ course }) {
   const { name, description, duration, fee, Icon, image, detailPath, questionPapers } = course;
@@ -108,26 +123,25 @@ export function CourseCard({ course }) {
   );
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-[28px] border border-border/80 bg-white shadow-[0_1px_2px_rgba(17,17,17,0.04),0_10px_28px_-14px_rgba(17,17,17,0.14)] transition-all duration-300 ease-out hover:-translate-y-1.5 hover:shadow-[0_2px_4px_rgba(17,17,17,0.06),0_20px_40px_-16px_rgba(17,17,17,0.2)]">
-      {detailPath ? (
-        <Link
-          to={detailPath}
-          aria-label={`View ${name} programme details`}
-          className="relative flex aspect-[4/3] w-full shrink-0 items-center justify-center overflow-hidden rounded-t-[28px] bg-gradient-to-br from-primary/[0.07] via-muted to-muted"
-        >
-          {imageContent}
-        </Link>
-      ) : (
-        <div className="relative flex aspect-[4/3] w-full shrink-0 items-center justify-center overflow-hidden rounded-t-[28px] bg-gradient-to-br from-primary/[0.07] via-muted to-muted">
-          {imageContent}
-        </div>
-      )}
+    // `relative` is what the title link's stretched ::after anchors to — it
+    // must stay on this element, or the overlay escapes to the page.
+    <div className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-border/80 bg-white shadow-[0_1px_2px_rgba(17,17,17,0.04),0_10px_28px_-14px_rgba(17,17,17,0.14)] transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_2px_4px_rgba(17,17,17,0.06),0_20px_40px_-16px_rgba(17,17,17,0.2)]">
+      <div className="relative flex aspect-[4/3] w-full shrink-0 items-center justify-center overflow-hidden rounded-t-[28px] bg-gradient-to-br from-primary/[0.07] via-muted to-muted">
+        {imageContent}
+      </div>
 
       <div className="flex flex-1 flex-col gap-5 p-6">
         <div className="flex flex-col gap-1.5">
           <h3 className="font-brand text-2xl text-foreground">
             {detailPath ? (
-              <Link to={detailPath} className="transition-colors duration-200 hover:text-primary">
+              // `group-hover:` rather than `hover:` only because it reads
+              // clearer — the ::after covers the card, so hovering anywhere
+              // already counts as hovering this link. That doubles as the
+              // affordance: the title tints wherever the pointer is.
+              <Link
+                to={detailPath}
+                className="cursor-pointer transition-colors duration-200 after:absolute after:inset-0 after:content-[''] group-hover:text-primary"
+              >
                 {name}
               </Link>
             ) : (
@@ -152,7 +166,11 @@ export function CourseCard({ course }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
+        {/* `relative z-10` lifts these action rows above the title link's
+            stretched ::after so they keep their own click targets. Every
+            interactive child of this card needs to be inside one of these
+            two wrappers, or the card-wide link will swallow it. */}
+        <div className="relative z-10 grid grid-cols-2 gap-3">
           {/* No per-course brochures exist; every card points at the one
               official prospectus, which covers all programmes. Same new-tab
               treatment as the question papers above. */}
@@ -171,7 +189,7 @@ export function CourseCard({ course }) {
           <QuestionPapersAction courseName={name} papers={questionPapers} />
         </div>
 
-        <div className="mt-auto grid grid-cols-2 gap-3">
+        <div className="relative z-10 mt-auto grid grid-cols-2 gap-3">
           {detailPath ? (
             <Button to={detailPath} variant="secondary" className="justify-center py-2.5 text-sm">
               Learn More
