@@ -6,12 +6,16 @@ import {
   Sigma,
   TrendingUp,
 } from 'lucide-react';
-import mbaImage from '@/assets/courses/mba.png';
-import baImage from '@/assets/courses/ba.png';
-import bcomImage from '@/assets/courses/bcom.png';
-import maImage from '@/assets/courses/ma.png';
-import mcomImage from '@/assets/courses/mcom.png';
-import mscImage from '@/assets/courses/msc.png';
+// WebP, generated from the .png sources by scripts/optimize-images.mjs
+// (11.5MB of PNG -> 519KB). The PNGs are kept in the same folder as the
+// originals to re-encode from; only these .webp files are imported, so only
+// these are bundled. Re-run that script after replacing any photograph.
+import mbaImage from '@/assets/courses/mba.webp';
+import baImage from '@/assets/courses/ba.webp';
+import bcomImage from '@/assets/courses/bcom.webp';
+import maImage from '@/assets/courses/ma.webp';
+import mcomImage from '@/assets/courses/mcom.webp';
+import mscImage from '@/assets/courses/msc.webp';
 
 // `questionPapers` holds the real previous-question-paper PDFs, served from
 // public/question-papers/ (static files, not bundled — they're documents to
