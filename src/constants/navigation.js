@@ -31,7 +31,10 @@ export const CONTACT_NUMBERS = [
   { label: '+91 81231 75590', href: 'tel:+918123175590' },
 ];
 
+// `short` is the phone-width form. Fitting the toggle and all three numbers
+// on one utility row needs ~55px back from "English"; "ಕನ್ನಡ" is already
+// short, so it is its own abbreviation rather than a transliteration.
 export const LANGUAGES = [
-  { code: 'en', label: 'English' },
-  { code: 'kn', label: 'ಕನ್ನಡ' },
+  { code: 'en', label: 'English', short: 'EN' },
+  { code: 'kn', label: 'ಕನ್ನಡ', short: 'ಕನ್ನಡ' },
 ];

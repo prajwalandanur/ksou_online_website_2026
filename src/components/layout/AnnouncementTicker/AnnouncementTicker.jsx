@@ -40,11 +40,11 @@ export function AnnouncementTicker() {
     // bottom corners. Height is fixed per breakpoint — the header must not
     // change height on scroll.
     <section aria-label="Latest updates" className="border-t border-border/70 bg-ticker">
-      <div className="flex h-9 items-center gap-3 px-6 sm:h-11 sm:gap-4 2xl:px-7">
+      <div className="flex h-7 items-center gap-2 px-3 sm:h-9 sm:gap-3 sm:px-5 md:h-11 md:gap-4 md:px-6 2xl:px-7">
         {/* Fixed label. It is a flex sibling of the track, not an overlay, so
             the moving content is structurally unable to run underneath it. */}
-        <p className="flex shrink-0 items-center gap-1.5 text-[12px] font-bold uppercase tracking-[0.08em] text-navy sm:gap-2 sm:text-[12.5px]">
-          <Megaphone className="h-3.5 w-3.5 text-gold sm:h-4 sm:w-4" aria-hidden="true" />
+        <p className="flex shrink-0 items-center gap-1 text-[10.5px] font-bold uppercase tracking-[0.06em] text-navy sm:gap-2 sm:text-[12px] md:text-[12.5px] md:tracking-[0.08em]">
+          <Megaphone className="h-3 w-3 text-gold sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" aria-hidden="true" />
           {/* Two variants rather than a conditional word: the uppercase
               tracking turns a trailing space into a visible gap. Only one is
               ever displayed, so screen readers still read a single label. */}

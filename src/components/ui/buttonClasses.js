@@ -1,5 +1,8 @@
+// `whitespace-nowrap`: button labels are short by design, and letting one
+// break mid-label turns a pill into a two-line blob — "LMS Login" was doing
+// exactly that in the squeezed mobile navbar.
 const BASE_CLASSES =
-  'inline-flex cursor-pointer items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold tracking-tight transition-all duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-semibold tracking-tight transition-all duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
 
 export const VARIANT_CLASSES = {
   primary:
