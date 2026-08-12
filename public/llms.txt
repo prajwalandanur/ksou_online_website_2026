@@ -1,0 +1,44 @@
+# KSOU Online — Karnataka State Open University
+
+> Karnataka State Open University (KSOU) is a government university established in 1996, headquartered in Mysuru, Karnataka, India. KSOU Online is the university's official online learning division offering UGC-approved, NAAC A+ rated online degree programmes for students and working professionals across India.
+
+## About
+
+KSOU Online provides flexible, affordable higher education through its online learning platform. The university is approved by UGC (University Grants Commission), recognized by AICTE (All India Council for Technical Education), and holds NAAC A+ accreditation with a GPA of 3.31. Over 115,000 students have graduated from KSOU since its establishment.
+
+## Online Programmes Offered
+
+### Undergraduate (UG)
+- **BA (Bachelor of Arts)** — 3-year programme, fees from ₹10,000/year
+- **B.Com (Bachelor of Commerce)** — 3-year programme, fees from ₹10,000/year
+
+### Postgraduate (PG)
+- **MBA (Master of Business Administration)** — 2-year programme
+- **M.Com (Master of Commerce)** — 2-year programme
+- **MA (Master of Arts)** — 2-year programme, specializations in Kannada, English, Hindi, Sanskrit, Economics
+- **M.Sc Mathematics** — 2-year programme
+
+## Key Facts
+- Government university (not private)
+- UGC Approved for online programmes
+- NAAC A+ Accredited (GPA 3.31)
+- AICTE Recognized (for MBA)
+- 115,000+ graduates since 1996
+- 120+ programmes across disciplines
+- Admissions open for July 2026 cycle
+
+## Important Pages
+
+- Homepage: https://ksou-online-website-2026-qmolackhn.vercel.app/
+- MBA Programme: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/mba
+- BA Programme: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/ba
+- B.Com Programme: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/bcom
+- M.Com Programme: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/mcom
+- MA Programme: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/ma
+- M.Sc Mathematics: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/msc-mathematics
+- About KSOU: https://ksou-online-website-2026-qmolackhn.vercel.app/about
+- Blog / Insights: https://ksou-online-website-2026-qmolackhn.vercel.app/blogs
+- Announcements: https://ksou-online-website-2026-qmolackhn.vercel.app/announcements
+
+## Contact
+For admissions enquiries, visit the Contact page or call the admissions helpline numbers listed on the website.
