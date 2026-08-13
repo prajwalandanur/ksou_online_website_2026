@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { APPLY_NOW_URL } from '@/constants/navigation';
+import { useContent } from '@/i18n/content';
 import { HeroVisual } from './HeroVisual';
 import { AccreditationStrip } from './AccreditationStrip';
 
@@ -13,6 +14,9 @@ const fadeUp = (delay) => ({
 });
 
 export function Hero() {
+  const { ui } = useContent();
+  const { hero, common } = ui;
+
   return (
     <section
       aria-labelledby="hero-heading"
@@ -28,7 +32,10 @@ export function Hero() {
             {...fadeUp(0)}
             className="font-brand text-[2.75rem] leading-[1.12] text-foreground sm:text-6xl lg:text-[4rem] xl:text-[4.25rem]"
           >
-            UGC Approved <span className="text-primary">KSOU Online Programmes</span>
+            {hero.headingLead}
+            {hero.headingLead && ' '}
+            <span className="text-primary">{hero.headingAccent}</span>
+            {hero.headingTrail}
           </motion.h1>
 
           {/* The H1 deliberately stays short and brand-led. The full
@@ -41,18 +48,14 @@ export function Hero() {
             {...fadeUp(0.1)}
             className="text-lg font-medium text-foreground/75 sm:text-xl"
           >
-            Karnataka State Open University · NAAC A+ Government University · Online degrees from
-            ₹10,000/year.
+            {hero.subtitle}
           </motion.p>
 
           <motion.p
             {...fadeUp(0.15)}
             className="max-w-xl text-base text-muted-foreground sm:text-lg"
           >
-            Explore UGC-entitled online undergraduate and postgraduate programmes from Karnataka
-            State Open University (KSOU), Mysuru — a government university offering an accessible
-            alternative to conventional distance education in Karnataka, built for students and
-            working professionals. Admissions for the 2026 cycle are open.
+            {hero.description}
           </motion.p>
 
           {/* Deliberately a pill plus a line of supporting text, not a
@@ -67,11 +70,9 @@ export function Hero() {
                 that isn't the one specified. */}
             <p className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-gold/[0.07] px-3.5 py-1.5 text-[13px] font-semibold tracking-tight text-navy">
               <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-gold" />
-              Admissions Open • July 2026 Cycle
+              {hero.admissionsPill}
             </p>
-            <p className="text-sm text-muted-foreground">
-              Applications are now open for the July 2026 admission cycle.
-            </p>
+            <p className="text-sm text-muted-foreground">{hero.admissionsNote}</p>
           </motion.div>
 
           <motion.div {...fadeUp(0.25)} className="w-full pt-1 sm:w-auto">
@@ -80,7 +81,7 @@ export function Hero() {
               withArrow
               className="w-full py-3.5 text-base sm:w-auto"
             >
-              Apply Now
+              {common.applyNow}
             </Button>
           </motion.div>
         </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { FAQS } from '@/constants/faq';
+import { useContent } from '@/i18n/content';
 import { FaqItem } from './FaqItem';
 import { Button } from '@/components/ui/Button';
 
@@ -9,6 +9,7 @@ const INITIAL_VISIBLE_COUNT = 5;
 export function Faq() {
   const [openId, setOpenId] = useState(null);
   const [showAll, setShowAll] = useState(false);
+  const { ui, faqs } = useContent();
 
   const toggleFaq = (id) => {
     setOpenId((current) => (current === id ? null : id));
@@ -25,12 +26,12 @@ export function Faq() {
     <section aria-labelledby="faq-heading" className="flex flex-col gap-8 py-10 sm:gap-10 sm:py-14 lg:py-16">
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
         <h2 id="faq-heading" className="font-brand text-3xl text-foreground sm:text-4xl lg:text-5xl">
-          Frequently Asked Questions
+          {ui.faq.heading}
         </h2>
       </div>
 
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-6 lg:px-8">
-        {FAQS.map((faq, index) => (
+        {faqs.map((faq, index) => (
           <FaqItem
             key={faq.id}
             faq={faq}
@@ -45,7 +46,7 @@ export function Faq() {
           onClick={() => setShowAll((current) => !current)}
           className="mt-2 self-start"
         >
-          {showAll ? 'Show Less' : 'Show More'}
+          {showAll ? ui.faq.showLess : ui.faq.showMore}
           <ChevronDown
             className={`h-4 w-4 transition-transform duration-300 ease-out ${showAll ? 'rotate-180' : ''}`}
             aria-hidden="true"

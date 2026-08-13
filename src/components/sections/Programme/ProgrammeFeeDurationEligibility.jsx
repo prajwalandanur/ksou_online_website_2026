@@ -1,7 +1,10 @@
+import { useContent } from '@/i18n/content';
+import { fill } from '@/i18n/format';
 import { ProgrammeInfoCard } from './ProgrammeInfoCard';
 
 export function ProgrammeFeeDurationEligibility({ programme }) {
   const { feeDurationEligibility, shortName } = programme;
+  const { ui } = useContent();
 
   return (
     <section aria-labelledby="programme-fee-heading" className="bg-muted/40 py-10 sm:py-14 lg:py-20">
@@ -10,10 +13,10 @@ export function ProgrammeFeeDurationEligibility({ programme }) {
           id="programme-fee-heading"
           className="font-brand text-3xl text-foreground sm:text-4xl lg:text-5xl"
         >
-          Online {shortName} Course Fees, Duration &amp; Eligibility
+          {fill(ui.programme.fee.heading, { name: shortName })}
         </h2>
         <p className="text-base font-light text-muted-foreground sm:text-lg">
-          Everything you need to know before beginning your {shortName} journey with KSOU Online.
+          {fill(ui.programme.fee.subheading, { name: shortName })}
         </p>
       </div>
 

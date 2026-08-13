@@ -1,10 +1,12 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { useContent } from '@/i18n/content';
 
 const EASE = [0.22, 1, 0.36, 1];
 
 export function ProgrammeStructureCard({ group, isOpen, onToggle }) {
   const { id, title, description, meta, subjects, note, Icon } = group;
+  const { ui } = useContent();
   const listId = `programme-structure-${id}`;
 
   return (
@@ -43,7 +45,7 @@ export function ProgrammeStructureCard({ group, isOpen, onToggle }) {
         </div>
 
         <span className="mt-auto text-xs font-semibold uppercase tracking-wide text-primary">
-          {isOpen ? 'Hide details' : 'Explore details →'}
+          {isOpen ? ui.programme.structure.hideDetails : ui.programme.structure.showDetails}
         </span>
       </button>
 

@@ -1,5 +1,16 @@
+import { useLocation } from 'react-router-dom';
+import { stripLanguage } from '@/i18n/language';
 import { CounsellorCta } from '@/components/sections/CounsellorCta/CounsellorCta';
 import { Footer } from './Footer/Footer';
+
+/**
+ * Routes that are themselves a "talk to us" surface, where the counsellor
+ * block would be the same call to action twice on one screen.
+ *
+ * Compared against the language-stripped pathname so a future `/kn/contact`
+ * matches without needing a second entry.
+ */
+const NO_COUNSELLOR_CTA = new Set(['/contact']);
 
 /**
  * The Counsellor CTA and Footer share one ice-blue background so the page
@@ -17,11 +28,15 @@ import { Footer } from './Footer/Footer';
  * right edge — and that is verified by the mobile QA overflow check.
  */
 export function ClosingSection() {
+  const showCounsellorCta = !NO_COUNSELLOR_CTA.has(stripLanguage(useLocation().pathname));
+
   return (
     <div className="relative bg-ice">
-      <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-        <CounsellorCta />
-      </div>
+      {showCounsellorCta && (
+        <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
+          <CounsellorCta />
+        </div>
+      )}
 
       <Footer />
     </div>

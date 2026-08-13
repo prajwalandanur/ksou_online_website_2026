@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom';
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { PROGRAMMES } from '@/constants/programmes';
+import { useContent } from '@/i18n/content';
+import { useLanguage } from '@/i18n/useLanguage';
+import { localizePath } from '@/i18n/language';
 import { JsonLd } from '@/components/common/JsonLd';
 import {
   buildBreadcrumbSchema,
@@ -29,12 +31,22 @@ const DEFAULT_SEO = {
 
 export function ProgrammePage() {
   const { slug } = useParams();
-  const programme = PROGRAMMES[slug];
+  const language = useLanguage();
+  // Kannada merged over English per key, so an untranslated section on this
+  // page renders in English rather than disappearing.
+  const { programmes } = useContent();
+  const programme = programmes[slug];
   const seo = programme?.seo ?? DEFAULT_SEO;
+  const englishPath = `/programmes/${slug}`;
+
   useDocumentMeta({
     ...seo,
     ogType: 'website',
-    canonicalPath: `/programmes/${slug}`,
+    // Canonical points at *this* language's URL, and the alternates below
+    // declare the pair — a single canonical shared by both would tell Google
+    // the Kannada page is a duplicate and drop it from the index.
+    canonicalPath: localizePath(englishPath, language),
+    alternates: englishPath,
   });
 
   if (!programme) {

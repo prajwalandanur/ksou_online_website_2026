@@ -127,3 +127,35 @@ export const PROGRAMME_EXAM_FEES = [
 
 export const PROGRAMME_EXAM_FEE_NOTE =
   'Examination fees are charged separately according to the applicable examination fee structure.';
+
+/**
+ * Closed vocabulary for the examination-fee rows above, translated by lookup
+ * rather than positionally.
+ *
+ * `PROGRAMME_EXAM_FEES` is one array referenced by all six programme files,
+ * but merging happens per programme, so translating it positionally would
+ * mean writing the same four strings into six Kannada files — exactly the
+ * six-way drift the parallel-constants architecture exists to prevent. Keyed
+ * by the English label; an unrecognised label renders unchanged.
+ */
+export const PROGRAMME_EXAM_FEE_LABELS = Object.fromEntries(
+  PROGRAMME_EXAM_FEES.map((fee) => [fee.label, fee.label]),
+);
+
+/**
+ * The institution-level content above, bundled for `src/i18n/content.js`.
+ *
+ * Recognition, Career Support and the university story are about KSOU rather
+ * than any one course, so their components take no `programme` prop — which
+ * also meant they imported these constants directly and rendered English on
+ * the `/kn` routes. Routing them through the content registry is what gives
+ * them a Kannada counterpart.
+ */
+export const PROGRAMME_SHARED = {
+  recognition: PROGRAMME_RECOGNITION,
+  careerSupport: PROGRAMME_CAREER_SUPPORT,
+  degreeTags: PROGRAMME_DEGREE_TAGS,
+  universityVision: PROGRAMME_UNIVERSITY_VISION,
+  universityMilestones: PROGRAMME_UNIVERSITY_MILESTONES,
+  examFeeLabels: PROGRAMME_EXAM_FEE_LABELS,
+};

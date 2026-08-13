@@ -1,18 +1,34 @@
-import {
-  FacebookIcon,
-  InstagramIcon,
-  LinkedinIcon,
-  YoutubeIcon,
-} from '@/components/common/SocialIcons';
+import { FacebookIcon, InstagramIcon } from '@/components/common/SocialIcons';
 import { ACADEMIC_CALENDAR_URL, PROSPECTUS_URL } from './navigation';
 
-// No official KSOU Online social handles have been supplied yet — these are
-// styled placeholders (see FOOTER_SOCIAL_LINKS usage) until real profiles exist.
+/**
+ * Real, official profiles — these stopped being placeholders on 2026-08-13.
+ *
+ * **Instagram is the KSOU Online account; Facebook is the parent
+ * university's.** That asymmetry is intentional and comes from the supplied
+ * links, not an oversight — don't "fix" it by inventing a KSOU Online
+ * Facebook page.
+ *
+ * YouTube and LinkedIn were removed outright (icons deleted from
+ * SocialIcons.jsx too): no accounts exist, and four icons where two are dead
+ * placeholders reads worse than two that all work.
+ *
+ * The supplied URLs carried `utm_source=chatgpt.com` and an `igsh` share
+ * token. Both are stripped — they are artefacts of how the links were
+ * copied, and shipping them would attribute the site's own social traffic to
+ * a chat session.
+ */
 export const FOOTER_SOCIAL_LINKS = [
-  { label: 'Instagram', Icon: InstagramIcon },
-  { label: 'Facebook', Icon: FacebookIcon },
-  { label: 'YouTube', Icon: YoutubeIcon },
-  { label: 'LinkedIn', Icon: LinkedinIcon },
+  {
+    label: 'Instagram',
+    Icon: InstagramIcon,
+    href: 'https://www.instagram.com/ksou_online',
+  },
+  {
+    label: 'Facebook',
+    Icon: FacebookIcon,
+    href: 'https://www.facebook.com/karnatakastateopenuniversitymysuru',
+  },
 ];
 
 // The parent university's own site — a real external destination, unlike the
@@ -57,5 +73,13 @@ export const FOOTER_LINK_COLUMNS = [
     ],
   },
 ];
+
+// The fifth footer column. Its *values* (address, numbers, email) come from
+// constants/contact.js and navigation.js — only the labels live here.
+export const FOOTER_CONTACT_TITLE = 'Get in Touch';
+
+export const FOOTER_CONTACT_LABELS = {
+  helpline: 'General helpline',
+};
 
 export const FOOTER_COPYRIGHT = '© 2026 KSOU Online. All Rights Reserved.';

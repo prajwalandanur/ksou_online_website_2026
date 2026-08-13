@@ -1,9 +1,18 @@
 import { Link } from 'react-router-dom';
+import { useContent } from '@/i18n/content';
+import { useLocalizedPath } from '@/i18n/useLanguage';
+import { fill } from '@/i18n/format';
 
 const LINK_CLASSES =
   'text-sm text-muted-foreground transition-colors duration-200 hover:text-primary';
 
 export function FooterColumn({ title, links }) {
+  const { ui } = useContent();
+  // The "Online Degrees" column deep-links to all six programme pages, which
+  // do have Kannada versions — without this the footer walks the visitor out
+  // of Kannada from any page on the site.
+  const to = useLocalizedPath();
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -15,7 +24,7 @@ export function FooterColumn({ title, links }) {
         {links.map((link) => (
           <li key={link.label}>
             {link.to ? (
-              <Link to={link.to} className={LINK_CLASSES}>
+              <Link to={to(link.to)} className={LINK_CLASSES}>
                 {link.label}
               </Link>
             ) : (
@@ -26,7 +35,7 @@ export function FooterColumn({ title, links }) {
                   ? {
                       target: '_blank',
                       rel: 'noopener noreferrer',
-                      'aria-label': `${link.label} (PDF, opens in a new tab)`,
+                      'aria-label': fill(ui.common.pdfNewTab, { label: link.label }),
                     }
                   : {})}
               >

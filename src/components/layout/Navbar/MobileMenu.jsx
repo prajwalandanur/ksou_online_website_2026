@@ -2,7 +2,10 @@ import { useEffect, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
 import { X, Phone } from 'lucide-react';
-import { NAV_LINKS, CONTACT_NUMBERS, LMS_LOGIN_URL } from '@/constants/navigation';
+import { CONTACT_NUMBERS, LMS_LOGIN_URL } from '@/constants/navigation';
+import { useContent } from '@/i18n/content';
+import { useLocalizedPath } from '@/i18n/useLanguage';
+import { fill } from '@/i18n/format';
 import { useLockBodyScroll } from '@/hooks/useLockBodyScroll';
 import { Button } from '@/components/ui/Button';
 import { Logo } from '@/components/common/Logo';
@@ -12,6 +15,10 @@ const MOBILE_LINK_BASE =
   'block cursor-pointer rounded-2xl px-4 py-3.5 text-lg font-semibold tracking-tight transition-colors duration-200 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
 
 export function MobileMenu({ isOpen, onClose }) {
+  const { ui, navLinks } = useContent();
+  // Matches DesktopNavLinks — routes keep the visitor in their current
+  // language, `newTab` entries are PDFs and stay exactly as authored.
+  const to = useLocalizedPath();
   const closeButtonRef = useRef(null);
 
   useLockBodyScroll(isOpen);
@@ -34,7 +41,7 @@ export function MobileMenu({ isOpen, onClose }) {
         <motion.div
           role="dialog"
           aria-modal="true"
-          aria-label="Site navigation"
+          aria-label={ui.nav.siteNavigation}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -47,7 +54,7 @@ export function MobileMenu({ isOpen, onClose }) {
               ref={closeButtonRef}
               type="button"
               onClick={onClose}
-              aria-label="Close menu"
+              aria-label={ui.nav.closeMenu}
               className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full text-foreground transition-colors duration-200 ease-out hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
             >
               <X className="h-5 w-5" aria-hidden="true" />
@@ -56,7 +63,7 @@ export function MobileMenu({ isOpen, onClose }) {
 
           <nav className="flex flex-1 flex-col justify-between overflow-y-auto px-6 py-8">
             <ul className="flex flex-col gap-1">
-              {NAV_LINKS.map((link, i) => (
+              {navLinks.map((link, i) => (
                 <motion.li
                   key={link.href}
                   initial={{ opacity: 0, y: 12 }}
@@ -70,14 +77,14 @@ export function MobileMenu({ isOpen, onClose }) {
                       target="_blank"
                       rel="noopener noreferrer"
                       onClick={onClose}
-                      aria-label={`${link.label} (PDF, opens in a new tab)`}
+                      aria-label={fill(ui.common.pdfNewTab, { label: link.label })}
                       className={`${MOBILE_LINK_BASE} text-foreground hover:bg-muted`}
                     >
                       {link.label}
                     </a>
                   ) : (
                     <NavLink
-                      to={link.href}
+                      to={to(link.href)}
                       end={link.href === '/'}
                       onClick={onClose}
                       className={({ isActive }) =>
@@ -100,7 +107,7 @@ export function MobileMenu({ isOpen, onClose }) {
                 onClick={onClose}
                 className="w-full py-3.5 text-base"
               >
-                LMS Login
+                {ui.nav.lmsLogin}
               </Button>
 
               <ul className="flex flex-col gap-3">

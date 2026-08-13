@@ -3,6 +3,9 @@ import { ChevronDown, ExternalLink, FileText } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { buttonClasses } from '@/components/ui/buttonClasses';
 import { APPLY_NOW_URL, PROSPECTUS_URL } from '@/constants/navigation';
+import { useContent } from '@/i18n/content';
+import { useLocalizedPath } from '@/i18n/useLanguage';
+import { fill } from '@/i18n/format';
 
 // Tighter padding/gap than the sibling Brochure button so the extra chevron
 // still fits on one line at the card's width — otherwise the label wraps and
@@ -27,15 +30,17 @@ const QP_TRIGGER_CLASSES = buttonClasses(
  * (it clips the image's rounded top), so a downward panel would be cut off.
  */
 function QuestionPapersAction({ courseName, papers }) {
+  const { ui } = useContent();
+
   if (!papers?.length) {
     return (
       <Button
         variant="secondary"
-        aria-label={`View previous question papers for ${courseName} — coming soon`}
+        aria-label={fill(ui.courses.previousQpsPendingAria, { name: courseName })}
         className="justify-center gap-1.5 py-2.5 text-xs sm:text-sm"
       >
         <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
-        Previous QPs
+        {ui.courses.previousQps}
       </Button>
     );
   }
@@ -48,11 +53,11 @@ function QuestionPapersAction({ courseName, papers }) {
         target="_blank"
         rel="noopener noreferrer"
         variant="secondary"
-        aria-label={`View previous question papers for ${courseName} (PDF, opens in a new tab)`}
+        aria-label={fill(ui.courses.previousQpsAria, { name: courseName })}
         className="justify-center gap-1.5 py-2.5 text-xs sm:text-sm"
       >
         <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
-        Previous QPs
+        {ui.courses.previousQps}
       </Button>
     );
   }
@@ -61,7 +66,7 @@ function QuestionPapersAction({ courseName, papers }) {
     <details className="group/qp relative">
       <summary className={QP_TRIGGER_CLASSES}>
         <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
-        Previous QPs
+        {ui.courses.previousQps}
         <ChevronDown
           className="h-3 w-3 shrink-0 transition-transform duration-200 group-open/qp:rotate-180"
           aria-hidden="true"
@@ -75,7 +80,10 @@ function QuestionPapersAction({ courseName, papers }) {
               href={paper.href}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`View ${courseName} ${paper.label} previous question papers (PDF, opens in a new tab)`}
+              aria-label={fill(ui.courses.previousQpsDisciplineAria, {
+                name: courseName,
+                discipline: paper.label,
+              })}
               className="flex items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-muted-foreground transition-colors duration-200 hover:bg-muted hover:text-primary"
             >
               <ExternalLink className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
@@ -110,11 +118,16 @@ function QuestionPapersAction({ courseName, papers }) {
  */
 export function CourseCard({ course }) {
   const { name, description, duration, fee, Icon, image, detailPath, questionPapers } = course;
+  const { ui } = useContent();
+  // Without this the card is a one-way door out of Kannada: `detailPath` is
+  // the English route, so every card on /kn navigated to /programmes/* and
+  // silently switched the visitor's language mid-journey.
+  const to = useLocalizedPath();
 
   const imageContent = image ? (
     <img
       src={image}
-      alt={`${name} students`}
+      alt={fill(ui.courses.imageAlt, { name })}
       loading="lazy"
       className="h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-105"
     />
@@ -139,7 +152,7 @@ export function CourseCard({ course }) {
               // already counts as hovering this link. That doubles as the
               // affordance: the title tints wherever the pointer is.
               <Link
-                to={detailPath}
+                to={to(detailPath)}
                 className="cursor-pointer transition-colors duration-200 after:absolute after:inset-0 after:content-[''] group-hover:text-primary"
               >
                 {name}
@@ -154,15 +167,17 @@ export function CourseCard({ course }) {
         <div className="flex flex-col gap-2 rounded-2xl bg-muted/50 px-4 py-3">
           <div className="flex items-center justify-between gap-3">
             <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              Duration
+              {ui.courses.duration}
             </span>
             <span className="text-sm font-semibold text-foreground">{duration}</span>
           </div>
           <div className="flex items-center justify-between gap-3 border-t border-border/70 pt-2">
             <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-              Course Fee
+              {ui.courses.courseFee}
             </span>
-            <span className="text-sm font-semibold text-primary">{fee} / Year</span>
+            <span className="text-sm font-semibold text-primary">
+              {fee} {ui.courses.perYear}
+            </span>
           </div>
         </div>
 
@@ -180,31 +195,35 @@ export function CourseCard({ course }) {
             target="_blank"
             rel="noopener noreferrer"
             variant="secondary"
-            aria-label={`View the KSOU Online prospectus, which covers ${name} (PDF, opens in a new tab)`}
+            aria-label={fill(ui.courses.brochureAria, { name })}
             className="justify-center gap-1.5 py-2.5 text-xs sm:text-sm"
           >
             <FileText className="h-4 w-4 shrink-0" aria-hidden="true" />
-            Brochure
+            {ui.courses.brochure}
           </Button>
           <QuestionPapersAction courseName={name} papers={questionPapers} />
         </div>
 
         <div className="relative z-10 mt-auto grid grid-cols-2 gap-3">
           {detailPath ? (
-            <Button to={detailPath} variant="secondary" className="justify-center py-2.5 text-sm">
-              Learn More
+            <Button
+              to={to(detailPath)}
+              variant="secondary"
+              className="justify-center py-2.5 text-sm"
+            >
+              {ui.common.learnMore}
             </Button>
           ) : (
             <Button
               variant="secondary"
-              aria-label={`Learn more about ${name} — coming soon`}
+              aria-label={fill(ui.courses.learnMorePendingAria, { name })}
               className="justify-center py-2.5 text-sm"
             >
-              Learn More
+              {ui.common.learnMore}
             </Button>
           )}
-          <Button to={APPLY_NOW_URL} className="justify-center py-2.5 text-sm">
-            Apply Now
+          <Button to={to(APPLY_NOW_URL)} className="justify-center py-2.5 text-sm">
+            {ui.common.applyNow}
           </Button>
         </div>
       </div>

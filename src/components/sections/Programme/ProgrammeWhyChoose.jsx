@@ -1,4 +1,6 @@
 import { motion } from 'framer-motion';
+import { useContent } from '@/i18n/content';
+import { fill } from '@/i18n/format';
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -27,6 +29,8 @@ function WhyChooseCard({ item, index }) {
 
 export function ProgrammeWhyChoose({ programme }) {
   const { whyChoose, shortName } = programme;
+  const { ui } = useContent();
+  const heading = ui.programme.whyChoose;
 
   return (
     <section aria-labelledby="programme-why-heading" className="py-10 sm:py-14 lg:py-20">
@@ -35,7 +39,11 @@ export function ProgrammeWhyChoose({ programme }) {
           id="programme-why-heading"
           className="font-brand text-3xl text-foreground sm:text-4xl lg:text-5xl"
         >
-          Why Choose <span className="text-primary">KSOU Online {shortName}?</span>
+          {heading.headingLead}{' '}
+          <span className="text-primary">
+            {fill(heading.headingAccent, { name: shortName })}
+          </span>
+          {heading.headingTrail}
         </h2>
         <p className="text-base font-light text-muted-foreground sm:text-lg">
           {whyChoose.intro}

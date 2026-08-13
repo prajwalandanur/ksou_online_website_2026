@@ -2,6 +2,12 @@ import { Link } from 'react-router-dom';
 import { Megaphone } from 'lucide-react';
 import { ANNOUNCEMENTS_URL, TICKER_ANNOUNCEMENTS } from '@/constants/announcements';
 import { useMarquee } from '@/hooks/useMarquee';
+import { useContent } from '@/i18n/content';
+import {
+  HEADER_BAND_CARD,
+  HEADER_BAND_CONTAINER,
+  HEADER_BAND_TRAIL,
+} from '@/components/layout/headerBands';
 import { TickerItem } from './TickerItem';
 
 /**
@@ -24,6 +30,7 @@ const VIEW_ALL_CLASSES =
   'shrink-0 cursor-pointer whitespace-nowrap text-[13px] font-semibold tracking-tight text-primary-hover underline-offset-4 transition-colors duration-200 ease-out hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
 
 export function AnnouncementTicker() {
+  const { ui } = useContent();
   const { containerRef, pause, resume, scheduleResume, prefersReducedMotion } = useMarquee({
     // Deliberately slower than the accreditation strip's 40px/s — this is a
     // reading surface sitting under the navbar, not a logo wall.
@@ -39,8 +46,17 @@ export function AnnouncementTicker() {
     // the three bands line up. The card's `overflow-hidden` rounds its
     // bottom corners. Height is fixed per breakpoint — the header must not
     // change height on scroll.
-    <section aria-label="Latest updates" className="border-t border-border/70 bg-ticker">
-      <div className="flex h-7 items-center gap-2 px-3 sm:h-9 sm:gap-3 sm:px-5 md:h-11 md:gap-4 md:px-6 2xl:px-7">
+    <section aria-label={ui.ticker.regionLabel} className={HEADER_BAND_TRAIL}>
+      <div className={HEADER_BAND_CONTAINER}>
+        {/* `lg:overflow-hidden` so the marquee track and its edge-fade
+            gradients are clipped by the card's rounded corners instead of
+            running past them. Safe here in a way it would not be on the nav
+            band: this section is a *sibling* of the sticky header, never an
+            ancestor, so a non-visible overflow cannot break sticky. */}
+        <div
+          className={`bg-ticker max-lg:border-t max-lg:border-border/70 lg:overflow-hidden ${HEADER_BAND_CARD}`}
+        >
+          <div className="flex h-7 items-center gap-2 px-3 sm:h-9 sm:gap-3 sm:px-5 md:h-11 md:gap-4 md:px-6 lg:px-6 xl:px-5 2xl:px-6">
         {/* Fixed label. It is a flex sibling of the track, not an overlay, so
             the moving content is structurally unable to run underneath it. */}
         <p className="flex shrink-0 items-center gap-1 text-[10.5px] font-bold uppercase tracking-[0.06em] text-navy sm:gap-2 sm:text-[12px] md:text-[12.5px] md:tracking-[0.08em]">
@@ -48,8 +64,8 @@ export function AnnouncementTicker() {
           {/* Two variants rather than a conditional word: the uppercase
               tracking turns a trailing space into a visible gap. Only one is
               ever displayed, so screen readers still read a single label. */}
-          <span className="hidden sm:inline">Latest Updates</span>
-          <span className="sm:hidden">Updates</span>
+          <span className="hidden sm:inline">{ui.ticker.label}</span>
+          <span className="sm:hidden">{ui.ticker.labelShort}</span>
         </p>
 
         <span aria-hidden="true" className="h-4 w-px shrink-0 bg-navy/15" />
@@ -111,8 +127,10 @@ export function AnnouncementTicker() {
         )}
 
         <Link to={ANNOUNCEMENTS_URL} className={`hidden sm:inline ${VIEW_ALL_CLASSES}`}>
-          View all
+          {ui.ticker.viewAll}
         </Link>
+          </div>
+        </div>
       </div>
     </section>
   );

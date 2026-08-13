@@ -10,6 +10,13 @@ export const VARIANT_CLASSES = {
   secondary:
     'border border-border bg-white text-foreground hover:-translate-y-0.5 hover:border-primary/40 hover:bg-muted hover:shadow-[0_8px_16px_-10px_rgba(17,17,17,0.15)]',
   ghost: 'text-foreground hover:bg-muted',
+  // The navbar's second CTA. Gold rather than another blue so the two header
+  // buttons read as different actions at a glance; navy text rather than
+  // white because white on gold is ~1.9:1 while navy is 6.25:1. This is the
+  // *only* place gold carries text — everywhere else it is a decorative
+  // hairline or dot (see the token note in index.css).
+  gold:
+    'bg-gold text-navy shadow-[0_1px_2px_rgba(201,162,39,0.12),0_8px_16px_-8px_rgba(201,162,39,0.55)] hover:bg-gold-hover hover:shadow-[0_2px_4px_rgba(201,162,39,0.18),0_14px_24px_-10px_rgba(201,162,39,0.6)] hover:-translate-y-0.5',
   // The next two are for CTAs sitting on a solid primary-blue background
   // (e.g. the final CTA panel) — distinct variants, not overrides of
   // `primary`/`secondary`, because overriding another variant's bg/border/

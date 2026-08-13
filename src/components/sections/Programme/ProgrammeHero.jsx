@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion';
 import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { APPLY_NOW_URL } from '@/constants/navigation';
+import { APPLY_NOW_URL, PROSPECTUS_URL } from '@/constants/navigation';
+import { useContent } from '@/i18n/content';
 import { ProgrammeHeroVisual } from './ProgrammeHeroVisual';
 
 const EASE = [0.22, 1, 0.36, 1];
@@ -14,6 +15,7 @@ const fadeUp = (delay) => ({
 
 export function ProgrammeHero({ programme }) {
   const { hero, infoStrip } = programme;
+  const { ui } = useContent();
 
   return (
     <section
@@ -50,15 +52,19 @@ export function ProgrammeHero({ programme }) {
             className="flex w-full flex-col gap-3 pt-2 sm:w-auto sm:flex-row"
           >
             <Button to={APPLY_NOW_URL} withArrow className="justify-center py-3.5 text-base">
-              Apply Now
+              {ui.common.applyNow}
             </Button>
             <Button
+              as="a"
+              href={PROSPECTUS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               variant="secondary"
-              aria-label="View prospectus — coming soon"
+              aria-label={ui.programme.actions.viewProspectusAria}
               className="justify-center gap-2 py-3.5 text-base"
             >
               <Download className="h-4 w-4" aria-hidden="true" />
-              View Prospectus
+              {ui.programme.actions.viewProspectus}
             </Button>
           </motion.div>
         </div>

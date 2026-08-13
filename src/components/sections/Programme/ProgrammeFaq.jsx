@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown, Download } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { APPLY_NOW_URL } from '@/constants/navigation';
+import { APPLY_NOW_URL, PROSPECTUS_URL } from '@/constants/navigation';
+import { useContent } from '@/i18n/content';
+import { fill } from '@/i18n/format';
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -50,6 +52,7 @@ function FaqItem({ faq, isOpen, onToggle }) {
 
 export function ProgrammeFaq({ programme }) {
   const { faqs, shortName } = programme;
+  const { ui } = useContent();
   const defaultFaqs = faqs.defaultIds
     .map((id) => faqs.items.find((faq) => faq.id === id))
     .filter(Boolean);
@@ -65,10 +68,10 @@ export function ProgrammeFaq({ programme }) {
           id="programme-faq-heading"
           className="font-brand text-3xl text-foreground sm:text-4xl lg:text-5xl"
         >
-          Frequently Asked Questions
+          {ui.faq.heading}
         </h2>
         <p className="text-base font-light text-muted-foreground sm:text-lg">
-          Answers to common questions about the KSOU Online {shortName} programme.
+          {fill(ui.programme.faq.subheading, { name: shortName })}
         </p>
       </div>
 
@@ -109,7 +112,7 @@ export function ProgrammeFaq({ programme }) {
             onClick={() => setShowAll((current) => !current)}
             className="mx-auto mt-2 cursor-pointer text-sm font-semibold text-primary hover:text-primary-hover"
           >
-            {showAll ? 'Show Less' : 'Show More'}
+            {showAll ? ui.faq.showLess : ui.faq.showMore}
           </button>
         )}
       </div>
@@ -117,10 +120,10 @@ export function ProgrammeFaq({ programme }) {
       <div className="mx-auto mt-10 w-full max-w-4xl px-6 sm:mt-14 lg:px-8">
         <div className="flex flex-col items-center gap-5 rounded-[28px] bg-primary px-6 py-10 text-center sm:px-10 sm:py-12">
           <h3 className="font-brand text-2xl text-primary-foreground sm:text-3xl lg:text-4xl">
-            Ready to Begin Your {shortName} Journey?
+            {fill(ui.programme.cta.heading, { name: shortName })}
           </h3>
           <p className="max-w-xl text-sm text-primary-foreground/85 sm:text-base">
-            Take the next step with KSOU Online.
+            {ui.programme.cta.description}
           </p>
           <div className="flex w-full flex-col gap-3 pt-2 sm:w-auto sm:flex-row">
             <Button
@@ -129,15 +132,19 @@ export function ProgrammeFaq({ programme }) {
               variant="onPrimary"
               className="justify-center py-3.5 text-base"
             >
-              Apply Now
+              {ui.common.applyNow}
             </Button>
             <Button
+              as="a"
+              href={PROSPECTUS_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               variant="outlineOnPrimary"
-              aria-label="View programme prospectus — coming soon"
+              aria-label={ui.programme.actions.viewProspectusAria}
               className="justify-center gap-2 py-3.5 text-base"
             >
               <Download className="h-4 w-4" aria-hidden="true" />
-              View Prospectus
+              {ui.programme.actions.viewProspectus}
             </Button>
           </div>
         </div>

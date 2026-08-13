@@ -4,6 +4,15 @@
 @import '@fontsource/dm-sans/500.css';
 @import '@fontsource/dm-sans/600.css';
 @import '@fontsource/dm-sans/700.css';
+/* Kannada faces for the /kn routes. Self-hosted like every other font here —
+   nothing is loaded from a CDN at runtime. Importing them unconditionally is
+   fine: a browser only downloads a face once text actually renders in it, so
+   English visitors never fetch these. */
+@import '@fontsource/noto-serif-kannada/400.css';
+@import '@fontsource/noto-sans-kannada/400.css';
+@import '@fontsource/noto-sans-kannada/500.css';
+@import '@fontsource/noto-sans-kannada/600.css';
+@import '@fontsource/noto-sans-kannada/700.css';
 
 @theme {
   --color-background: #ffffff;
@@ -28,11 +37,22 @@
      indicator. Decorative only: on any of our light backgrounds it sits
      around 2:1, so it must never carry text that has to be read. */
   --color-gold: #c9a227;
+  /* Hover shade for the one place gold is a *surface* rather than a hairline:
+     the navbar's "Apply Now / Login" button. Navy on --color-gold measures
+     6.25:1, so that pairing (and only that pairing) may carry text. */
+  --color-gold-hover: #b08d1f;
   /* Pale blue bed for the announcement ticker under the navbar. A touch more
      saturated than --color-ice so the strip reads as a distinct notification
      layer, while staying inside the KSOU blue family. Edge-fade gradients on
      the ticker track must use this exact token or the fade shows a seam. */
   --color-ticker: #e9effd;
+  /* WhatsApp's own brand green, for the floating chat button only. It is
+     deliberately outside the KSOU palette: the whole value of that button is
+     that it is recognised at a glance, and recolouring it blue would make it
+     read as just another site control. White on this green measures ~2.4:1,
+     so the button carries an icon and an aria-label, never body text. */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-hover: #1da851;
 
   /* Site-wide type system: DM Serif Display for headings/brand, DM Sans for
      everything else. DM Serif Display ships Regular (400) only — never
@@ -43,6 +63,31 @@
   /* Soft elevation scale for the floating navbar card — resting vs. lifted-on-scroll. */
   --shadow-card-rest: 0 1px 2px rgba(17, 17, 17, 0.04), 0 8px 24px -12px rgba(17, 17, 17, 0.1);
   --shadow-card-scrolled: 0 4px 8px -2px rgba(17, 17, 17, 0.08), 0 16px 36px -12px rgba(17, 17, 17, 0.16);
+}
+
+/**
+ * Kannada type system, swapped by redefining the two font tokens rather than
+ * by targeting elements.
+ *
+ * Every existing `font-brand` / `font-sans` utility already compiles to
+ * `font-family: var(--font-brand | --font-sans)`, so overriding the variables
+ * re-points the entire site — body default included — with no component
+ * changes and no risk of missing a heading. Selecting `h1,h2,h3…` instead
+ * would both miss `font-brand` on non-heading elements and over-apply to
+ * headings that are deliberately set in the sans face.
+ *
+ * `html[lang="kn"]` (type + attribute) outranks the `:root` that Tailwind
+ * emits its theme on, so this wins without `!important`.
+ *
+ * Noto Serif Kannada is loaded at 400 only, deliberately mirroring the
+ * DM Serif Display rule — headings take their weight from size and tracking,
+ * never from `font-bold`. The Latin fallbacks stay in the stack because
+ * un-translated strings (UGC, NAAC, MBA, fees) still render in Latin script
+ * on these pages and should keep the brand faces.
+ */
+html[lang='kn'] {
+  --font-sans: 'Noto Sans Kannada', 'DM Sans', system-ui, sans-serif;
+  --font-brand: 'Noto Serif Kannada', 'DM Serif Display', 'Georgia', serif;
 }
 
 @layer base {

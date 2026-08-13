@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
 import { announcementTarget } from '@/constants/announcements';
+import { useContent } from '@/i18n/content';
+import { fill } from '@/i18n/format';
 
 /**
  * One announcement inside the moving strip, plus the hairline separator that
@@ -12,6 +14,7 @@ import { announcementTarget } from '@/constants/announcements';
  * shade of the same blue lands at ~5.5:1 and keeps small text AA-compliant.
  */
 export function TickerItem({ announcement, isDuplicate = false }) {
+  const { ui } = useContent();
   const target = announcementTarget(announcement);
   const isExternalDocument = target.isDocument;
   // The duplicated half is aria-hidden, and a focusable node inside an
@@ -44,7 +47,10 @@ export function TickerItem({ announcement, isDuplicate = false }) {
           href={target.href}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`${announcement.title} — ${target.label} (PDF, opens in a new tab)`}
+          aria-label={fill(ui.ticker.itemPdf, {
+            title: announcement.title,
+            action: target.label,
+          })}
           className={linkClasses}
           {...focusProps}
         >

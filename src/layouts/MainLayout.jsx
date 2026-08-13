@@ -1,6 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { Navbar } from '@/components/layout/Navbar/Navbar';
 import { ClosingSection } from '@/components/layout/ClosingSection';
+import { FloatingActions } from '@/components/common/FloatingActions';
 
 export function MainLayout() {
   return (
@@ -11,6 +12,10 @@ export function MainLayout() {
       <Navbar />
       <Outlet />
       <ClosingSection />
+      {/* Rendered here, once, so the WhatsApp and back-to-top controls exist
+          on every route — including the PageComingSoon placeholders and the
+          404 — without any page opting in. */}
+      <FloatingActions />
     </>
   );
 }

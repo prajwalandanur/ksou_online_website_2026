@@ -1,5 +1,10 @@
 import { Phone } from 'lucide-react';
 import { CONTACT_NUMBERS } from '@/constants/navigation';
+import {
+  HEADER_BAND_CARD,
+  HEADER_BAND_CONTAINER,
+  HEADER_BAND_LEAD,
+} from '@/components/layout/headerBands';
 import { LanguageToggle } from './LanguageToggle';
 
 /**
@@ -20,7 +25,11 @@ import { LanguageToggle } from './LanguageToggle';
  */
 export function TopBar() {
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-1.5 gap-y-0 border-b border-border/70 bg-muted/60 px-2.5 py-1 text-[12.5px] leading-tight text-muted-foreground sm:px-5 sm:py-1.5 md:gap-4 md:px-7 md:py-2.5 md:leading-normal lg:px-9">
+    <div className={HEADER_BAND_LEAD}>
+      <div className={HEADER_BAND_CONTAINER}>
+        <div
+          className={`flex flex-wrap items-center justify-between gap-x-1.5 gap-y-0 bg-muted/60 px-2.5 py-1 text-[12.5px] leading-tight text-muted-foreground max-lg:border-b max-lg:border-border/70 sm:px-5 sm:py-1.5 md:gap-4 md:px-7 md:py-2.5 md:leading-normal lg:px-6 xl:px-5 2xl:px-6 ${HEADER_BAND_CARD}`}
+        >
       <LanguageToggle />
 
       {/* The numbers step out of the bar's muted grey — navy, semibold, blue
@@ -49,7 +58,9 @@ export function TopBar() {
             </a>
           </li>
         ))}
-      </ul>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }

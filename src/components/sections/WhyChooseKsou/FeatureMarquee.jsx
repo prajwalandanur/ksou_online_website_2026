@@ -1,8 +1,9 @@
-import { WHY_CHOOSE_KSOU } from '@/constants/whyChooseKsou';
+import { useContent } from '@/i18n/content';
 import { useMarquee } from '@/hooks/useMarquee';
 import { FeatureCard } from './FeatureCard';
 
 export function FeatureMarquee() {
+  const { whyChoose } = useContent();
   const { containerRef, pause, resume, scheduleResume, prefersReducedMotion } = useMarquee({
     speedPxPerSec: 48,
   });
@@ -31,7 +32,7 @@ export function FeatureMarquee() {
         className="flex overflow-x-auto px-6 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] lg:px-8 [&::-webkit-scrollbar]:hidden"
       >
         <ul className="flex shrink-0 gap-5 pr-5 sm:gap-6 sm:pr-6">
-          {WHY_CHOOSE_KSOU.map((feature, i) => (
+          {whyChoose.map((feature, i) => (
             <li key={feature.id} className="shrink-0">
               <FeatureCard feature={feature} index={i} />
             </li>
@@ -40,7 +41,7 @@ export function FeatureMarquee() {
 
         {!prefersReducedMotion && (
           <ul aria-hidden="true" className="flex shrink-0 gap-5 pr-5 sm:gap-6 sm:pr-6">
-            {WHY_CHOOSE_KSOU.map((feature, i) => (
+            {whyChoose.map((feature, i) => (
               <li key={`dup-${feature.id}`} className="shrink-0">
                 <FeatureCard feature={feature} index={i} />
               </li>

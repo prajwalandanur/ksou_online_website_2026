@@ -35,6 +35,8 @@ const ROUTES = [
   '/',
   '/about',
   '/announcements',
+  '/contact',
+  '/programmes',
   '/blogs',
   '/blogs/career-options-after-bcom-degree',
   '/blogs/how-to-choose-right-online-degree-after-graduation',
@@ -48,6 +50,21 @@ const ROUTES = [
   '/programmes/mcom',
   '/programmes/ma',
   '/programmes/msc-mathematics',
+
+  // Kannada tree. Only the routes that actually have Kannada content — see
+  // KANNADA_ROUTE_PATTERNS in src/i18n/language.js. These must be listed
+  // explicitly: language comes from the URL, so each one renders its own
+  // static HTML with Kannada text in the markup. Without them the /kn pages
+  // would exist only after JavaScript runs, which is the whole thing this
+  // pre-render step is here to avoid.
+  '/kn',
+  '/kn/programmes',
+  '/kn/programmes/mba',
+  '/kn/programmes/ba',
+  '/kn/programmes/bcom',
+  '/kn/programmes/mcom',
+  '/kn/programmes/ma',
+  '/kn/programmes/msc-mathematics',
 ];
 
 const MIME = {

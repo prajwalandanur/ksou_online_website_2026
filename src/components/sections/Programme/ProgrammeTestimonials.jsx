@@ -1,6 +1,9 @@
 import { Quote, UserRound } from 'lucide-react';
+import { useContent } from '@/i18n/content';
 
 function TestimonialCard({ testimonial }) {
+  const { ui } = useContent();
+
   return (
     <div className="relative flex h-full flex-col gap-6 rounded-[28px] border border-border/80 bg-white p-7 pt-14 shadow-[0_1px_2px_rgba(17,17,17,0.04),0_28px_56px_-28px_rgba(17,17,17,0.18)] sm:p-9 sm:pt-16">
       <div className="absolute -top-8 left-7 flex h-20 w-20 items-center justify-center rounded-[20px] border-4 border-white bg-primary/10 text-primary shadow-[0_10px_24px_-8px_rgba(17,17,17,0.25)] sm:left-9">
@@ -9,7 +12,7 @@ function TestimonialCard({ testimonial }) {
 
       {testimonial.isPlaceholder && (
         <span className="absolute right-7 top-6 rounded-full bg-muted px-3 py-1 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground sm:right-9">
-          Placeholder
+          {ui.programme.testimonials.placeholderBadge}
         </span>
       )}
 
@@ -29,6 +32,7 @@ function TestimonialCard({ testimonial }) {
 
 export function ProgrammeTestimonials({ programme }) {
   const { testimonials } = programme;
+  const { ui } = useContent();
 
   return (
     <section
@@ -40,10 +44,10 @@ export function ProgrammeTestimonials({ programme }) {
           id="programme-testimonials-heading"
           className="font-brand text-3xl text-foreground sm:text-4xl lg:text-5xl"
         >
-          Real Stories. Real Impact.
+          {ui.programme.testimonials.heading}
         </h2>
         <p className="text-base font-light text-muted-foreground sm:text-lg">
-          Discover how learners are building their academic journey with KSOU Online.
+          {ui.programme.testimonials.subheading}
         </p>
       </div>
 

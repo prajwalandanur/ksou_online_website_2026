@@ -1,6 +1,9 @@
+import { useContent } from '@/i18n/content';
 import { FeatureMarquee } from './FeatureMarquee';
 
 export function WhyChooseKsou() {
+  const { ui } = useContent();
+
   return (
     <section
       aria-labelledby="why-choose-ksou-heading"
@@ -11,10 +14,13 @@ export function WhyChooseKsou() {
           id="why-choose-ksou-heading"
           className="font-brand text-3xl text-foreground sm:text-4xl lg:text-5xl"
         >
-          Why Choose <span className="text-primary">KSOU Online?</span>
+          {ui.whyChoose.headingLead}
+          {ui.whyChoose.headingLead && ' '}
+          <span className="text-primary">{ui.whyChoose.headingAccent}</span>
+          {ui.whyChoose.headingTrail}
         </h2>
         <p className="mx-auto max-w-xl text-base font-light text-muted-foreground sm:text-lg">
-          A flexible, recognized degree designed around your ambitions.
+          {ui.whyChoose.subtitle}
         </p>
       </div>
 

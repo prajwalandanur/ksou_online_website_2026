@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { useContent } from '@/i18n/content';
+import { fill } from '@/i18n/format';
 
 const EASE = [0.22, 1, 0.36, 1];
 
 function SubjectList({ term }) {
+  const { ui } = useContent();
+  const { subjectTypes, creditsShort } = ui.programme.curriculum;
+
   return (
     <div className="flex flex-col gap-2">
       {term.subjects.map((subject) => (
@@ -16,12 +21,14 @@ function SubjectList({ term }) {
             <span className="text-sm font-medium text-foreground">{subject.title}</span>
             {subject.type && (
               <span className="text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
-                {subject.type}
+                {subjectTypes[subject.type] ?? subject.type}
               </span>
             )}
           </div>
           {subject.credits && (
-            <span className="shrink-0 text-sm font-semibold text-primary">{subject.credits} Cr</span>
+            <span className="shrink-0 text-sm font-semibold text-primary">
+              {subject.credits} {creditsShort}
+            </span>
           )}
         </div>
       ))}
@@ -37,6 +44,7 @@ function SubjectList({ term }) {
 
 export function ProgrammeCurriculum({ programme }) {
   const { curriculum, shortName } = programme;
+  const { ui } = useContent();
   const [activeTabId, setActiveTabId] = useState(curriculum.terms[0].id);
   const [openMobileId, setOpenMobileId] = useState(null);
   const activeTerm = curriculum.terms.find((term) => term.id === activeTabId);
@@ -48,7 +56,7 @@ export function ProgrammeCurriculum({ programme }) {
           id="programme-curriculum-heading"
           className="font-brand text-3xl text-foreground sm:text-4xl lg:text-5xl"
         >
-          Online {shortName} Curriculum
+          {fill(ui.programme.curriculum.heading, { name: shortName })}
         </h2>
         <p className="text-base font-light text-muted-foreground sm:text-lg">
           {curriculum.subtitle}
@@ -91,7 +99,7 @@ export function ProgrammeCurriculum({ programme }) {
               <h3 className="font-brand text-xl text-foreground">{activeTerm.label}</h3>
               {activeTerm.credits && (
                 <span className="text-xs font-semibold uppercase tracking-wide text-primary">
-                  {activeTerm.credits} Credits
+                  {fill(ui.programme.curriculum.credits, { count: activeTerm.credits })}
                 </span>
               )}
             </div>
@@ -120,7 +128,9 @@ export function ProgrammeCurriculum({ programme }) {
                 <span className="flex flex-col">
                   <span className="text-sm font-semibold text-foreground">{term.label}</span>
                   {term.credits && (
-                    <span className="text-xs text-muted-foreground">{term.credits} Credits</span>
+                    <span className="text-xs text-muted-foreground">
+                      {fill(ui.programme.curriculum.credits, { count: term.credits })}
+                    </span>
                   )}
                 </span>
                 <ChevronDown

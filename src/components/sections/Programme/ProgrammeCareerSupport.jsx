@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { CircleCheckBig } from 'lucide-react';
-import { PROGRAMME_CAREER_SUPPORT } from '@/constants/programmes/shared';
+import { useContent } from '@/i18n/content';
 
 const EASE = [0.22, 1, 0.36, 1];
 
@@ -33,6 +33,9 @@ const profileItemVariants = {
 
 export function ProgrammeCareerSupport({ programme }) {
   const { careerContext } = programme;
+  const { ui, programmeShared } = useContent();
+  const careerSupport = programmeShared.careerSupport;
+  const text = ui.programme.career;
 
   return (
     <section aria-labelledby="programme-career-support-heading" className="py-10 sm:py-14 lg:py-20">
@@ -41,7 +44,7 @@ export function ProgrammeCareerSupport({ programme }) {
           id="programme-career-support-heading"
           className="font-brand text-3xl text-foreground sm:text-4xl lg:text-5xl"
         >
-          Career &amp; Placement Assistance
+          {text.heading}
         </h2>
         <p className="text-base font-light text-muted-foreground sm:text-lg">{careerContext}</p>
       </div>
@@ -63,10 +66,10 @@ export function ProgrammeCareerSupport({ programme }) {
           <div className="relative grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-16">
             <div className="flex flex-col gap-6">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-gold">
-                Career Support
+                {text.kicker}
               </span>
               <h3 className="font-brand text-2xl leading-tight text-primary-foreground sm:text-3xl lg:text-[2.25rem]">
-                Build your profile. Prepare for opportunities.
+                {text.subheading}
               </h3>
 
               <motion.ul
@@ -76,7 +79,7 @@ export function ProgrammeCareerSupport({ programme }) {
                 viewport={{ once: true, margin: '-60px' }}
                 className="flex flex-col gap-4"
               >
-                {PROGRAMME_CAREER_SUPPORT.map((feature) => (
+                {careerSupport.map((feature) => (
                   <motion.li
                     key={feature.id}
                     variants={itemVariants}
@@ -105,10 +108,8 @@ export function ProgrammeCareerSupport({ programme }) {
               transition={{ duration: 0.55, ease: EASE }}
               className="rounded-[24px] bg-white p-6 shadow-[0_24px_60px_-24px_rgba(17,17,17,0.35)] sm:p-8"
             >
-              <span className="text-sm font-semibold text-foreground">Your Career Profile</span>
-              <p className="mt-1 text-xs text-muted-foreground">
-                A single profile connecting your preparation and opportunities.
-              </p>
+              <span className="text-sm font-semibold text-foreground">{text.profileTitle}</span>
+              <p className="mt-1 text-xs text-muted-foreground">{text.profileNote}</p>
 
               <motion.div
                 variants={listVariants}
@@ -117,7 +118,7 @@ export function ProgrammeCareerSupport({ programme }) {
                 viewport={{ once: true, margin: '-60px' }}
                 className="mt-6 flex flex-col gap-3"
               >
-                {PROGRAMME_CAREER_SUPPORT.map((feature) => (
+                {careerSupport.map((feature) => (
                   <motion.div
                     key={feature.id}
                     variants={profileItemVariants}

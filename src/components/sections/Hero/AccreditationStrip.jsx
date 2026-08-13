@@ -1,5 +1,5 @@
-import { ACCREDITATIONS } from '@/constants/accreditation';
 import { useMarquee } from '@/hooks/useMarquee';
+import { useContent } from '@/i18n/content';
 
 /**
  * `useMarquee` loops by wrapping scrollLeft past the width of one of two
@@ -9,7 +9,6 @@ import { useMarquee } from '@/hooks/useMarquee';
  * overflows even on a very wide screen.
  */
 const REPEATS_PER_HALF = 3;
-const MARQUEE_HALF = Array.from({ length: REPEATS_PER_HALF }, () => ACCREDITATIONS).flat();
 
 function AccreditationItem({ logo, alt, heading, description }) {
   return (
@@ -28,6 +27,13 @@ function AccreditationItem({ logo, alt, heading, description }) {
 }
 
 export function AccreditationStrip() {
+  // `KN_ACCREDITATIONS` has existed since the first Kannada pass; this
+  // component just never read it, so the strip stayed English on /kn. The
+  // repeated half is built per render rather than at module scope because it
+  // now depends on the language.
+  const { accreditations } = useContent();
+  const marqueeHalf = Array.from({ length: REPEATS_PER_HALF }, () => accreditations).flat();
+
   const { containerRef, pause, resume, scheduleResume, prefersReducedMotion } = useMarquee({
     speedPxPerSec: 40,
   });
@@ -57,7 +63,7 @@ export function AccreditationStrip() {
           className="flex overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         >
           <ul className="flex shrink-0">
-            {MARQUEE_HALF.map((item, i) => (
+            {marqueeHalf.map((item, i) => (
               <AccreditationItem key={`${item.heading}-${i}`} {...item} />
             ))}
           </ul>
@@ -66,7 +72,7 @@ export function AccreditationStrip() {
               reduced motion there's no wrap, so it's just noise. */}
           {!prefersReducedMotion && (
             <ul aria-hidden="true" className="flex shrink-0">
-              {MARQUEE_HALF.map((item, i) => (
+              {marqueeHalf.map((item, i) => (
                 <AccreditationItem key={`dup-${item.heading}-${i}`} {...item} />
               ))}
             </ul>

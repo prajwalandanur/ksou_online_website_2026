@@ -5,6 +5,12 @@ import {
   SITE_NAME,
   absoluteUrl,
 } from '@/constants/seo';
+import {
+  DEFAULT_LANGUAGE,
+  KANNADA,
+  hasKannadaVersion,
+  localizePath,
+} from '@/i18n/language';
 
 /**
  * Upserts a <meta> tag, matching on `property` for Open Graph and `name` for
@@ -37,6 +43,43 @@ function upsertCanonical(href) {
 }
 
 /**
+ * Declares the English/Kannada pair for a page via `link rel=alternate`.
+ *
+ * `englishPath` is the *English* path for the page; both URLs are derived
+ * from it so the two tags can never disagree. Pages with no Kannada version
+ * get no alternates at all — `localizePath` would return the English URL for
+ * both, and pointing hreflang="kn" at an English page tells Google a
+ * translation exists when it does not.
+ *
+ * Every render replaces the whole set rather than upserting individually:
+ * navigating between two pages that each declare alternates would otherwise
+ * leave the previous page's URLs behind.
+ */
+function upsertAlternates(englishPath) {
+  document.head
+    .querySelectorAll('link[rel="alternate"][data-managed-meta]')
+    .forEach((node) => node.remove());
+
+  if (!englishPath || !hasKannadaVersion(englishPath)) return;
+
+  const urls = [
+    ['en', absoluteUrl(localizePath(englishPath, DEFAULT_LANGUAGE))],
+    ['kn', absoluteUrl(localizePath(englishPath, KANNADA))],
+    // x-default names the version to serve when no declared language fits.
+    ['x-default', absoluteUrl(localizePath(englishPath, DEFAULT_LANGUAGE))],
+  ];
+
+  for (const [hreflang, href] of urls) {
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'alternate');
+    link.setAttribute('hreflang', hreflang);
+    link.setAttribute('href', href);
+    link.setAttribute('data-managed-meta', '');
+    document.head.appendChild(link);
+  }
+}
+
+/**
  * Sets the document title, description, Open Graph / Twitter card tags and
  * the canonical link for the current route.
  *
@@ -57,6 +100,7 @@ export function useDocumentMeta({
   ogType = 'website',
   ogImage = DEFAULT_OG_IMAGE,
   canonicalPath,
+  alternates,
 }) {
   useEffect(() => {
     document.title = title;
@@ -87,5 +131,7 @@ export function useDocumentMeta({
     upsertMeta('name', 'twitter:image', imageUrl);
 
     if (pageUrl) upsertCanonical(pageUrl);
-  }, [title, description, ogType, ogImage, canonicalPath]);
+
+    upsertAlternates(alternates);
+  }, [title, description, ogType, ogImage, canonicalPath, alternates]);
 }

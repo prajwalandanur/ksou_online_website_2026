@@ -1,5 +1,8 @@
+import { useContent } from '@/i18n/content';
+
 export function ProgrammeInfoCard({ card }) {
   const { label, value, meta, description, Icon, breakdown, note, examFees } = card;
+  const { programmeShared } = useContent();
 
   return (
     <div className="flex flex-col gap-4 rounded-[24px] border border-border/80 bg-white p-6 shadow-[0_1px_2px_rgba(17,17,17,0.04),0_10px_28px_-16px_rgba(17,17,17,0.12)] sm:p-7">
@@ -38,7 +41,10 @@ export function ProgrammeInfoCard({ card }) {
           <ul className="flex flex-wrap gap-x-4 gap-y-1">
             {examFees.map((fee) => (
               <li key={fee.label} className="text-[11px] text-muted-foreground">
-                <span className="font-semibold text-foreground/70">{fee.label}:</span> {fee.value}
+                <span className="font-semibold text-foreground/70">
+                  {programmeShared.examFeeLabels[fee.label] ?? fee.label}:
+                </span>{' '}
+                {fee.value}
               </li>
             ))}
           </ul>

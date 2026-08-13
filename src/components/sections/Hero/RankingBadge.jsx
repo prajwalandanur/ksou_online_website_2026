@@ -1,3 +1,5 @@
+import { useContent } from '@/i18n/content';
+
 /**
  * The ranking ribbon that sits over the hero photo.
  *
@@ -29,10 +31,12 @@
  * cosmetic error — do not reintroduce an uncited claim here.
  */
 export function RankingBadge() {
+  const { ui } = useContent();
+
   return (
     <div className="absolute left-3 top-3 z-10 sm:-left-3 sm:top-6">
       <p className="rounded-[14px] border border-[#a67f14]/45 bg-[linear-gradient(135deg,#f9edb8_0%,#e6c866_20%,#c9a227_46%,#f4e2a0_60%,#b8901f_84%,#e0c778_100%)] px-3 py-1.5 text-[11.5px] font-bold tracking-tight text-navy shadow-[0_1px_1px_rgba(255,255,255,0.5)_inset,0_8px_18px_-6px_rgba(17,17,17,0.45)] sm:px-4 sm:py-2 sm:text-[13px]">
-        NIRF 2025 · #2 Open University
+        {ui.hero.rankingBadge}
       </p>
     </div>
   );

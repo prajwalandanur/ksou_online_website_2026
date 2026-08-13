@@ -25,15 +25,20 @@ export const APPLY_NOW_URL = '/apply';
 // The real admissions lines. `label` is the display form and `href` the
 // dial-able one — they must stay in sync; the digits differing between the
 // two is the bug this pairing exists to prevent.
+//
+// This is the single source of truth for admissions numbers: the utility
+// bar, the mobile drawer, the footer's Get in Touch column and the /contact
+// page all read it. Withdrawing +91 91411 81241 on 2026-08-13 therefore
+// took one edit here and removed it from every surface at once — do not
+// re-declare a number anywhere else.
 export const CONTACT_NUMBERS = [
   { label: '+91 97407 40340', href: 'tel:+919740740340' },
-  { label: '+91 91411 81241', href: 'tel:+919141181241' },
   { label: '+91 81231 75590', href: 'tel:+918123175590' },
 ];
 
-// `short` is the phone-width form. Fitting the toggle and all three numbers
-// on one utility row needs ~55px back from "English"; "ಕನ್ನಡ" is already
-// short, so it is its own abbreviation rather than a transliteration.
+// `short` is the phone-width form. Fitting the toggle and the numbers on one
+// utility row needs ~55px back from "English"; "ಕನ್ನಡ" is already short, so
+// it is its own abbreviation rather than a transliteration.
 export const LANGUAGES = [
   { code: 'en', label: 'English', short: 'EN' },
   { code: 'kn', label: 'ಕನ್ನಡ', short: 'ಕನ್ನಡ' },

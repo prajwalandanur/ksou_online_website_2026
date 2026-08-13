@@ -3,6 +3,7 @@ import chooseDegree from '@/assets/blog/how-to-choose-right-online-degree-after-
 import whileWorking from '@/assets/blog/online-degree-while-working-full-time.webp';
 import learningGuide from '@/assets/blog/online-learning-guide-admission-to-graduation.webp';
 import onlineVsTraditional from '@/assets/blog/online-degree-vs-traditional-degree.webp';
+import abcDebId from '@/assets/blog/how-to-create-abc-id-and-deb-id.webp';
 
 /**
  * One image per article, keyed by slug, shared by the listing card and the
@@ -34,5 +35,9 @@ export const BLOG_IMAGES = {
   'online-degree-vs-traditional-degree': {
     src: onlineVsTraditional,
     alt: 'A balance scale weighing a briefcase against a graduation cap',
+  },
+  'how-to-create-abc-id-and-deb-id': {
+    src: abcDebId,
+    alt: 'A laptop showing ABC ID and DEB ID cards beside an admission checklist',
   },
 };
