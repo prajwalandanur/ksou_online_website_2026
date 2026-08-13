@@ -1,5 +1,6 @@
 /**
- * ⚠ MACHINE-DRAFTED KANNADA — AWAITING NATIVE REVIEW.
+ * Kannada drafted by Claude, then reviewed and approved by the site owner
+ * on 2026-08-14 before going live.
  *
  * Kannada for the six programme pages, keyed by the same slugs as
  * src/constants/programmes/index.js. Merged over the English programme

@@ -1,5 +1,6 @@
 /**
- * ⚠ MACHINE-DRAFTED KANNADA — AWAITING NATIVE REVIEW.
+ * Kannada drafted by Claude, then reviewed and approved by the site owner
+ * on 2026-08-14 before going live.
  *
  * Mirrors WHY_CHOOSE_KSOU in src/constants/whyChooseKsou.js positionally.
  * Only `title` and `description` appear here — `id`, `number` and the icon

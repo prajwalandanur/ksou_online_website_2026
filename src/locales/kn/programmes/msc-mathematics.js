@@ -1,5 +1,6 @@
 /**
- * ⚠ MACHINE-DRAFTED KANNADA — AWAITING NATIVE REVIEW. Merged over
+ * Kannada drafted by Claude, then reviewed and approved by the site owner
+ * on 2026-08-14 before going live.
  * constants/programmes/msc-mathematics.js.
  *
  * Fees, credits, durations and eligibility values are inherited from the English

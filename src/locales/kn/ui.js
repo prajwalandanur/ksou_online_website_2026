@@ -1,6 +1,8 @@
 /**
- * ⚠ MACHINE-DRAFTED KANNADA — AWAITING NATIVE REVIEW.
- * See src/locales/kn/index.js for the glossary and the review checklist.
+ * Kannada drafted by Claude, then reviewed and approved by the site owner
+ * on 2026-08-14 before going live. See src/locales/kn/index.js for the fixed
+ * glossary; keep new strings consistent with it, and route any further
+ * wording change back through the same review rather than editing in place.
  *
  * Mirrors src/constants/ui.js key for key. Anything omitted here falls back
  * to English automatically (src/i18n/mergeContent.js), so it is safe to

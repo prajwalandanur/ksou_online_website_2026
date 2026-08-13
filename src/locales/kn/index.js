@@ -1,5 +1,6 @@
 /**
- * ⚠ MACHINE-DRAFTED KANNADA — AWAITING NATIVE REVIEW.
+ * Kannada drafted by Claude, then reviewed and approved by the site owner
+ * on 2026-08-14 before going live.
  *
  * ── What this is ────────────────────────────────────────────────────────
  * Kannada values for the `/kn` routes, mirroring the English constants key

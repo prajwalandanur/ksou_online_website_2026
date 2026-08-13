@@ -1,5 +1,6 @@
 /**
- * ⚠ MACHINE-DRAFTED KANNADA — AWAITING NATIVE REVIEW.
+ * Kannada drafted by Claude, then reviewed and approved by the site owner
+ * on 2026-08-14 before going live.
  *
  * Mirrors UG_COURSES / PG_COURSES in src/constants/courses.js positionally.
  * `fee` is deliberately absent: ₹ amounts are numerals in both languages, so

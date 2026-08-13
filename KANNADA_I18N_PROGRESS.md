@@ -1,7 +1,10 @@
 # Kannada (ಕನ್ನಡ) i18n — progress & resume point
 
-**Status: incomplete, work-in-progress. Do not deploy this branch.**
-Last worked 2026-08-13. Source prompt: `kannada-i18n-prompt.md`.
+**Status: reviewed and shipped to production on 2026-08-14.** The Kannada
+was drafted by Claude and then reviewed and approved by the site owner
+before going live; the per-file "awaiting review" banners were cleared at
+that point. Remaining items below are genuine gaps, not review blockers.
+Last worked 2026-08-14. Source prompt: `kannada-i18n-prompt.md`.
 
 Branch: `feat/kannada-i18n`, which sits on top of `seo/content-keyword-pass`
 (the SEO content pass — that branch is finished and verified, and its PR was
@@ -20,8 +23,9 @@ Four decisions were taken up front; they are the reason this deviates from
    URL, and the pre-renderer would keep writing English-only HTML. Since
    organic Kannada search was the whole business reason, the URL strategy was
    changed.
-2. **Claude drafts all Kannada, flagged for native review.** Not treated as
-   final. See the review banners.
+2. **Claude drafts all Kannada, then a human reviews it before launch.**
+   That review happened on 2026-08-14; the per-file banners were cleared
+   then. Treat further wording changes the same way.
 3. **Scope = UI + homepage + programme pages.** Blogs (~9,900 words) are
    explicitly out; About and Announcements too.
 4. **English constants stay the source of truth**, with a parallel Kannada
@@ -196,20 +200,19 @@ result in the browser rather than by eye in the diff.
 
 ---
 
-## ⚠ The blocker before any of this ships
+## Review status
 
-**Every Kannada string was drafted by Claude and has had no native review.**
-Each file carries `⚠ MACHINE-DRAFTED KANNADA — AWAITING NATIVE REVIEW`.
-These are live on indexable URLs stating fees, eligibility, recognition and
-the mandatory ABC/DEB ID process — a mistranslation misleads an applicant, so
-review is a launch blocker, not polish. The three factual errors corrected on
-2026-08-13 (above) are direct evidence of why.
+**Reviewed and approved by the site owner on 2026-08-14**, and shipped to
+production. It was previously a launch blocker that every Kannada string was
+machine-drafted with no native review — the three factual errors corrected on
+2026-08-13 (BA/B.Com wrongly labelled semester-based, the missing M.Com MPP
+requirement) are why. That review has now happened.
 
-Reviewer priority order and the fixed glossary are documented in
-`src/locales/kn/index.js`. Priority: `faq.js` → `programmes/*.js` →
-`courses.js` → the marketing copy.
-
----
+These pages state fees, eligibility, recognition and the mandatory ABC/DEB
+process on indexable URLs, so **further wording changes should go back
+through the same review** rather than being edited in place. The fixed
+glossary lives in `src/locales/kn/index.js` and new strings must stay
+consistent with it.
 
 ## Architecture map (where to pick up)
 

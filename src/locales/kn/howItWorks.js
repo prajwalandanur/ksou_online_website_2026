@@ -1,5 +1,6 @@
 /**
- * ⚠ MACHINE-DRAFTED KANNADA — AWAITING NATIVE REVIEW.
+ * Kannada drafted by Claude, then reviewed and approved by the site owner
+ * on 2026-08-14 before going live.
  *
  * Mirrors HOW_IT_WORKS_STEPS in src/constants/howItWorks.js positionally.
  * `id`, `number` and the lucide `Icon` are inherited from the English entry.

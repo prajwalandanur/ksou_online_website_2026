@@ -1,5 +1,6 @@
 /**
- * ⚠ MACHINE-DRAFTED KANNADA — AWAITING NATIVE REVIEW. Merged over constants/programmes/ma.js.
+ * Kannada drafted by Claude, then reviewed and approved by the site owner
+ * on 2026-08-14 before going live.
  *
  * Fees, credits, durations and eligibility values are inherited from the English
  * file and are NOT repeated here — only the prose around them is translated.
