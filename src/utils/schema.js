@@ -24,7 +24,11 @@ export function buildOrganizationSchema() {
     name: 'Karnataka State Open University',
     alternateName: SITE_NAME,
     url: SITE_URL,
-    logo: absoluteUrl('/favicon.svg'),
+    // A 512px render of the real crest, not a favicon: Google wants an
+    // organisation logo at 112px or larger, and this field previously pointed
+    // at the scaffold's purple bolt — i.e. it was publishing that glyph as
+    // the university's logo in structured data.
+    logo: absoluteUrl('/ksou-logo.png'),
     description:
       'Apply for UGC-approved online degrees from Karnataka State Open University. NAAC A+ rated. MBA, MA, MCom, BA, BCom, MSc. Flexible online learning for students and working professionals.',
     address: {

@@ -2,7 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!--
+      Browser-tab icons, generated from the official KSOU crest by
+      scripts/generate-favicons.mjs. They replaced a purple bolt glyph that
+      came with the project scaffold.
+
+      /favicon.ico is listed first and carries 16/32/48 in one file: some
+      clients request it by name without reading these tags at all. The
+      explicit PNG sizes are what modern browsers actually pick from.
+    -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
