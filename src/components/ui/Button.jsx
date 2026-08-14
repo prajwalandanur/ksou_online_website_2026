@@ -13,6 +13,7 @@ export const Button = forwardRef(function Button(
     to,
     href,
     variant = 'primary',
+    size = 'default',
     withArrow = false,
     className = '',
     children,
@@ -20,7 +21,9 @@ export const Button = forwardRef(function Button(
   },
   ref,
 ) {
-  const classes = buttonClasses(variant, className);
+  // Padding/type come from `size`, never from `className` — see the note on
+  // SIZE_CLASSES for why a `className` override silently loses that fight.
+  const classes = buttonClasses(variant, className, size);
 
   const content = (
     <>

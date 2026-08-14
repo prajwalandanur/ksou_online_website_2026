@@ -2,7 +2,49 @@
 // break mid-label turns a pill into a two-line blob — "LMS Login" was doing
 // exactly that in the squeezed mobile navbar.
 const BASE_CLASSES =
-  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 py-2.5 text-sm font-semibold tracking-tight transition-all duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+  'inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold tracking-tight transition-all duration-300 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
+
+/**
+ * Padding and type scale, kept **out of `BASE_CLASSES` on purpose**.
+ *
+ * They used to live there, and that quietly broke callers trying to shrink a
+ * button through `className` — but only at the *unprefixed* step, which is what
+ * made it so easy to miss. `px-5` and `px-2` are the same utility at different
+ * scale steps, so they carry equal specificity and the winner is whichever
+ * Tailwind emits later: the larger step, not the one written last in the JSX.
+ * A `sm:px-3` does win, because variants are emitted after all the base
+ * utilities. So the navbar's `sm:`/`xl:`/`2xl:` sizes applied while its bare
+ * `px-2 py-1.5 text-[11px]` silently did not, and phones — the one width that
+ * needed the compact size — rendered the full `px-5 py-2.5 text-sm`, ~46px of
+ * a row that had none to spare.
+ *
+ * A `size` therefore *replaces* the scale rather than competing with it. Add a
+ * named size here instead of overriding padding from a `className`.
+ */
+export const SIZE_CLASSES = {
+  default: 'px-5 py-2.5 text-sm',
+  /**
+   * The header CTAs. The `sm` step and up is the scale the navbar has always
+   * rendered, kept verbatim — only the phone step was ever broken, so only the
+   * phone step changes. Below `sm` the row must fit the crest, the bilingual
+   * wordmark, both CTAs and the hamburger inside 320-414px, and this is the
+   * step that pays for it.
+   *
+   * **Shrink the label with the padding, not one without the other.** The
+   * ratios that keep a pill looking like a pill are the ones the rest of this
+   * scale already uses: side padding ≈ 1.0x the font size (`sm` is 12px on
+   * 12.5px) and vertical padding ≈ 0.6x (8px on 12.5px). A first pass cut
+   * padding to `px-1.5` but left the label at 10.5px — ratio 0.57 — and the
+   * text visibly crowded the pill edges. Both steps below `sm` hold ~0.9-1.0
+   * horizontal and ~0.65 vertical, so the button reads as the same component
+   * at every width, just smaller.
+   *
+   * Two steps rather than one because the extra ~24px a 400px phone has over
+   * a 360px one is worth spending on legibility: 9px labels are as small as
+   * these should ever go, and only the narrowest phones need them.
+   */
+  nav: 'px-2 py-1.5 text-[9px] min-[400px]:px-2.5 min-[400px]:text-[10.5px] sm:px-3 sm:py-2 sm:text-[12.5px] xl:px-3 xl:text-[13px] 2xl:px-3.5 2xl:text-[13.5px]',
+};
 
 export const VARIANT_CLASSES = {
   primary:
@@ -36,6 +78,6 @@ export const VARIANT_CLASSES = {
  * like a Button but can't be one — e.g. a <summary>, which has its own
  * semantics. Prefer <Button> itself everywhere else.
  */
-export function buttonClasses(variant = 'primary', className = '') {
-  return `${BASE_CLASSES} ${VARIANT_CLASSES[variant]} ${className}`;
+export function buttonClasses(variant = 'primary', className = '', size = 'default') {
+  return `${BASE_CLASSES} ${SIZE_CLASSES[size] ?? SIZE_CLASSES.default} ${VARIANT_CLASSES[variant]} ${className}`;
 }

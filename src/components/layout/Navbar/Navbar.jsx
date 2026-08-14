@@ -94,19 +94,17 @@ export function Navbar() {
             <DesktopNavLinks />
 
             <div className="flex shrink-0 items-center gap-1.5 sm:gap-2 xl:gap-2.5">
-              {/* Both CTAs stay visible at every width per the brief — they
-                shrink rather than hide, which is why neither carries a
-                `hidden` utility (that would lose the cascade anyway:
-                BASE_CLASSES already has `inline-flex` and Tailwind emits
-                `.hidden` first — the bug documented in buttonClasses.js).
-                Measured at 320px, the tightest case: the arrows alone were
-                40px of the 23px overrun, so they drop below `sm` while every
-                other size keeps them. */}
+              {/* Both CTAs stay visible at every width, including 320px. They
+                shrink rather than hide — `size="nav"` is what actually makes
+                that happen (a `className` padding override does not; see
+                SIZE_CLASSES). The arrows drop below `sm` on top of that: they
+                were 40px of pure decoration in the tightest row on the site. */}
               <Button
                 to={APPLY_NOW_URL}
                 variant="gold"
+                size="nav"
                 withArrow
-                className="gap-1 px-2 py-1.5 text-[11px] [&>svg]:hidden sm:gap-1.5 sm:px-3 sm:py-2 sm:text-[12.5px] sm:[&>svg]:block xl:px-3 xl:text-[13px] 2xl:px-3.5 2xl:text-[13.5px]"
+                className="gap-1 [&>svg]:hidden sm:gap-1.5 sm:[&>svg]:block"
               >
                 {/* Two spans, not a conditional string — swapping the text in
                   JS would reflow the row at the breakpoint. */}
@@ -116,8 +114,9 @@ export function Navbar() {
 
               <Button
                 to={LMS_LOGIN_URL}
+                size="nav"
                 withArrow
-                className="gap-1 px-2 py-1.5 text-[11px] [&>svg]:hidden sm:gap-1.5 sm:px-3 sm:py-2 sm:text-[12.5px] sm:[&>svg]:block xl:px-3 xl:text-[13px] 2xl:px-3.5 2xl:text-[13.5px]"
+                className="gap-1 [&>svg]:hidden sm:gap-1.5 sm:[&>svg]:block"
               >
                 {ui.nav.lmsLogin}
               </Button>
@@ -128,7 +127,7 @@ export function Navbar() {
                 aria-label={ui.nav.openMenu}
                 aria-haspopup="dialog"
                 aria-expanded={isMenuOpen}
-                className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-full text-foreground transition-colors duration-200 ease-out hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:h-10 sm:w-10 xl:hidden"
+                className="flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-foreground transition-colors duration-200 ease-out hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:h-10 sm:w-10 xl:hidden"
               >
                 <Menu className="h-5 w-5" aria-hidden="true" />
               </button>

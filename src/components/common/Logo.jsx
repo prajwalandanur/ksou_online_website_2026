@@ -41,7 +41,10 @@ export function Logo({ className = '' }) {
       to={home}
       onClick={onClick}
       aria-label={ui.nav.logo}
-      className={`flex shrink-0 items-center gap-2 sm:gap-3 lg:gap-3.5 ${className}`}
+      /* `min-w-0`, and deliberately no `shrink-0`: that pairing is what lets
+         the wordmark below scale itself down at 320px instead of pushing the
+         nav row into horizontal overflow. */
+      className={`flex min-w-0 items-center gap-1.5 sm:gap-3 lg:gap-3.5 ${className}`}
     >
       {/* Both images are decorative here: the <Link> carries the accessible
           name via aria-label, so alt text on either would be announced twice
@@ -52,34 +55,31 @@ export function Logo({ className = '' }) {
         className="h-9 w-9 shrink-0 object-contain sm:h-10 sm:w-10 lg:h-12 lg:w-12"
       />
 
-      {/* Phone-width wordmark: live text, not the image.
-          The bilingual image is 5.25:1 with two stacked lines, so at a height
-          that fits a mobile row each line renders around 9px — present but
-          not readable, which is what "the title is cropped / not visible"
-          was describing. Text at 15px is both legible and ~40px narrower,
-          and 40px is the difference between fitting and not at 320px.
-          This is the same "KSOU Online" lockup the header used before the
-          image landed, kept for exactly this breakpoint. */}
-      <span className="whitespace-nowrap font-brand text-[15px] leading-none text-foreground sm:hidden">
-        KSOU <span className="text-primary">Online</span>
-      </span>
-      {/* The supplied bilingual wordmark. It is 536x102 (5.25:1), so height
-          drives width — and width is the constraint that matters, because the
-          nav row now carries seven links and *two* CTAs.
+      {/* The supplied bilingual wordmark, now shown at *every* width — it used
+          to be hidden below `sm` in favour of a "KSOU Online" text lockup, and
+          the request was for the university title beside the crest on mobile
+          too, in both the header and the footer.
 
-          Hidden below `sm`, where the text lockup above takes its place: at
-          320-414px the crest plus both CTAs plus the hamburger need every
-          pixel, and this image is both wider and less legible than the text
-          at that size.
+          It is 536x102 (5.25:1), so height drives width, and width is the
+          binding constraint in the nav row. Room for it on a phone came from
+          shrinking the two header CTAs — `size="nav"` in buttonClasses.js —
+          not from dropping one of them; both stay visible at every width.
 
-          `xl:h-7` rather than h-8 buys back 21px in the 1280-1535 band, which
-          is where the row is tightest; 2xl restores the larger mark. */}
+          `max-w-full` + `min-w-0` + `object-contain` are the safety net below
+          390px, where h-7 is wider than the leftover space: the box narrows
+          and the artwork scales down inside it, letterboxed rather than
+          stretched (126px at 360, 86px at 320). From 390px up it renders at
+          its full h-7.
+
+          h-7 rather than h-8 through `xl` buys back 21px in the 1280-1535
+          band, where the row is tightest with seven links and two CTAs; 2xl
+          restores the larger mark. */}
       <img
         src={wordmark}
         alt=""
         width={536}
         height={102}
-        className="hidden h-6 w-auto shrink-0 object-contain sm:block sm:h-7 xl:h-7 2xl:h-8"
+        className="h-7 w-auto min-w-0 max-w-full shrink object-contain 2xl:h-8"
       />
     </Link>
   );

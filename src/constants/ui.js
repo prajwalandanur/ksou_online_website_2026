@@ -72,7 +72,19 @@ export const UI_TEXT = {
     description:
       'Explore UGC-entitled online undergraduate and postgraduate programmes from Karnataka State Open University (KSOU), Mysuru — a government university offering an accessible alternative to conventional distance education in Karnataka, built for students and working professionals. Admissions for the 2026 cycle are open.',
     admissionsPill: 'Admissions Open • July 2026 Cycle',
-    admissionsNote: 'Applications are now open for the July 2026 admission cycle.',
+    /**
+     * Deliberately *not* a restatement of the pill above it — the two lines
+     * previously both said "admissions are open for the July 2026 cycle",
+     * which spent a prime hero slot saying one thing twice.
+     *
+     * The ABC ID / DEB ID step is the useful thing to say next to an open
+     * admissions badge: it is mandatory before enrolment and is the step
+     * applicants most often reach admission without having done. Both claims
+     * here ("free", "mandatory") come from KSOU's own circular, via
+     * `constants/blogs/how-to-create-abc-id-and-deb-id.js` — do not soften
+     * or embellish them without checking that source.
+     */
+    admissionsNote: 'Create your ABC ID and DEB ID before applying — both are free and mandatory.',
     rankingBadge: 'NIRF 2025 · #2 Open University',
   },
 
