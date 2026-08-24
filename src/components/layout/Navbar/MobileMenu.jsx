@@ -102,7 +102,10 @@ export function MobileMenu({ isOpen, onClose }) {
 
             <div className="flex flex-col gap-6 border-t border-border/70 pt-6">
               <Button
-                to={LMS_LOGIN_URL}
+                href={LMS_LOGIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={ui.nav.lmsLoginAria}
                 withArrow
                 onClick={onClose}
                 className="w-full py-3.5 text-base"

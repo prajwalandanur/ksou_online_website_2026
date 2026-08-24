@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useLanguage } from '@/i18n/useLanguage';
 import {
   NAV_LINKS,
-  LMS_LOGIN_URL,
   APPLY_NOW_URL,
   PROSPECTUS_URL,
   ACADEMIC_CALENDAR_URL,
@@ -29,7 +28,9 @@ const PLACEHOLDER_ROUTES = [
   // `newTab` links point at PDFs in public/, not routes — registering them
   // here would create a bogus /documents/....pdf route.
   ...NAV_LINKS.filter((link) => !REAL_PAGES.has(link.href) && !link.newTab),
-  { label: 'LMS Login', href: LMS_LOGIN_URL },
+  // LMS Login is deliberately absent: LMS_LOGIN_URL now points at the
+  // university's external LMS, so there is no page here to place-hold and
+  // registering an absolute URL as a route path would be meaningless.
   { label: 'Apply Now', href: APPLY_NOW_URL },
   { label: 'Student Support', href: '/student-support' },
   { label: 'Admissions', href: '/admissions' },
@@ -63,10 +64,13 @@ export function AppRoutes() {
               English page behind a Kannada URL would create a duplicate that
               hreflang then asserts is a translation, which is worse for
               search than simply having no Kannada URL for that page.
-              KANNADA_ROUTE_PATTERNS and these two routes must stay in step:
-              the patterns decide which links get localised, these decide
-              what actually renders. */}
+              KANNADA_ROUTE_PATTERNS and these routes must stay in step: the
+              patterns decide which links get localised, these decide what
+              actually renders. A pattern with no route here renders the
+              "Page not found" catch-all while the language toggle happily
+              links to it. */}
           <Route path="/kn" element={<Home />} />
+          <Route path="/kn/about" element={<AboutPage />} />
           <Route path="/kn/programmes" element={<ProgrammesPage />} />
           <Route path="/kn/programmes/:slug" element={<ProgrammePage />} />
 

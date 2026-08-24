@@ -112,8 +112,13 @@ export function Navbar() {
                 <span className="hidden sm:inline">{ui.nav.applyNowLogin}</span>
               </Button>
 
+              {/* href, not `to` — the LMS is an external site, so this has
+                to render a real <a>; see LMS_LOGIN_URL. */}
               <Button
-                to={LMS_LOGIN_URL}
+                href={LMS_LOGIN_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={ui.nav.lmsLoginAria}
                 size="nav"
                 withArrow
                 className="gap-1 [&>svg]:hidden sm:gap-1.5 sm:[&>svg]:block"

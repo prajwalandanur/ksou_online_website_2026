@@ -18,7 +18,12 @@ export const NAV_LINKS = [
   { label: 'Academic Planner', href: ACADEMIC_CALENDAR_URL, newTab: true },
 ];
 
-export const LMS_LOGIN_URL = '/lms-login';
+// The real student LMS, hosted on the parent university's domain — an
+// external site, not a route on this one. Both call sites (the navbar row
+// and the mobile drawer) therefore pass it to Button as `href`, never `to`:
+// a router <Link> would match it against the route table, miss, and land on
+// the "Page not found" catch-all. Same trap NAV_LINKS.newTab exists for.
+export const LMS_LOGIN_URL = 'https://onlinelms.ksoumysuru.ac.in/user/login';
 
 export const APPLY_NOW_URL = '/apply';
 
