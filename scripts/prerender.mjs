@@ -58,6 +58,7 @@ const ROUTES = [
   // would exist only after JavaScript runs, which is the whole thing this
   // pre-render step is here to avoid.
   '/kn',
+  '/kn/about',
   '/kn/programmes',
   '/kn/programmes/mba',
   '/kn/programmes/ba',
@@ -131,6 +132,18 @@ try {
   process.exit(0);
 }
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
+
+/**
+ * Tells the app it is being pre-rendered, so timed interruptions stay out of
+ * the static HTML. Only the enquiry popup reads it today: `networkidle`
+ * normally settles in a second or two, far inside that popup's 25s timer, but
+ * the goto above allows up to 45s — and a single slow route would otherwise
+ * bake an open modal into a file every visitor and every crawler receives.
+ * Set as an init script so it exists before any app code runs.
+ */
+await page.addInitScript(() => {
+  window.__KSOU_PRERENDER__ = true;
+});
 
 const failures = [];
 let written = 0;

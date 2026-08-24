@@ -1,4 +1,5 @@
 import { SITE_NAME, SITE_URL, absoluteUrl } from '@/constants/seo';
+import { VICE_CHANCELLOR } from '@/constants/about';
 
 /**
  * JSON-LD schema builders.
@@ -180,4 +181,55 @@ export function buildArticleSchema(article, slug) {
   if (datePublished) schema.datePublished = datePublished;
 
   return schema;
+}
+
+/**
+ * The About page: the organisation, plus the Vice-Chancellor as its named
+ * employee. This is the one page on the site that makes the leadership
+ * association explicit, and structured data is how an AI search engine picks
+ * that association up — a page that reads clearly to a human but leaves the
+ * person unlinked to the institution in markup gets summarised without them.
+ *
+ * Only fields backed by the sources cited in `constants/about.js` appear
+ * here — no `alumniOf`, no `award`. A schema claim is a published claim, and
+ * an unverifiable one is worse in markup than absent, because nothing on the
+ * rendered page contradicts it where a reader could notice.
+ *
+ * `image` points at `public/vc-portrait.webp` rather than at the bundled
+ * import the page renders: structured data needs a stable absolute URL and
+ * Vite gives bundled assets hashed filenames. The two files are the same
+ * photograph and must be replaced together.
+ *
+ * `vc` is passed in from `useContent()` rather than read from the constant, so
+ * /kn/about emits the Kannada name and title and the structured data agrees
+ * with the page it sits on. It defaults to the English constant for any caller
+ * that has no content object to hand. `path` is the page's own localised
+ * path, so the Kannada page's schema `url` is /kn/about and not the English
+ * one it would otherwise claim to describe.
+ */
+export function buildAboutPageSchema(vc = VICE_CHANCELLOR, path = '/about') {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    url: absoluteUrl(path),
+    name: 'About KSOU Online',
+    mainEntity: {
+      '@type': 'EducationalOrganization',
+      name: 'Karnataka State Open University',
+      alternateName: SITE_NAME,
+      url: SITE_URL,
+      logo: absoluteUrl('/ksou-logo.png'),
+      employee: {
+        '@type': 'Person',
+        name: vc.name,
+        jobTitle: vc.designation,
+        image: absoluteUrl('/vc-portrait.webp'),
+        worksFor: {
+          '@type': 'EducationalOrganization',
+          name: vc.institution,
+          url: SITE_URL,
+        },
+      },
+    },
+  };
 }

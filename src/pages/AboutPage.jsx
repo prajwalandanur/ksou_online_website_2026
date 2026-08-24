@@ -1,47 +1,71 @@
 import { useDocumentMeta } from '@/hooks/useDocumentMeta';
-import { ABOUT_SEO } from '@/constants/about';
+import { useContent } from '@/i18n/content';
+import { useLanguage } from '@/i18n/useLanguage';
+import { localizePath } from '@/i18n/language';
+import { JsonLd } from '@/components/common/JsonLd';
+import { buildAboutPageSchema } from '@/utils/schema';
 import { AboutHero } from '@/components/sections/About/AboutHero';
-import { AboutLegacy } from '@/components/sections/About/AboutLegacy';
-import { AboutValues } from '@/components/sections/About/AboutValues';
-import { AboutStory } from '@/components/sections/About/AboutStory';
-import { AboutOnlineToday } from '@/components/sections/About/AboutOnlineToday';
-import { AboutCredibility } from '@/components/sections/About/AboutCredibility';
-import { AboutCommunity } from '@/components/sections/About/AboutCommunity';
-import { AboutPromise } from '@/components/sections/About/AboutPromise';
+import { AboutLeadership } from '@/components/sections/About/AboutLeadership';
+import { AboutVision } from '@/components/sections/About/AboutVision';
+import { AboutDigitalExperience } from '@/components/sections/About/AboutDigitalExperience';
+import { AboutEcosystem } from '@/components/sections/About/AboutEcosystem';
+import { AboutRoadAhead } from '@/components/sections/About/AboutRoadAhead';
 
 /**
- * Ordered as one institutional story rather than a stack of sections:
- * who KSOU is (hero) -> its scale (legacy) -> why it exists (values) ->
- * how it evolved into online education (story, then today) -> why it can
- * be trusted (credibility, community) -> what it stands for (promise).
+ * Six sections, ordered so the visitor arrives at the leadership rather than
+ * being handed it:
  *
- * Four sections were cut in a refinement pass because each restated a
- * point another section already made better:
- *  - "Learning Beyond the Conventional Classroom" (accessibility, already
- *    the whole point of the values section)
- *  - "The Classroom Has Changed" (a second evolution timeline alongside
- *    the 1969-today one)
- *  - "KSOU at a Glance" (four of its five figures were the legacy stats)
- *  - the final blue CTA (the global counsellor block already closes every
- *    page, and two CTAs back to back read as filler)
- * Don't reintroduce them without new information to justify the space.
+ *   institution has a mission (hero) -> it is entering a new phase (hero) ->
+ *   here is the leader and his documented background (leadership) -> here
+ *   are the priorities of this phase (vision) -> here is what they look like
+ *   in practice (digital) -> here is what a student can actually use
+ *   (ecosystem) -> here is where it is going (road ahead).
  *
- * The page intentionally ends on `AboutPromise` — `MainLayout` appends the
- * shared counsellor CTA and footer after it.
+ * The leadership sections carry roughly 40% of the page. That is the point of
+ * the design, not an accident of length — this replaced an eight-section
+ * institutional About page whose sections each restated the university's
+ * accessibility mission in a different arrangement.
+ *
+ * **Every biographical claim on this page is sourced.** See the header of
+ * `constants/about.js` for the references and for the two claims from the
+ * original brief that were dropped for lack of one. Directional copy is
+ * written as institutional direction, never as personal authorship.
+ *
+ * Every section reads its copy through `useContent()`, so `/kn/about` renders
+ * the Kannada mirror in `src/locales/kn/about.js` with no per-language
+ * branching anywhere in the components.
+ *
+ * The page intentionally ends on `AboutRoadAhead` — `MainLayout` appends the
+ * shared counsellor CTA and footer after it, which is why the closing panel
+ * carries only Explore Programmes and Apply Now.
  */
 export function AboutPage() {
-  useDocumentMeta({ ...ABOUT_SEO, ogType: 'website', canonicalPath: '/about' });
+  const { about } = useContent();
+  const language = useLanguage();
+  const path = localizePath('/about', language);
+
+  useDocumentMeta({
+    title: about.seo.title,
+    description: about.seo.description,
+    ogType: 'website',
+    // Self-referencing canonical per language, with `alternates` keyed on the
+    // English path so the en/kn/x-default trio derives from one value.
+    canonicalPath: path,
+    alternates: '/about',
+  });
 
   return (
     <main>
+      {/* Name, title and URL all come from the localised content and path,
+          so the structured data on /kn/about describes the Kannada page in
+          Kannada rather than claiming to describe the English one. */}
+      <JsonLd data={buildAboutPageSchema(about.vc, path)} />
       <AboutHero />
-      <AboutLegacy />
-      <AboutValues />
-      <AboutStory />
-      <AboutOnlineToday />
-      <AboutCredibility />
-      <AboutCommunity />
-      <AboutPromise />
+      <AboutLeadership />
+      <AboutVision />
+      <AboutDigitalExperience />
+      <AboutEcosystem />
+      <AboutRoadAhead />
     </main>
   );
 }

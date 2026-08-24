@@ -26,7 +26,7 @@ export const KANNADA = 'kn';
 export const KANNADA_PREFIX = '/kn';
 
 /**
- * Only these pages exist in Kannada. Blogs, About and Announcements are
+ * Only these pages exist in Kannada. Blogs and Announcements are
  * intentionally absent: parking an untranslated English page behind a
  * Kannada URL creates a duplicate-content pair that hreflang would then
  * assert is a translation, which is worse than having no Kannada URL at all.
@@ -34,6 +34,10 @@ export const KANNADA_PREFIX = '/kn';
  */
 export const KANNADA_ROUTE_PATTERNS = [
   /^\/$/,
+  // Added 2026-08-21, when `src/locales/kn/about.js` landed. Every string the
+  // About sections render now comes through `useContent()`, so this page is
+  // genuinely translated rather than an English page behind a Kannada URL.
+  /^\/about$/,
   // The listing page. Its own framing is translated (`programmesPage` in the
   // content registry) and everything else on it — section headings and the
   // course cards — already came from the registry, so this needed no new

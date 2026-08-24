@@ -90,6 +90,30 @@ html[lang='kn'] {
   --font-brand: 'Noto Serif Kannada', 'DM Serif Display', 'Georgia', serif;
 }
 
+/**
+ * Kill wide letter-spacing on the Kannada tree.
+ *
+ * The site's eyebrow/label pattern is `uppercase tracking-[0.18em]`, which is
+ * right for Latin small caps and **wrong for Kannada**. Kannada is an abugida:
+ * a written unit is a base consonant plus its vowel sign and any conjunct, and
+ * tracking inserts space *inside* that cluster. At 0.18em on a 14px label the
+ * gap measures 2.52px and ಶೈಕ್ಷಣಿಕ stops reading as one word — it renders as
+ * ಶೈ ಕ್ಷ ಣಿ ಕ. `text-transform: uppercase` is separately a no-op here, since
+ * Kannada has no letter case at all.
+ *
+ * Only the deliberately-widened steps are reset. `tracking-tight` (-0.025em)
+ * on the display headings is deliberately left alone: it is small enough not
+ * to break clusters, and neutralising it would reflow every Kannada heading
+ * on pages that are already reviewed and live.
+ *
+ * `html[lang='kn'] [class*='tracking-']` scores (0,2,1) against a utility
+ * class's (0,1,0), so this wins the cascade without `!important` — the same
+ * reasoning as the font-family override above.
+ */
+html[lang='kn'] :is([class*='tracking-['], .tracking-wide, .tracking-wider, .tracking-widest) {
+  letter-spacing: normal;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

@@ -50,6 +50,7 @@
  * "ಪದೇ ಪದೇ", which is what ui.js uses.
  */
 import { KN_UI_TEXT } from './ui';
+import { KN_ABOUT } from './about';
 import { KN_FAQS } from './faq';
 import { KN_WHY_CHOOSE_KSOU } from './whyChooseKsou';
 import { KN_HOW_IT_WORKS_STEPS } from './howItWorks';
@@ -88,6 +89,7 @@ export const KN_ACCREDITATIONS = [
 /** Shape must match EN_CONTENT in src/i18n/content.js exactly. */
 export const KN_CONTENT = {
   ui: KN_UI_TEXT,
+  about: KN_ABOUT,
   faqs: KN_FAQS,
   whyChoose: KN_WHY_CHOOSE_KSOU,
   howItWorks: KN_HOW_IT_WORKS_STEPS,

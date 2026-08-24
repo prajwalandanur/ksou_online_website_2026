@@ -1,4 +1,5 @@
 import { UI_TEXT } from '@/constants/ui';
+import { ABOUT } from '@/constants/about';
 import { FAQS } from '@/constants/faq';
 import { WHY_CHOOSE_KSOU } from '@/constants/whyChooseKsou';
 import { HOW_IT_WORKS_STEPS } from '@/constants/howItWorks';
@@ -22,6 +23,7 @@ import { DEFAULT_LANGUAGE, KANNADA } from './language';
  */
 const EN_CONTENT = {
   ui: UI_TEXT,
+  about: ABOUT,
   faqs: FAQS,
   whyChoose: WHY_CHOOSE_KSOU,
   howItWorks: HOW_IT_WORKS_STEPS,
