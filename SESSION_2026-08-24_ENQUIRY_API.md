@@ -175,30 +175,102 @@ Commits: `06c8bec` (integration), `291565c` (CLAUDE.md).
 
 ---
 
-## 3. Still open
+## 3. Deployed and tested — the proxy is blocked by Cloudflare
 
-**Cloudflare vs. the proxy — untested.** Cloudflare 403s plain `curl`, and a
-Vercel function's outbound request looks much the same. Whether it is admitted
-can only be settled by a deploy. As of the end of this session the Vercel build
-was still running, so **the one controlled test lead specified in `apitest.md`
-(`Test User / 9999999999 / test@test.com`) has not been sent.**
+The build was **not** slow; it was never the problem. Every deployment is
+`Ready` in ~22s. Two things were confusing the picture:
 
-If Cloudflare does block it, the fix is not code — it is asking KSOU to
-allowlist Vercel's egress, or to send an `Access-Control-Allow-Origin` header so
-the proxy can be dropped entirely.
+### The canonical host in this repo is the wrong host
 
-**Nobody on this side can see Talisma.** A 200 proves the API accepted the lead,
-not that it arrived correctly. Ask KSOU to confirm the test lead landed and that
-`programId` / `countryId` read correctly against it before trusting the mapping
-in production.
+`constants/seo.js`, `public/sitemap.xml`, `public/robots.txt` and
+`public/llms.txt` all use
 
-**Vercel Deployment Protection (SSO) is on** for `ksou-online-website-2026-qmolackhn.vercel.app`
-— an unauthenticated request 302s to `vercel.com/sso-api`, and the responses
-carry `X-Robots-Tag: noindex`. Worth confirming that is intended, because it
-also means crawlers cannot see the site.
+    https://ksou-online-website-2026-qmolackhn.vercel.app
 
-**Unrelated and still outstanding** (carried over, see `CLAUDE.md` §7):
-Kannada review of both the enquiry strings and the new About page — both are
-Claude-drafted, live on indexable URLs, and unreviewed by a Kannada speaker. The
-About page names a real serving public official and states his career history,
-so it belongs at the top of that queue.
+That host is **not** the site. It serves Vercel's "Deployment is building"
+placeholder and 302s unauthenticated requests to `vercel.com/sso-api`. The real
+production domain, per the project's own dashboard, is
+
+    https://ksou-online-website-2026.vercel.app
+
+So every canonical link, every sitemap URL, the OG image URL and the llms.txt
+references currently point somewhere that is not the website. **Not yet fixed** —
+if a real domain is coming, that is the value to put in, and it has to change in
+`constants/seo.js` *and* the three static files, which cannot import from JS.
+
+### `/api/enquiry` works. KSOU's Cloudflare rejects it.
+
+Confirmed live on the real domain:
+
+- `POST /api/enquiry` with `{}` returns `400 {"error":"Missing enquiry payload"}`
+  as JSON — so the function is deployed and `vercel.json`'s `/((?!api/).*)`
+  lookahead does keep the SPA fallback off `/api/*`.
+- A reachability probe (a 200-character `studentName`, over KSOU's 150 cap, so
+  their validator would have to reject it and no lead could be created) came
+  back **502**, and the Vercel runtime log shows why:
+
+```
+[enquiry] KSOU rejected lead {
+  status: 403,
+  body: '<!DOCTYPE html><html lang="en-US"><head><title>Just a moment...</title>
+         ... script-src ... https://challenges.cloudflare.com ...
+```
+
+**That is Cloudflare's managed JS challenge**, not an API error. It is designed
+so that only a real browser executing JavaScript gets through, which a
+server-to-server call never will.
+
+This also explains why KSOU's own enquiry form works: a human's browser solves
+the challenge once and carries a `cf_clearance` cookie for that domain
+afterwards. Our function has no such cookie and cannot obtain one.
+
+**No amount of code on this side fixes it, and it should not be attempted** —
+working around a bot-protection challenge is the wrong thing to build into a
+university's website even when the integration is authorised. The fix belongs to
+whoever administers `onlineprogramme.ksoumysuru.ac.in`. Ask KSOU for one of:
+
+1. **A WAF/bot-management exception for the API path**, so
+   `/ksouapi/api/enquiries` is not behind a browser challenge at all. This is
+   the right fix — an API endpoint should never be gated by a JS interstitial.
+2. **An allowlist entry for Vercel's egress**, if they prefer to keep the
+   challenge and admit this one caller.
+3. **An `Access-Control-Allow-Origin` header** for the site's domain. Note this
+   one alone may not be sufficient: it removes the CORS barrier but the
+   challenge would still apply to a cross-origin request that carries no
+   clearance cookie. Options 1 or 2 are the reliable ones.
+
+Everything on this side is finished and waiting behind that. When KSOU opens the
+path, no code change should be needed — re-run the reachability probe above and
+it should return 400 (their validator) instead of 502 (their firewall).
+
+### The one test lead has NOT been sent
+
+`apitest.md` asks for a controlled `Test User / 9999999999 / test@test.com`
+submission. It has not happened: nothing can reach the endpoint yet. Send it as
+the first check once the block is lifted.
+
+---
+
+## 4. Still open
+
+**Nobody on this side can see Talisma.** Even once delivery works, a 200 proves
+the API accepted the lead, not that it arrived correctly. Ask KSOU to confirm the
+test lead landed and that `programId` / `countryId` read correctly against it
+before trusting the mapping in production.
+
+**Vercel Deployment Protection (SSO) is on.** Unauthenticated requests to the
+deployment host 302 to `vercel.com/sso-api` and responses carry
+`X-Robots-Tag: noindex`. Worth confirming that is intended — it means crawlers
+cannot see the site, which would undercut the entire SEO and pre-render layer.
+
+**Builds finish in ~22 seconds**, which is far too fast to have downloaded
+Chromium and pre-rendered 27 routes. That is consistent with the known
+fail-soft path in `scripts/prerender.mjs` (`CLAUDE.md` §7): the deploy is very
+likely still shipping un-prerendered HTML despite the `installCommand`. Not
+investigated this session — worth checking the build log for the warning.
+
+**Unrelated and carried over** (see `CLAUDE.md` §7): Kannada review of both the
+enquiry strings and the new About page — both Claude-drafted, live on indexable
+URLs, unreviewed by a Kannada speaker. The About page names a real serving
+public official and states his career history, so it belongs at the top of that
+queue.
