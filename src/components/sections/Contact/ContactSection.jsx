@@ -1,8 +1,7 @@
-import { Headphones, Mail, MapPin, Phone } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+import { Mail, MapPin, Phone } from 'lucide-react';
 import { CONTACT_NUMBERS } from '@/constants/navigation';
-import { CONTACT_ADDRESS, CONTACT_COPY, CONTACT_EMAIL, WHATSAPP } from '@/constants/contact';
-import { WhatsappIcon } from './WhatsappIcon';
+import { CONTACT_ADDRESS, CONTACT_COPY, CONTACT_EMAIL } from '@/constants/contact';
+import { ContactEnquiryCard } from './ContactEnquiryCard';
 
 /**
  * One informational row: a tinted icon chip, a small label, and the value.
@@ -49,12 +48,24 @@ export function ContactSection() {
   return (
     <section
       aria-labelledby="contact-heading"
-      className="px-6 py-10 sm:py-14 lg:px-8 lg:py-20"
+      // Top padding is the homepage rhythm; the bottom is not, deliberately.
+      // "Select Programme" is the last field in the card and its listbox
+      // (`max-h-56`, opening downward) hangs ~120px past the bottom of the
+      // card — measured overhanging the footer by 20px at 1440 and 80px at
+      // 390 on the old `py-10 sm:py-14 lg:py-20`. Raising the list's z-index
+      // stops the footer painting over it, but a dropdown that merely floats
+      // *on top of* the footer still reads as broken, so the section reserves
+      // real room underneath instead. Keep any future field below the
+      // programme select in mind here: this number is the card's tail plus
+      // the tallest dropdown, not an arbitrary gap.
+      className="px-6 pb-40 pt-10 sm:pt-14 lg:px-8 lg:pb-44 lg:pt-20"
     >
-      {/* 1.05/0.95 rather than a straight half: the left column carries five
-          stacked rows and the card is deliberately compact, so an even split
-          left the card looking stretched at 1440. */}
-      <div className="mx-auto grid w-full max-w-7xl gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-start lg:gap-16">
+      {/* The right column used to be a compact support card and took the
+          smaller share (0.95fr). It now holds the six-field enquiry form, so
+          the weighting is reversed — a little wider than the contact details,
+          without going all the way to the 45/55 that would leave inputs
+          uncomfortably long on a 1440 screen. */}
+      <div className="mx-auto grid w-full max-w-7xl gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4">
             <h1
@@ -113,55 +124,10 @@ export function ContactSection() {
           </ul>
         </div>
 
-        {/* Support card. `lg:sticky` is deliberately absent — the page is one
+        {/* The enquiry form, in the slot the "Talk to a Counsellor" card used
+            to occupy. `lg:sticky` is deliberately absent — the page is one
             short section, so there is nothing to scroll past. */}
-        <div className="relative rounded-[28px] border border-border/80 bg-white p-8 shadow-[0_1px_2px_rgba(17,17,17,0.04),0_24px_56px_-28px_rgba(17,17,17,0.22)] sm:p-10">
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-40 rounded-t-[28px] bg-gradient-to-b from-ice to-transparent"
-          />
-
-          <div className="relative flex flex-col items-start gap-5">
-            <span className="flex h-14 w-14 items-center justify-center rounded-2xl border border-primary/15 bg-primary/10 text-primary">
-              <Headphones className="h-7 w-7" aria-hidden="true" />
-            </span>
-
-            <div className="flex flex-col gap-3">
-              <h2 className="font-brand text-2xl text-navy sm:text-[1.75rem]">
-                {CONTACT_COPY.support.title}
-              </h2>
-              <p className="text-[15px] font-light leading-relaxed text-muted-foreground">
-                {CONTACT_COPY.support.description}
-              </p>
-            </div>
-
-            <div className="mt-1 flex w-full flex-col gap-3 sm:flex-row sm:items-center">
-              <Button
-                as="a"
-                href={WHATSAPP.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                withArrow
-                aria-label={`${CONTACT_COPY.support.whatsapp} on ${WHATSAPP.displayNumber} (opens WhatsApp in a new tab)`}
-                className="justify-center py-3 sm:flex-1"
-              >
-                <WhatsappIcon className="h-[18px] w-[18px] shrink-0" />
-                {CONTACT_COPY.support.whatsapp}
-              </Button>
-
-              <Button
-                as="a"
-                href={CONTACT_NUMBERS[0].href}
-                variant="secondary"
-                aria-label={`${CONTACT_COPY.support.call} on ${CONTACT_NUMBERS[0].label}`}
-                className="justify-center py-3 sm:flex-1"
-              >
-                <Phone className="h-[18px] w-[18px] shrink-0" aria-hidden="true" />
-                {CONTACT_COPY.support.call}
-              </Button>
-            </div>
-          </div>
-        </div>
+        <ContactEnquiryCard />
       </div>
     </section>
   );

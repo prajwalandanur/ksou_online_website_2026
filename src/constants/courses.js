@@ -35,9 +35,17 @@ import mscImage from '@/assets/courses/msc.webp';
 // duplicated copy. "UGC-entitled" is the prospectus's own wording; the
 // "UGC approved" phrasing people search for is carried by the hero H1 and the
 // homepage FAQ instead of overstating the credential here.
+// `searchTerms` are the abbreviations and synonyms people type that the formal
+// degree title does not contain — "MBA" is nowhere inside "Master of Business
+// Administration", and an Indian student looking for M.Sc Mathematics types
+// "maths". They exist for the enquiry form's programme combobox and are search
+// keys only: nothing renders them, and they state no fact about the programme
+// beyond the name it already carries. They stay in Latin script in both
+// languages, like every other degree abbreviation on the site.
 export const UG_COURSES = [
   {
     id: 'ba',
+    searchTerms: ['BA', 'B.A.', 'Arts'],
     name: 'Bachelor of Arts',
     description:
       'KSOU Online BA — a UGC-entitled arts degree with History, Economics and Political Science.',
@@ -51,6 +59,7 @@ export const UG_COURSES = [
   },
   {
     id: 'bcom',
+    searchTerms: ['B.Com', 'BCom', 'Commerce'],
     name: 'Bachelor of Commerce',
     description:
       'KSOU Online B.Com — a UGC-entitled commerce degree covering accounting, finance and business law.',
@@ -67,6 +76,7 @@ export const UG_COURSES = [
 export const PG_COURSES = [
   {
     id: 'mcom',
+    searchTerms: ['M.Com', 'MCom', 'Commerce'],
     name: 'Master of Commerce',
     description:
       'KSOU Online M.Com — a UGC-entitled postgraduate degree in commerce, finance and business policy.',
@@ -80,6 +90,7 @@ export const PG_COURSES = [
   },
   {
     id: 'ma',
+    searchTerms: ['MA', 'M.A.', 'Arts'],
     name: 'Master of Arts',
     description:
       'KSOU Online MA — a UGC-entitled postgraduate arts degree in Kannada, English, Hindi, Sanskrit or Economics.',
@@ -101,6 +112,7 @@ export const PG_COURSES = [
   },
   {
     id: 'mba',
+    searchTerms: ['MBA', 'Management', 'Business'],
     name: 'Master of Business Administration',
     description:
       'KSOU Online MBA — a UGC-entitled, AICTE-approved online MBA for leadership and management roles.',
@@ -114,6 +126,7 @@ export const PG_COURSES = [
   },
   {
     id: 'msc-mathematics',
+    searchTerms: ['M.Sc', 'MSc', 'Maths', 'Mathematics'],
     name: 'Master of Science – Mathematics',
     description:
       'KSOU Online M.Sc Mathematics — a UGC-entitled postgraduate degree for analytical and research careers.',

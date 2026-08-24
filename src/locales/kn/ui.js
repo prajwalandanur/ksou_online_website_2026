@@ -20,6 +20,7 @@ export const KN_UI_TEXT = {
 
   nav: {
     lmsLogin: 'LMS ಲಾಗಿನ್',
+    lmsLoginAria: 'LMS ಲಾಗಿನ್ (ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ)',
     applyNowLogin: 'ಈಗ ಅರ್ಜಿ ಸಲ್ಲಿಸಿ / ಲಾಗಿನ್',
     applyNowLoginShort: 'ಅರ್ಜಿ ಸಲ್ಲಿಸಿ',
     selectLanguage: 'ಭಾಷೆ ಆಯ್ಕೆಮಾಡಿ',
@@ -202,6 +203,69 @@ export const KN_UI_TEXT = {
     actions: {
       viewProspectus: 'ಪ್ರಾಸ್ಪೆಕ್ಟಸ್ ನೋಡಿ',
       viewProspectusAria: 'KSOU Online ಪ್ರಾಸ್ಪೆಕ್ಟಸ್ ವೀಕ್ಷಿಸಿ (PDF, ಹೊಸ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ)',
+    },
+  },
+
+  /**
+   * Enquiry popup. Drafted 2026-08-18 and NOT yet reviewed by a Kannada
+   * speaker — unlike the rest of this file, which the site owner approved on
+   * 2026-08-14. It ships because the popup fires on the `/kn` routes too and
+   * an English-only lead form there would be worse; treat review as a launch
+   * blocker, priority above the marketing copy, since a mistranslated
+   * validation message stops a real applicant from submitting.
+   *
+   * Country and programme names are deliberately NOT translated: they come
+   * from `COUNTRIES` (English ICU data) and from the course list, whose
+   * Kannada names already live in locales/kn/courses.js and merge in on their
+   * own.
+   */
+  enquiry: {
+    title: 'KSOU ಸಲಹೆಗಾರರೊಂದಿಗೆ ಮಾತನಾಡಿ',
+    description:
+      'ನಿಮ್ಮ ವಿವರಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಿ — ಕಾರ್ಯಕ್ರಮಗಳು, ಅರ್ಹತೆ ಮತ್ತು ಪ್ರವೇಶ ಪ್ರಕ್ರಿಯೆಯ ಬಗ್ಗೆ ನಮ್ಮ ಪ್ರವೇಶಾತಿ ತಂಡ ನಿಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ.',
+    close: 'ವಿಚಾರಣೆ ಫಾರ್ಮ್ ಮುಚ್ಚಿ',
+    requiredNote: '* ಗುರುತಿಸಲಾದ ಕ್ಷೇತ್ರಗಳು ಕಡ್ಡಾಯ.',
+
+    fields: {
+      nameLabel: 'ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು',
+      namePlaceholder: 'ನಿಮ್ಮ ಹೆಸರು ನಮೂದಿಸಿ',
+      mobileLabel: 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ',
+      mobilePlaceholder: 'ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ',
+      emailLabel: 'ಇ-ಮೇಲ್ ಐಡಿ',
+      emailPlaceholder: 'ಇ-ಮೇಲ್ ವಿಳಾಸ ನಮೂದಿಸಿ',
+      cityLabel: 'ನಗರ',
+      cityPlaceholder: 'ನಗರ / ಸ್ಥಳ ನಮೂದಿಸಿ',
+      countryLabel: 'ದೇಶ',
+      countryPlaceholder: 'ದೇಶ ಹುಡುಕಿ...',
+      programmeLabel: 'ಕಾರ್ಯಕ್ರಮ ಆಯ್ಕೆಮಾಡಿ',
+      programmePlaceholder: 'ಕಾರ್ಯಕ್ರಮ ಹುಡುಕಿ ಅಥವಾ ಆಯ್ಕೆಮಾಡಿ...',
+    },
+
+    noResults: 'ಯಾವುದೇ ಫಲಿತಾಂಶ ಸಿಗಲಿಲ್ಲ',
+    submit: 'ಸಲ್ಲಿಸಿ',
+    submitting: 'ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ...',
+
+    errors: {
+      nameRequired: 'ದಯವಿಟ್ಟು ವಿದ್ಯಾರ್ಥಿಯ ಹೆಸರು ನಮೂದಿಸಿ.',
+      nameInvalid: 'ದಯವಿಟ್ಟು ಪೂರ್ಣ ಹೆಸರು ನಮೂದಿಸಿ.',
+      mobileRequired: 'ದಯವಿಟ್ಟು ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ.',
+      mobileInvalidIndia: '6, 7, 8 ಅಥವಾ 9 ರಿಂದ ಆರಂಭವಾಗುವ ಸರಿಯಾದ 10-ಅಂಕಿಯ ಭಾರತೀಯ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ.',
+      mobileInvalid: 'ದೇಶದ ಕೋಡ್ ಸಹಿತ ಸರಿಯಾದ ಮೊಬೈಲ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ.',
+      emailRequired: 'ದಯವಿಟ್ಟು ಇ-ಮೇಲ್ ವಿಳಾಸ ನಮೂದಿಸಿ.',
+      emailInvalid: 'ಸರಿಯಾದ ಇ-ಮೇಲ್ ವಿಳಾಸ ನಮೂದಿಸಿ, ಉದಾಹರಣೆಗೆ name@example.com.',
+      cityRequired: 'ದಯವಿಟ್ಟು ನಿಮ್ಮ ನಗರ ಅಥವಾ ಸ್ಥಳ ನಮೂದಿಸಿ.',
+      countryRequired: 'ದಯವಿಟ್ಟು ದೇಶ ಆಯ್ಕೆಮಾಡಿ.',
+      programmeRequired: 'ದಯವಿಟ್ಟು ನಿಮಗೆ ಆಸಕ್ತಿಯಿರುವ ಕಾರ್ಯಕ್ರಮ ಆಯ್ಕೆಮಾಡಿ.',
+      submitFailed:
+        'ನಿಮ್ಮ ವಿಚಾರಣೆ ಕಳುಹಿಸುವಾಗ ಸಮಸ್ಯೆ ಉಂಟಾಯಿತು. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ, ಅಥವಾ ನಮ್ಮ ಪ್ರವೇಶಾತಿ ಸಹಾಯವಾಣಿಗೆ ಕರೆ ಮಾಡಿ.',
+    },
+
+    success: {
+      title: 'ಧನ್ಯವಾದಗಳು!',
+      description:
+        'ನಿಮ್ಮ ವಿಚಾರಣೆ ಸ್ವೀಕರಿಸಲಾಗಿದೆ. ನಮ್ಮ ಪ್ರವೇಶಾತಿ ತಂಡ ಶೀಘ್ರದಲ್ಲೇ ನಿಮ್ಮನ್ನು ಸಂಪರ್ಕಿಸುತ್ತದೆ.',
+      close: 'ಮುಚ್ಚಿ',
+      again: 'ಮತ್ತೊಂದು ವಿಚಾರಣೆ ಕಳುಹಿಸಿ',
     },
   },
 };

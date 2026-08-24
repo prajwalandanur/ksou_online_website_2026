@@ -43,14 +43,6 @@ export const CONTACT_COPY = {
   phoneLabel: 'General Helpline',
   emailLabel: 'Email',
 
-  support: {
-    title: 'Talk to a Counsellor',
-    description:
-      'Connect with our team for assistance with admissions and online programmes.',
-    whatsapp: 'WhatsApp Us',
-    call: 'Call Us',
-  },
-
   seo: {
     title: 'Contact KSOU Online — Helpline, Email & Campus Address',
     description:

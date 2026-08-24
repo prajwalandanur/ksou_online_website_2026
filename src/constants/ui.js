@@ -30,6 +30,13 @@ export const UI_TEXT = {
 
   nav: {
     lmsLogin: 'LMS Login',
+    /**
+     * The LMS lives on the parent university's own domain, so the button
+     * leaves the site — the label alone doesn't say that, and the same
+     * "opens in a new tab" promise the PDF links make is what stops it
+     * being a surprise.
+     */
+    lmsLoginAria: 'LMS Login (opens in a new tab)',
     applyNowLogin: 'Apply Now / Login',
     /**
      * Phone-width form of the above. Below 640px the row has to hold the
@@ -255,6 +262,79 @@ export const UI_TEXT = {
        * wordings for one destination would only drift.
        */
       viewProspectusAria: 'View the KSOU Online prospectus (PDF, opens in a new tab)',
+    },
+  },
+
+  /**
+   * The automatic enquiry popup. Copy lives here rather than in the component
+   * for the usual reason — it is the site's only lead-capture surface, and
+   * admissions will want to reword it without a developer.
+   *
+   * Validation messages are UI strings too. They are phrased as instructions
+   * ("Enter a valid…") rather than accusations ("Invalid…"), and they name
+   * what a correct value looks like, because this form is the last step
+   * before a counsellor call and a dead end here costs a real applicant.
+   */
+  enquiry: {
+    title: 'Speak With a KSOU Counsellor',
+    description:
+      'Share your details and our admissions team will help you with programmes, eligibility and the admission process.',
+    close: 'Close enquiry form',
+    /** Explains the asterisks, which are decorative to a screen reader. */
+    requiredNote: 'Fields marked * are required.',
+
+    fields: {
+      nameLabel: 'Student Name',
+      namePlaceholder: 'Enter your name',
+      mobileLabel: 'Mobile Number',
+      mobilePlaceholder: 'Enter mobile number',
+      emailLabel: 'E-mail ID',
+      emailPlaceholder: 'Enter email address',
+      cityLabel: 'City',
+      cityPlaceholder: 'Enter city / place',
+      countryLabel: 'Country',
+      countryPlaceholder: 'Search country...',
+      programmeLabel: 'Select Programme',
+      programmePlaceholder: 'Search or select programme...',
+    },
+
+    noResults: 'No matches found',
+    submit: 'Submit',
+    submitting: 'Submitting...',
+
+    errors: {
+      nameRequired: 'Please enter the student name.',
+      nameInvalid: 'Please enter the full name as it should appear on records.',
+      mobileRequired: 'Please enter a mobile number.',
+      /**
+       * Two messages, because the form accepts applicants from 261 regions.
+       * Telling a student in Dubai that their number must be 10 digits
+       * starting 6-9 would be wrong, so the Indian rule is only quoted when
+       * India is the selected country.
+       */
+      mobileInvalidIndia: 'Enter a valid 10-digit Indian mobile number, starting 6, 7, 8 or 9.',
+      mobileInvalid: 'Enter a valid mobile number, including the country code.',
+      emailRequired: 'Please enter an e-mail address.',
+      emailInvalid: 'Enter a valid e-mail address, for example name@example.com.',
+      cityRequired: 'Please enter your city or place.',
+      countryRequired: 'Please select a country.',
+      programmeRequired: 'Please select the programme you are interested in.',
+      submitFailed:
+        'Something went wrong while sending your enquiry. Please try again, or call our admissions helpline.',
+    },
+
+    success: {
+      title: 'Thank You!',
+      description:
+        'Your enquiry has been received. Our admissions team will contact you shortly.',
+      close: 'Close',
+      /**
+       * Only the contact page uses this. The popup's confirmation closes
+       * itself, but the form on `/contact` stays on screen, and a visitor
+       * asking about a second programme would otherwise have to reload the
+       * page to get an empty form back.
+       */
+      again: 'Send another enquiry',
     },
   },
 };
