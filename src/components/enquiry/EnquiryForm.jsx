@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { LoaderCircle } from 'lucide-react';
 import { COUNTRIES, DEFAULT_COUNTRY_CODE } from '@/constants/countries';
 import { ENQUIRY_SOURCES } from '@/constants/enquiry';
+import { MA_PROGRAMME_IDS, resolveKsouCountry, SPLIT_COURSE_ID } from '@/constants/ksouCrm';
 import { useContent } from '@/i18n/content';
 import { stripLanguage } from '@/i18n/language';
 import { useLanguage } from '@/i18n/useLanguage';
@@ -148,6 +149,35 @@ export function EnquiryForm({ onSuccess, source = ENQUIRY_SOURCES.popup }) {
   );
 
   const programmeGroups = useMemo(() => {
+    /**
+     * MA is one card on this site and five programmes in KSOU's CRM — their
+     * enquiry API wants a discipline (ids 3-7), not "Master of Arts". So the
+     * single MA option expands into one option per discipline here. That is
+     * data, not a redesign: the combobox, its search and its markup are
+     * untouched, and KSOU's own enquiry form lists exactly these five.
+     *
+     * The option **value** carries the English discipline key
+     * (`ma:English`), because that is what `MA_PROGRAMME_IDS` is keyed by.
+     * The **label** comes from the localised `specializations` array, which
+     * on `/kn` holds Kannada strings — so the two are paired by position,
+     * and the order of `specializations` in `constants/courses.js` and in
+     * `locales/kn/courses.js` is load-bearing. `keys` below is the English
+     * order; a locale that reorders its array would mislabel a discipline.
+     */
+    const splitOption = (course) => {
+      const keys = Object.keys(MA_PROGRAMME_IDS);
+      return keys.map((key, index) => ({
+        value: `${course.id}:${key}`,
+        label: `${course.name} — ${course.specializations?.[index] ?? key}`,
+        keywords: [
+          course.id,
+          key,
+          course.specializations?.[index],
+          ...(course.searchTerms ?? []),
+        ].filter(Boolean),
+      }));
+    };
+
     const toOption = (course) => ({
       value: course.id,
       label: course.name,
@@ -165,15 +195,31 @@ export function EnquiryForm({ onSuccess, source = ENQUIRY_SOURCES.popup }) {
       ],
     });
 
+    const expand = (courses) =>
+      courses.flatMap((course) =>
+        course.id === SPLIT_COURSE_ID ? splitOption(course) : [toOption(course)],
+      );
+
     return [
-      { label: ui.courses.ugHeading, options: ugCourses.map(toOption) },
-      { label: ui.courses.pgHeading, options: pgCourses.map(toOption) },
+      { label: ui.courses.ugHeading, options: expand(ugCourses) },
+      { label: ui.courses.pgHeading, options: expand(pgCourses) },
     ];
   }, [pgCourses, ugCourses, ui.courses.pgHeading, ui.courses.ugHeading]);
 
+  /**
+   * Only countries KSOU's CRM knows about.
+   *
+   * Their list is 193 entries against this site's 245 ISO regions; the 52
+   * that drop out are dependencies and territories (Hong Kong, Puerto Rico,
+   * Réunion...) plus a few limited-recognition states. Offering one of those
+   * and then failing on submit — `countryId` is a required integer with no
+   * sensible fallback — would be worse than not offering it, and this is the
+   * same set KSOU's own enquiry form presents. Display names and search
+   * aliases stay ours; only the set is theirs.
+   */
   const countryOptions = useMemo(
     () =>
-      COUNTRIES.map((country) => ({
+      COUNTRIES.filter((country) => resolveKsouCountry(country)).map((country) => ({
         value: country.code,
         label: country.name,
         keywords: country.aliases ?? [],
@@ -196,7 +242,11 @@ export function EnquiryForm({ onSuccess, source = ENQUIRY_SOURCES.popup }) {
       email: '',
       city: '',
       country: DEFAULT_COUNTRY_CODE,
-      programme: routeCourse?.id ?? '',
+      // `/programmes/ma` deliberately does not preselect: that page covers
+      // all five MA disciplines and the field now asks for one of them, so
+      // there is no single correct answer to fill in. Every other programme
+      // page still opens the form one decision shorter.
+      programme: routeCourse && routeCourse.id !== SPLIT_COURSE_ID ? routeCourse.id : '',
     },
   });
 
@@ -210,10 +260,6 @@ export function EnquiryForm({ onSuccess, source = ENQUIRY_SOURCES.popup }) {
       await submitEnquiry(
         buildEnquiryLead({
           values,
-          countryName:
-            COUNTRIES.find((country) => country.code === values.country)?.name ?? values.country,
-          programmeName:
-            allCourses.find((course) => course.id === values.programme)?.name ?? values.programme,
           page,
           pageTitle: document.title,
           language,

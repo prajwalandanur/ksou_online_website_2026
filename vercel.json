@@ -3,7 +3,7 @@
   "installCommand": "npm install && (npx playwright install chromium || true)",
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!api/).*)",
       "destination": "/index.html"
     }
   ]

@@ -1,10 +1,26 @@
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Navbar } from '@/components/layout/Navbar/Navbar';
 import { ClosingSection } from '@/components/layout/ClosingSection';
 import { FloatingActions } from '@/components/common/FloatingActions';
 import { EnquiryPopup } from '@/components/enquiry/EnquiryPopup';
+import { captureUtmParameters } from '@/services/utm';
 
 export function MainLayout() {
+  /**
+   * Campaign attribution is read once, here, on the landing URL.
+   *
+   * It has to happen at mount rather than at submission: a visitor arrives on
+   * `/?utm_source=google&...`, browses for a few minutes and only then opens
+   * the enquiry form, by which point React Router has replaced the URL and
+   * the parameters are gone. Captured here they are held for the visit. The
+   * call is a no-op when the URL carries no UTMs, and first touch wins, so
+   * running it again on a later load cannot overwrite the real source.
+   */
+  useEffect(() => {
+    captureUtmParameters();
+  }, []);
+
   return (
     <>
       {/* The announcement ticker is the third band inside <Navbar />, not a

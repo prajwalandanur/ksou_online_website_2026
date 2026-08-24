@@ -18,4 +18,11 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    // `api/` holds Vercel serverless functions and `scripts/` the build-time
+    // Node tooling. Neither runs in a browser, and both legitimately reach
+    // for `process`, so they get Node globals rather than the browser set.
+    files: ['api/**/*.js', 'scripts/**/*.mjs'],
+    languageOptions: { globals: globals.node },
+  },
 ])
