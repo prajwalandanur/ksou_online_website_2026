@@ -33,3 +33,18 @@ desktop.ini
 *.njsproj
 *.sln
 *.sw?
+
+# Local environment files.
+#
+# `.env` holds VITE_API_KEY, which Vite bakes into the bundle at build time —
+# so the key is public on the deployed site by necessity. It is still kept
+# out of THIS REPO, which is public on GitHub: a key in git history is
+# permanent, is harvested by credential scrapers within minutes, and would
+# need a history rewrite plus rotation with KSOU to undo.
+#
+# Nothing is lost by ignoring it. The build reads .env from the machine that
+# runs `npm run build`, not from the repository. `.env.example` documents the
+# variables for anyone setting that machine up.
+.env
+.env.local
+.env.*.local

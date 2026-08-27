@@ -2,85 +2,85 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <!-- Homepage -->
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
 
   <!-- Programme Pages -->
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/mba</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/mba</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/ba</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/ba</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/bcom</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/bcom</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/mcom</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/mcom</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/ma</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/ma</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/msc-mathematics</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/msc-mathematics</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <!-- About -->
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/about</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Blog Listing -->
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/blogs</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/blogs</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Individual Blog Articles -->
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/blogs/career-options-after-bcom-degree</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/blogs/career-options-after-bcom-degree</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/blogs/how-to-choose-right-online-degree-after-graduation</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/blogs/how-to-choose-right-online-degree-after-graduation</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/blogs/online-degree-while-working-full-time</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/blogs/online-degree-while-working-full-time</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/blogs/online-learning-guide-admission-to-graduation</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/blogs/online-learning-guide-admission-to-graduation</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/blogs/online-degree-vs-traditional-degree</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/blogs/online-degree-vs-traditional-degree</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/blogs/how-to-create-abc-id-and-deb-id</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/blogs/how-to-create-abc-id-and-deb-id</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -89,68 +89,68 @@
        translated appear here; the pairing is declared per page with
        link rel="alternate" hreflang. -->
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/kn</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/kn</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/kn/about</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/kn/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/kn/programmes</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/kn/programmes</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/kn/programmes/mba</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/kn/programmes/mba</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/kn/programmes/ba</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/kn/programmes/ba</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/kn/programmes/bcom</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/kn/programmes/bcom</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/kn/programmes/mcom</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/kn/programmes/mcom</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/kn/programmes/ma</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/kn/programmes/ma</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/kn/programmes/msc-mathematics</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/kn/programmes/msc-mathematics</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <!-- Announcements -->
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/announcements</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/announcements</loc>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <!-- Contact -->
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/contact</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/contact</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <!-- Programmes listing -->
   <url>
-    <loc>https://ksou-online-website-2026-qmolackhn.vercel.app/programmes</loc>
+    <loc>https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>

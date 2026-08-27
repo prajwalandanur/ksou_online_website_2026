@@ -1,9 +1,11 @@
+import { withBase } from './basePath';
+
 // Real PDFs served straight from public/documents/ (static, not bundled —
 // they're multi-MB documents). Both open in a new tab in the browser's PDF
 // viewer rather than downloading; see the note in CourseCard for why there
 // must be no `download` attribute on the anchors that use these.
-export const PROSPECTUS_URL = '/documents/ksou-online-prospectus.pdf';
-export const ACADEMIC_CALENDAR_URL = '/documents/academic-calendar.pdf';
+export const PROSPECTUS_URL = withBase('/documents/ksou-online-prospectus.pdf');
+export const ACADEMIC_CALENDAR_URL = withBase('/documents/academic-calendar.pdf');
 
 // `newTab: true` marks a link that points at a file rather than a route —
 // it renders as a plain <a target="_blank">, and AppRoutes skips it when

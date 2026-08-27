@@ -38,8 +38,27 @@ const UTM_PARAMS = {
  */
 const MAX_LENGTH = 200;
 
-/** Empty rather than absent — the brief is explicit that "test" must never ship. */
-const EMPTY = { utmSource: '', utmMedium: '', utmCampaign: '' };
+/**
+ * What an unattributed visit reports.
+ *
+ * `direct` / `none` is the convention GA and most CRMs already use for
+ * traffic that arrived without a campaign, so a counsellor reading the lead
+ * sees a meaningful origin instead of three blank columns — and the blanks
+ * were genuinely ambiguous, since they could equally mean "attribution
+ * broke". Placeholder values such as "test" must never ship, which is why
+ * these are the real conventional terms rather than invented ones.
+ *
+ * Applied per field, not just wholesale: a URL carrying only `utm_source`
+ * still reports `none` for the two it omitted.
+ */
+const DEFAULTS = { utmSource: 'direct', utmMedium: 'none', utmCampaign: 'none' };
+
+/** Fills any field the visit did not supply with its conventional default. */
+const withDefaults = (found) => ({
+  utmSource: found?.utmSource || DEFAULTS.utmSource,
+  utmMedium: found?.utmMedium || DEFAULTS.utmMedium,
+  utmCampaign: found?.utmCampaign || DEFAULTS.utmCampaign,
+});
 
 function readFromLocation(search) {
   const params = new URLSearchParams(search);
@@ -71,23 +90,19 @@ export function captureUtmParameters(search = window.location.search) {
 }
 
 /**
- * The attribution to send with a lead. Always returns all three fields, as
- * empty strings when this visit carried no campaign parameters.
+ * The attribution to send with a lead. Always returns all three fields,
+ * falling back to `direct` / `none` / `none` for anything this visit did not
+ * carry, so the CRM never receives a blank attribution column.
  */
 export function getUtmParameters() {
   const raw = readStored('session', STORAGE_KEY);
-  if (!raw) return { ...EMPTY };
+  if (!raw) return withDefaults(null);
 
   try {
-    const parsed = JSON.parse(raw);
-    return {
-      utmSource: parsed.utmSource ?? '',
-      utmMedium: parsed.utmMedium ?? '',
-      utmCampaign: parsed.utmCampaign ?? '',
-    };
+    return withDefaults(JSON.parse(raw));
   } catch {
     // Corrupt value — treat the visit as unattributed rather than throwing
     // inside a form submission.
-    return { ...EMPTY };
+    return withDefaults(null);
   }
 }

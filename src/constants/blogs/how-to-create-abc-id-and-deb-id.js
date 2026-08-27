@@ -1,3 +1,5 @@
+import { withBase } from '../basePath';
+
 /**
  * Every procedural detail in this article comes from KSOU's own circular,
  * public/documents/announcements/abc-deb-id-creation-process.pdf — the cover
@@ -186,7 +188,7 @@ export const ABC_DEB_ID_GUIDE = {
     },
     {
       type: 'link',
-      href: '/documents/announcements/abc-deb-id-creation-process.pdf',
+      href: withBase('/documents/announcements/abc-deb-id-creation-process.pdf'),
       label: 'Read KSOU\'s official ABC ID & DEB ID circular (PDF)',
     },
     {

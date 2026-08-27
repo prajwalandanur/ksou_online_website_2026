@@ -22,6 +22,30 @@
       content="Apply for UGC-approved online degrees from Karnataka State Open University. NAAC A+ rated. MBA MA MCom BA BCom. Fees from ₹10000/year."
     />
     <title>KSOU Online Programmes — Admissions Open 2026</title>
+
+    <!--
+      Google Analytics 4.
+
+      This is the site's first third-party runtime script — the project has
+      otherwise deliberately shipped none (fonts are self-hosted, no CDNs).
+      It is here because `services/analytics.js` fires a `form_submit`
+      conversion on every successful enquiry, and until now nothing was
+      listening: the event was being raised into a void.
+
+      `gtag` is defined synchronously below, before the async library
+      arrives, so a submission that completes early still queues its event
+      onto `dataLayer` rather than hitting an undefined function. That is why
+      the inline block is not itself deferred.
+    -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-CH9V5HZ0LF"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-CH9V5HZ0LF');
+    </script>
   </head>
   <body>
     <div id="root"></div>

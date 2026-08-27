@@ -27,4 +27,4 @@ User-agent: cohere-ai
 Allow: /
 
 # Sitemap
-Sitemap: https://ksou-online-website-2026-qmolackhn.vercel.app/sitemap.xml
+Sitemap: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/sitemap.xml

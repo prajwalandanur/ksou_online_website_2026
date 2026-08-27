@@ -9,6 +9,7 @@ import { useContent } from '@/i18n/content';
 import { stripLanguage } from '@/i18n/language';
 import { useLanguage } from '@/i18n/useLanguage';
 import { Button } from '@/components/ui/Button';
+import { trackFormSubmit } from '@/services/analytics';
 import { buildEnquiryLead, submitEnquiry } from '@/services/enquiry';
 import { suppressEnquiryPopup } from '@/services/enquiryStorage';
 import { SearchableSelect } from './SearchableSelect';
@@ -257,15 +258,28 @@ export function EnquiryForm({ onSuccess, source = ENQUIRY_SOURCES.popup }) {
     setSubmitError(null);
 
     try {
-      await submitEnquiry(
-        buildEnquiryLead({
-          values,
-          page,
-          pageTitle: document.title,
-          language,
-          source,
-        }),
-      );
+      const lead = buildEnquiryLead({
+        values,
+        page,
+        pageTitle: document.title,
+        language,
+        source,
+      });
+
+      await submitEnquiry(lead);
+
+      /*
+       * Only after delivery is confirmed. Firing on click would count
+       * conversions KSOU never received, which is the metric most likely to
+       * be trusted and least likely to be re-checked.
+       *
+       * The label is KSOU's own programme name (`Master Of Commerce`, and
+       * the MA disciplines individually) rather than the form's option
+       * value, so the analytics breakdown and their CRM agree on what a
+       * lead was for. Safe to call with no tag installed — see
+       * `services/analytics.js`.
+       */
+      trackFormSubmit(lead.enquiry.program);
       // A captured lead silences the popup for a week, wherever it was
       // captured. It lives here rather than in the popup's controller so that
       // this form's second home on `/contact` — and any future third one —

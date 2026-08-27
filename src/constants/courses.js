@@ -1,3 +1,4 @@
+import { withBase } from './basePath';
 import {
   BookOpen,
   Briefcase,
@@ -55,7 +56,7 @@ export const UG_COURSES = [
     Icon: BookOpen,
     image: baImage,
     detailPath: '/programmes/ba',
-    questionPapers: [{ href: '/question-papers/ba.pdf' }],
+    questionPapers: [{ href: withBase('/question-papers/ba.pdf') }],
   },
   {
     id: 'bcom',
@@ -69,7 +70,7 @@ export const UG_COURSES = [
     Icon: Briefcase,
     image: bcomImage,
     detailPath: '/programmes/bcom',
-    questionPapers: [{ href: '/question-papers/bcom.pdf' }],
+    questionPapers: [{ href: withBase('/question-papers/bcom.pdf') }],
   },
 ];
 
@@ -86,7 +87,7 @@ export const PG_COURSES = [
     Icon: Calculator,
     image: mcomImage,
     detailPath: '/programmes/mcom',
-    questionPapers: [{ href: '/question-papers/mcom.pdf' }],
+    questionPapers: [{ href: withBase('/question-papers/mcom.pdf') }],
   },
   {
     id: 'ma',
@@ -102,10 +103,10 @@ export const PG_COURSES = [
     image: maImage,
     detailPath: '/programmes/ma',
     questionPapers: [
-      { label: 'Kannada', href: '/question-papers/ma-kannada.pdf' },
-      { label: 'English', href: '/question-papers/ma-english.pdf' },
-      { label: 'Hindi', href: '/question-papers/ma-hindi.pdf' },
-      { label: 'Sanskrit', href: '/question-papers/ma-sanskrit.pdf' },
+      { label: 'Kannada', href: withBase('/question-papers/ma-kannada.pdf') },
+      { label: 'English', href: withBase('/question-papers/ma-english.pdf') },
+      { label: 'Hindi', href: withBase('/question-papers/ma-hindi.pdf') },
+      { label: 'Sanskrit', href: withBase('/question-papers/ma-sanskrit.pdf') },
       // No Economics paper has been supplied — deliberately absent rather
       // than pointed at another discipline's file.
     ],
@@ -122,7 +123,7 @@ export const PG_COURSES = [
     Icon: TrendingUp,
     image: mbaImage,
     detailPath: '/programmes/mba',
-    questionPapers: [{ href: '/question-papers/mba.pdf' }],
+    questionPapers: [{ href: withBase('/question-papers/mba.pdf') }],
   },
   {
     id: 'msc-mathematics',
@@ -136,6 +137,6 @@ export const PG_COURSES = [
     Icon: Sigma,
     image: mscImage,
     detailPath: '/programmes/msc-mathematics',
-    questionPapers: [{ href: '/question-papers/msc-mathematics.pdf' }],
+    questionPapers: [{ href: withBase('/question-papers/msc-mathematics.pdf') }],
   },
 ];
