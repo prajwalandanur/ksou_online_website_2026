@@ -1,3 +1,4 @@
+import { withBase } from './basePath';
 import { ACADEMIC_CALENDAR_URL, PROSPECTUS_URL } from './navigation';
 
 // Real notices, served straight from public/ so Vite doesn't hash or inline
@@ -6,11 +7,11 @@ import { ACADEMIC_CALENDAR_URL, PROSPECTUS_URL } from './navigation';
 // it in its built-in PDF viewer. Filenames were slugified on the way in —
 // the originals had spaces and parentheses, which need URL-encoding.
 export const ADMISSION_NOTIFICATION_URL =
-  '/documents/announcements/admission-notification-2026-27-july.pdf';
+  withBase('/documents/announcements/admission-notification-2026-27-july.pdf');
 export const ABC_DEB_ID_PROCESS_URL =
-  '/documents/announcements/abc-deb-id-creation-process.pdf';
+  withBase('/documents/announcements/abc-deb-id-creation-process.pdf');
 export const RENEWAL_NOTIFICATION_URL =
-  '/documents/announcements/renewal-notification-aug-2026.pdf';
+  withBase('/documents/announcements/renewal-notification-aug-2026.pdf');
 
 /**
  * University notifications — the single source for both the slim ticker

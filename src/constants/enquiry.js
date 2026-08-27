@@ -106,7 +106,7 @@ export const SUPPRESSED_PATH_PREFIXES = ['/programmes/'];
  * enough to read the confirmation, short enough that it does not become a
  * second thing to dismiss — the Close button is there for anyone faster.
  */
-export const SUCCESS_AUTO_CLOSE_MS = 5_000;
+export const SUCCESS_AUTO_CLOSE_MS = 3_000;
 
 /**
  * Storage keys, split by the lifetime each value needs. Namespaced because

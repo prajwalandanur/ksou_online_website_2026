@@ -9,9 +9,15 @@
  * server has no such restriction, so the lead takes one extra hop.
  *
  * This is the "appropriate secure proxy" path the integration brief asks for
- * when direct calls are blocked. It holds no credentials — KSOU's enquiry
- * endpoint is unauthenticated — so there is nothing here to leak; it exists
- * purely to move the request out of the browser's origin model.
+ * when direct calls are blocked. Since 2026-08-27 it also **does** hold a
+ * credential — KSOU's `X-API-Key` — which is the second reason it must stay
+ * server-side: a key shipped in the bundle is a published key.
+ *
+ * ── Success is `isSuccess`, not the status code ─────────────────────────
+ * Their API answers `{ isSuccess, message, errors, data }`. A 200 carrying
+ * `isSuccess: false` is a *rejected* lead, and reporting it as delivered
+ * would show a student a "Thank You" for an enquiry nobody received. This
+ * function therefore parses the body and treats that case as a failure.
  *
  * ── What it does NOT do ─────────────────────────────────────────────────
  * It does not re-validate the lead's contents beyond presence and shape.
@@ -26,6 +32,20 @@
 const KSOU_ENQUIRY_URL =
   process.env.KSOU_ENQUIRY_URL ||
   'https://onlineprogramme.ksoumysuru.ac.in/ksouapi/api/enquiries';
+
+/**
+ * KSOU's API key, supplied by the university on 2026-08-27.
+ *
+ * Server-side only and deliberately never `VITE_`-prefixed: Vite inlines
+ * those into the client bundle, which would publish this key to anyone who
+ * opens devtools. It stays here, where only the function can read it.
+ *
+ * Absent, the request is still attempted without the header — that is how
+ * the integration behaved before the key existed, and a missing environment
+ * variable should surface as KSOU's own 401 rather than as this function
+ * refusing to run.
+ */
+const KSOU_API_KEY = process.env.KSOU_ENQUIRY_API_KEY || '';
 
 /** Long enough for a slow CRM, short enough to stay inside the function budget. */
 const UPSTREAM_TIMEOUT_MS = 15_000;
@@ -107,7 +127,11 @@ export default async function handler(request, response) {
   try {
     const upstream = await fetch(KSOU_ENQUIRY_URL, {
       method: 'POST',
-      headers: { accept: 'text/plain', 'Content-Type': 'application/json' },
+      headers: {
+        accept: 'text/plain',
+        'Content-Type': 'application/json',
+        ...(KSOU_API_KEY ? { 'X-API-Key': KSOU_API_KEY } : {}),
+      },
       body: JSON.stringify(payload),
       signal: controller.signal,
     });
@@ -127,14 +151,52 @@ export default async function handler(request, response) {
         .json({ error: 'The enquiry service rejected this submission.' });
     }
 
+    /*
+     * A 2xx is necessary but not sufficient. Their envelope carries the real
+     * verdict in `isSuccess`, so parse it before calling this delivered.
+     *
+     * The `accept: text/plain` header they document means the body is not
+     * guaranteed to be JSON, so a parse failure is not treated as a
+     * rejection — an unparseable 2xx is accepted, since the alternative is
+     * failing leads over a content-type quirk. Only an explicit
+     * `isSuccess: false` fails.
+     */
+    let envelope;
+    try {
+      envelope = JSON.parse(text);
+    } catch {
+      envelope = null;
+    }
+
+    if (envelope && envelope.isSuccess === false) {
+      console.error('[enquiry] KSOU returned isSuccess=false', {
+        message: envelope.message,
+        errors: envelope.errors,
+        meta: body.meta,
+      });
+      return response.status(422).json({
+        error: 'The enquiry service rejected this submission.',
+        message: typeof envelope.message === 'string' ? envelope.message.slice(0, 300) : undefined,
+      });
+    }
+
     console.log('[enquiry] delivered', {
       programId: payload.programId,
       countryId: payload.countryId,
       source: body.meta?.source,
       page: body.meta?.page,
+      // Their own confirmation flags: a lead can be saved but not yet pushed
+      // to the CRM, which is worth seeing in the logs.
+      saved: envelope?.data?.saved,
+      crmIntegrated: envelope?.data?.crmIntegrated,
     });
 
-    return response.status(200).json({ delivered: true, upstream: text.slice(0, 500) });
+    return response.status(200).json({
+      delivered: true,
+      isSuccess: envelope?.isSuccess ?? true,
+      message: typeof envelope?.message === 'string' ? envelope.message.slice(0, 300) : undefined,
+      data: envelope?.data,
+    });
   } catch (error) {
     const aborted = error?.name === 'AbortError';
     console.error('[enquiry] upstream call failed', aborted ? 'timeout' : error);

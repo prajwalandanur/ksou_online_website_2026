@@ -1,20 +1,21 @@
 /**
  * Delivery of a captured enquiry lead to KSOU's enquiry system (Talisma).
  *
- * ── Why this posts to our own origin ────────────────────────────────────
- * The real endpoint is
+ * ── The browser posts straight to KSOU ──────────────────────────────────
  *   POST https://onlineprogramme.ksoumysuru.ac.in/ksouapi/api/enquiries
- * and the browser cannot call it directly: verified on 2026-08-24 from the
- * deployed Vercel origin, the cross-origin request fails outright
- * ("TypeError: Failed to fetch") because the host sits behind Cloudflare and
- * sends no `Access-Control-Allow-Origin` for us. There is nothing to fix on
- * this side — CORS is the other server's decision.
  *
- * So this posts to `/api/enquiry`, a serverless function on our own domain
- * (`api/enquiry.js`), which forwards the lead server-to-server where CORS
- * does not apply. Same-origin request, no preflight, no credentials in the
- * browser. If KSOU ever sends the ACAO header, this module is the only place
- * that needs to change.
+ * This build is deployed to IIS at
+ * `onlineprogramme.ksoumysuru.ac.in/ksou_test/` — the **same origin** as the
+ * API. That single fact removes both obstacles this module used to work
+ * around: there is no cross-origin request, so CORS never applies, and the
+ * visitor's own browser carries the Cloudflare clearance that a server-side
+ * call could never obtain. It is exactly how KSOU's existing enquiry form at
+ * /KSOU/Public/EnquiryForm already reaches this same endpoint.
+ *
+ * **The `api/enquiry.js` Vercel proxy is unused by this build.** IIS cannot
+ * run it; it is kept only for a possible return to Vercel, where a direct
+ * call would once again be blocked and that proxy — not a CORS request — is
+ * the path that works.
  *
  * ── The payload is theirs, not ours ─────────────────────────────────────
  * `buildEnquiryLead` emits exactly the eleven fields their OpenAPI schema
@@ -34,11 +35,25 @@ import { resolveKsouCountry, resolveKsouProgramme } from '@/constants/ksouCrm';
 import { getUtmParameters } from './utm';
 
 /**
- * Same-origin proxy route. `VITE_ENQUIRY_ENDPOINT` still overrides it, so a
- * staging build can be pointed elsewhere without a code change, but it is no
- * longer required for the form to work — the default path is the real one.
+ * KSOU's enquiry endpoint and its key, both from `.env` — which is gitignored
+ * and therefore NOT in the repository, so it must exist on whatever machine
+ * runs the build (see `.env.example`). Without it the site builds fine but
+ * posts an empty key and KSOU answers 401.
+ *
+ * `VITE_ENQUIRY_ENDPOINT` is still honoured first, so a staging build can be
+ * pointed at a proxy or a different collector without a code change.
  */
-const ENDPOINT = import.meta.env.VITE_ENQUIRY_ENDPOINT || '/api/enquiry';
+const ENDPOINT =
+  import.meta.env.VITE_ENQUIRY_ENDPOINT ||
+  import.meta.env.VITE_API_URL ||
+  'https://onlineprogramme.ksoumysuru.ac.in/ksouapi/api/enquiries';
+
+/**
+ * Inlined into the bundle at build time and therefore public. The API
+ * requires it: verified 2026-08-27, a request without the header is answered
+ * `401 "A valid X-API-Key header is required."`
+ */
+const API_KEY = import.meta.env.VITE_API_KEY || '';
 
 /** Field caps from their schema. Over-long input is rejected with a 400. */
 const MAX = {
@@ -105,31 +120,85 @@ export function buildEnquiryLead({ values, page, pageTitle, language, source }) 
  * Posts one lead through the proxy.
  *
  * Resolves only when KSOU accepted it. Rejects on a network failure, on a
- * validation rejection, and on anything the proxy could not deliver —
- * `EnquiryForm` turns every rejection into a visible, retryable message
- * rather than a confirmation the visitor did not earn.
+ * validation rejection, on an `isSuccess: false` envelope, and on anything
+ * the proxy could not deliver — `EnquiryForm` turns every rejection into a
+ * visible, retryable message rather than a confirmation the visitor did not
+ * earn.
  *
  * @param {{ enquiry: object, meta: object }} lead From `buildEnquiryLead`.
+ * @returns {Promise<{ isSuccess: true, message?: string, data?: object }>}
  */
 export async function submitEnquiry(lead) {
   const response = await fetch(ENDPOINT, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(lead),
+    headers: {
+      accept: 'text/plain',
+      'Content-Type': 'application/json',
+      'X-API-Key': API_KEY,
+    },
+    /*
+     * `lead.enquiry` only — never the whole object. `buildEnquiryLead` also
+     * returns a `meta` block (page, source, language) for this site's own
+     * use, and posting it would push fields their schema does not declare
+     * into a real CRM. The proxy used to strip it; sending directly, that
+     * responsibility moves here.
+     */
+    body: JSON.stringify(lead.enquiry),
   });
 
+  /*
+   * Read the body once as text, then try JSON. Their documented
+   * `accept: text/plain` means a 2xx body is not guaranteed to be JSON, and
+   * a Cloudflare challenge or an IIS error page returns HTML — in both cases
+   * `response.json()` would throw a parse error that masks the real status.
+   */
+  const raw = await response.text().catch(() => '');
+  let payload;
+  try {
+    payload = raw ? JSON.parse(raw) : null;
+  } catch {
+    payload = null;
+  }
+
   if (!response.ok) {
-    // The proxy returns a short, non-technical reason; keep it out of the UI
-    // (the form shows its own copy) but make it visible in the console for
-    // whoever is debugging a failing campaign.
-    let detail;
-    try {
-      detail = (await response.text()).slice(0, 500);
-    } catch {
-      detail = '(no body)';
-    }
+    /*
+     * Kept out of the UI (the form shows its own wording) but surfaced in the
+     * console, because the three failures worth telling apart all look
+     * identical to a visitor:
+     *   401 { detail: "A valid X-API-Key header is required." }  → key missing
+     *                                                             from the build
+     *   400 { errors: { StudentName: [...] } }                   → their validator
+     *   an HTML body                                             → Cloudflare or IIS
+     *                                                             answered, not the API
+     */
+    const detail =
+      payload?.detail ||
+      (payload?.errors && JSON.stringify(payload.errors)) ||
+      payload?.title ||
+      raw.slice(0, 500) ||
+      '(no body)';
     throw new Error(`Enquiry submission failed with status ${response.status}: ${detail}`);
   }
 
-  return { delivered: true };
+  /*
+   * A 2xx is necessary but not sufficient: their envelope carries the real
+   * verdict in `isSuccess`, and a 200 with `isSuccess: false` is a *rejected*
+   * lead. Treating that as delivered would show a student "Thank You" for an
+   * enquiry nobody received, which is the one outcome this must never
+   * produce. An unparseable 2xx is still accepted — failing real leads over
+   * a content-type quirk would be worse.
+   */
+  if (payload && payload.isSuccess === false) {
+    throw new Error(
+      `Enquiry rejected by KSOU: ${payload.message || '(no message)'} ${
+        payload.errors ? JSON.stringify(payload.errors) : ''
+      }`.trim(),
+    );
+  }
+
+  return {
+    isSuccess: true,
+    message: payload?.message,
+    data: payload?.data,
+  };
 }

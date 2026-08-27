@@ -325,8 +325,13 @@ export const UI_TEXT = {
 
     success: {
       title: 'Thank You!',
-      description:
-        'Your enquiry has been received. Our admissions team will contact you shortly.',
+      /*
+       * The 24-hour response time is a commitment supplied by KSOU, not an
+       * estimate written here. If admissions cannot hold to it, change this
+       * line rather than leaving a promise the team has to break — it is the
+       * last thing a student reads before waiting.
+       */
+      description: 'Our team will contact you within 24 hours.',
       close: 'Close',
       /**
        * Only the contact page uses this. The popup's confirmation closes

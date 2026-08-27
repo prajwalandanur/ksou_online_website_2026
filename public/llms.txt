@@ -33,17 +33,17 @@ Examination fees are charged separately from the programme fee.
 
 ## Important Pages
 
-- Homepage: https://ksou-online-website-2026-qmolackhn.vercel.app/
-- MBA Programme: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/mba
-- BA Programme: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/ba
-- B.Com Programme: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/bcom
-- M.Com Programme: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/mcom
-- MA Programme: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/ma
-- M.Sc Mathematics: https://ksou-online-website-2026-qmolackhn.vercel.app/programmes/msc-mathematics
-- About KSOU: https://ksou-online-website-2026-qmolackhn.vercel.app/about
-- Blog / Insights: https://ksou-online-website-2026-qmolackhn.vercel.app/blogs
-- ABC ID & DEB ID admission guide: https://ksou-online-website-2026-qmolackhn.vercel.app/blogs/how-to-create-abc-id-and-deb-id
-- Announcements: https://ksou-online-website-2026-qmolackhn.vercel.app/announcements
+- Homepage: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/
+- MBA Programme: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/mba
+- BA Programme: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/ba
+- B.Com Programme: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/bcom
+- M.Com Programme: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/mcom
+- MA Programme: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/ma
+- M.Sc Mathematics: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/programmes/msc-mathematics
+- About KSOU: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/about
+- Blog / Insights: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/blogs
+- ABC ID & DEB ID admission guide: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/blogs/how-to-create-abc-id-and-deb-id
+- Announcements: https://onlineprogramme.ksoumysuru.ac.in/ksou_test/announcements
 
 ## Contact
 For admissions enquiries, visit the Contact page or call the admissions helpline numbers listed on the website.

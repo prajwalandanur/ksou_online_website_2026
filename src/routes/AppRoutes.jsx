@@ -1,5 +1,13 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+/*
+ * The site is served from a subfolder (/ksou_test/), so the router has to
+ * know where it starts. With this set, every `<Route path>` and `<Link to>`
+ * in the codebase stays written as a root-relative path and is prefixed
+ * automatically — do NOT add the prefix to them by hand as well, or every
+ * link resolves to /ksou_test/ksou_test/...
+ */
+import { ROUTER_BASENAME } from '@/constants/basePath';
 import { useLanguage } from '@/i18n/useLanguage';
 import {
   NAV_LINKS,
@@ -54,7 +62,7 @@ function LanguageSync() {
 
 export function AppRoutes() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={ROUTER_BASENAME}>
       <ScrollToTop />
       <LanguageSync />
       <Routes>

@@ -31,6 +31,24 @@ const ROOT = path.resolve(import.meta.dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 const PORT = 4178;
 
+/**
+ * The subpath the site is deployed under, read from the real Vite config so
+ * it cannot drift from the build the app actually ships.
+ *
+ * This is load-bearing, not tidiness. React Router runs with a `basename`,
+ * so it only matches URLs that begin with the base. Navigating this headless
+ * browser to `/about` when the app expects `/ksou_test/about` matches no
+ * route at all — every page would render the "Page not found" catch-all and
+ * be written to disk as a real, deployable file. It would also pass the
+ * length check below, because that page has text. Silent, and served to
+ * every crawler.
+ *
+ * `BASE` keeps the trailing slash ('/ksou_test/'); `BASE_PREFIX` drops it
+ * for joining onto route paths that already start with one.
+ */
+const BASE = (await import(`file://${path.join(ROOT, 'vite.config.js')}`)).default.base || '/';
+const BASE_PREFIX = BASE.replace(/\/+$/, '');
+
 const ROUTES = [
   '/',
   '/about',
@@ -88,7 +106,17 @@ const MIME = {
 // Minimal static server with SPA fallback — the app must resolve its own
 // routes client-side for us to capture them.
 const server = http.createServer((req, res) => {
-  const urlPath = decodeURIComponent(new URL(req.url, `http://localhost:${PORT}`).pathname);
+  const requested = decodeURIComponent(new URL(req.url, `http://localhost:${PORT}`).pathname);
+
+  // The built HTML asks for /ksou_test/assets/…, but dist/ has no ksou_test
+  // folder — it *is* that folder. Strip the base to map a deployed URL onto
+  // the file that will serve it, so the pre-render sees the same bytes IIS
+  // will later hand to a visitor.
+  const urlPath =
+    BASE_PREFIX && requested.startsWith(BASE_PREFIX)
+      ? requested.slice(BASE_PREFIX.length) || '/'
+      : requested;
+
   let filePath = path.join(DIST, urlPath);
 
   if (!filePath.startsWith(DIST)) {
@@ -145,12 +173,30 @@ await page.addInitScript(() => {
   window.__KSOU_PRERENDER__ = true;
 });
 
+/*
+ * Keep the build out of Google Analytics.
+ *
+ * index.html loads gtag.js, which sends a page_view on load. Without this,
+ * every `npm run build` would report 27 pageviews from the build machine —
+ * quietly inflating traffic and, worse, corrupting landing-page and
+ * conversion-rate figures for exactly the routes the site cares about.
+ *
+ * Aborting the request also removes a third-party round trip from
+ * `networkidle`, so the pre-render is faster as well. The inline gtag stub in
+ * index.html still defines the function, so nothing on the page throws when
+ * the library never arrives.
+ */
+await page.route('**://www.googletagmanager.com/**', (route) => route.abort());
+
 const failures = [];
 let written = 0;
 
 for (const route of ROUTES) {
   try {
-    await page.goto(`http://localhost:${PORT}${route}`, { waitUntil: 'networkidle', timeout: 45000 });
+    await page.goto(`http://localhost:${PORT}${BASE_PREFIX}${route}`, {
+      waitUntil: 'networkidle',
+      timeout: 45000,
+    });
     // The app renders a <main> on every real route; waiting for it is a far
     // better readiness signal than a fixed sleep.
     await page.waitForSelector('main', { timeout: 15000 });

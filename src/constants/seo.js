@@ -1,15 +1,26 @@
 /**
  * Site-wide SEO constants.
  *
- * `SITE_URL` is the canonical origin used for og:url, link rel=canonical and
- * every absolute URL in the JSON-LD schemas. The site has no custom domain
- * yet, so this is the Vercel production host. **When a real domain lands,
- * this constant plus the three static files in public/ (robots.txt,
- * llms.txt, sitemap.xml) all need updating** — those files can't import from
- * here, so they are the easy ones to forget. No trailing slash: callers
- * concatenate a path that always starts with one.
+ * `SITE_URL` is the canonical base used for og:url, link rel=canonical and
+ * every absolute URL in the JSON-LD schemas.
+ *
+ * **It includes the `/ksou_test` subpath**, because that is genuinely where
+ * the site lives — it is deployed to IIS beside the university's existing
+ * site at the domain root. Canonical URLs must point at the real address of
+ * the page, so a canonical of `https://onlineprogramme.ksoumysuru.ac.in/about`
+ * would name a URL belonging to the *old* site.
+ *
+ * That is also why callers still pass router paths (`/about`) unprefixed:
+ * concatenating here applies the subpath once. Do not pass a `withBase()`
+ * result to `absoluteUrl` — it would double the prefix.
+ *
+ * **When this moves** (to the domain root, or off the test folder), this
+ * constant, `base` in vite.config.js, and the three static files in public/
+ * (robots.txt, llms.txt, sitemap.xml) all need updating — those files can't
+ * import from here, so they are the easy ones to forget. No trailing slash:
+ * callers concatenate a path that always starts with one.
  */
-export const SITE_URL = 'https://ksou-online-website-2026-qmolackhn.vercel.app';
+export const SITE_URL = 'https://onlineprogramme.ksoumysuru.ac.in/ksou_test';
 
 export const SITE_NAME = 'KSOU Online';
 
